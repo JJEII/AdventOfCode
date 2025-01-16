@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Advent of Code</title>
+	<link rel="stylesheet" type="text/css" href="AdventOfCode.css">
+</head>
+<body>
+	<h1>Advent of Code</h1>
+
+	<section>
+		<h2>Introduction and Overview</h2>
+		<p>Advent of Code (AoC) is an annual computer programming event that began in 2015 and is found at <a href="https://adventofcode.com">https://adventofcode.com</a>. The problems are presented in the context of a whimsical/silly story arc with some kind of semi-Christmas-y theme (like eventually recovering Santa's lost keys through a long series of intermediate adventures, or whatever). This page captures some recommended topics to be familiar with when participating in it, as well as some tips and tricks learned while working through its problems.</p>
+		<p>AoC happens in December each year, with a total of 25 problems (1 through 25) in the full event, which opens on Dec 1 and culmninates on Dec 25. Each problem number, <em>N</em>, becomes available at midnight EST on December <em>N</em>. (So, problem 1 is revealed at exactly the start of Dec 1 in EST, problem 2 on Dec 2, etc.) Each problem has two parts, with Part 1 being revealed at midnight on its day (and year) and Part 2 revealed upon solving Part 1. After a problem is made available, it remains available forever; this includes all previous events' problems, as well as the current event's previous days' problems. Individual problem availability is <em class="underline">not</em> dependent upon solving earlier problems in its event; <em>i.e.</em>, each problem is revealed on its date, independently of those problems preceding it. (Though, there are some problems that refer to earlier problems, they do not require that you have solved them first.)</p>
+		<p>For each year's event, every solved Part earns you a star. The event's objective is to earn 50 stars. (Well, really it's to save Christmas, but you <em>do</em> that by earning all the stars.) Part 2 of Problem 25 provides you a star for free, but it also requires that you have earned all the event's other 49 stars to actually complete it. In the big picture, the problems trend from easier to harder as the days increase, but there's definitely some choppiness in the diffculty curve. (Some problems may seem easier than other that came earlier.) There is no penalty for submitting wrong answers since you can simply try again; however, if you submit several wrong tries in succession, there is an increasing enforced delay for submitting yet more. (This prevents spamming submissions until "correct".)</p>
+		<p>AoC requires that you create a site account in order to participate. This is so your progress can be saved. (The event does not spam you at all.) It also provides a mechanism for creating/joining Private Leaderboards so you and your friends can track each other's progress.</p>
+		<p>NOTE: If you feel any important information is missing here, or something is unclear, please let me know so I can address it! This is a work in progress, and it's meant to be helpful.</p>
+	</section>
+
+	<section>
+		<h2>Language-Agnostic Comments</h2>
+		<p>AoC requires programming to solve the problems but does not require the use of any specific language. I recommend Python and will focus on it in the next section, but this section's comments are language-agnostic.</p>
+
+		<ol>
+			<li><details><summary>A few important general pointers...</summary>
+				<p>
+					<ul>
+						<li><strong>Solve the stated problem; do not pre-optimize or pre-generalize.</strong> After you've done a few of these, you may be tempted to anticipate Part 2 and try to write a generalized solution for Part 1 that will make Part 2 super easy. Or, you may be tempted to write ultra-optimized code in anticipation of the data set growing in a particular way. This sometimes works out, but more often it's a trap. You'll write a beautiful general solution that operates at lightning speed, and then Part 2 changes things in an unanticipated way, and you're back to the drawing board. It's better to just solve Part 1 in the most straightforward way possible, and figure out what you need to do for Part 2 once you actually have the problem statement.</li>
+						<li><strong>Leverage "test input".</strong> Nearly all problems include example scenarios that get walked through in detail as part of the problem description, which helps facilitate clear understanding of the problem. It is a very good idea to use these scenarios as "test input" for your code, to ensure it's producing the correct result for the example case before running it on the "real" input data, which is always more complex.</li>
+						<li><strong>Broadly speaking, you may completely ignore data validation concerns.</strong> All input data provided is properly formatted according to each problem's description; the event does not <em>ever</em> give you malformed data (<em>i.e.</em>, that's inconsistent with the problem description).</li>
+						<li><strong>Attention to detail is critical.</strong> Sometimes, the input data contains content that may seem a bit "sneaky" (<em>e.g.</em>, when compared to the "test input" content) but is entirely fair in the context of the problem statement, even if it wasn't considered when writing your code (which may cause it to fail). Also, there have been a handful of times where I didn't initially pay close enough attention to <em>exactly</em> what the problem statement actually said, and it resulted in some frustration.
+							<aside class="indent">Example: <a href="https://adventofcode.com/2015/day/23">2015's problem 23</a> describes an invented assembly language instruction set, which includes a <code>jie</code> and a <code>jio</code> instruction. The descriptions for <code>jie</code> and <code>jio</code> were the final two instructions provided in the overall list, with <code>jie</code> given first: <q>jie r, offset is like jmp, but only jumps if register r is even ("jump if even").</q> I far too easily elided over the detailed description for <code>jio</code> because my brain naturally leapt to it being "jump if odd", but that's not what it actually said; it was "jump if <em>one</em>". So, of course, my code wasn't working to produce the correct result, despite meticulous debugging of it, because the problem was in what I'd implemented, not how I'd done it. Oops!</aside></li>
+							<li><strong>Answers to problems <em>vary</em> from person to person.</strong> Each problem statement is identical for everybody, but the input data provided to participants varies, so the correct answer for your problem may not be the same as other people's correct answers for that same problem. (The basic <em>structures</em> of the data/problems do not vary, though, so they still may be easily discussed among participants.)</li>
+							<li><strong>Save your work.</strong> Keep separate source code files for all your solutions. This includes separate solutions for Part 1 and Part 2. Copying your Part 1 solution as the starting point for your Part 2 solution typically works well. You'll almost certainly find yourself wanting to refer back to previous solutions as you come across new problems with similarities to other problems you've already solved.</li>
+					</ul>
+				</p>
+			</details></li>
+			<li><details><summary>"Structural mapping" often works well, rather than lots of special case if-else/switch/match/etc. constructs.</summary>
+				<p>A couple use cases:
+					<ul>
+						<li>Deltas list &ndash; Need to know all neighbors around a grid cell? Make a list of <code>[dx, dy]</code> pairs, then loop through them, processing them all identically. (This is trivially easy to update if diagonal cells are/n't needed, and it makes for highly readable/maintainable code.) See examples under <code>zip</code> of the <a href="#useful-func--zip">"Especially useful functions" Python-specific section</a>.</li>
+						<li>Option-mapping dictionary &ndash; Need different information, or to respond in different ways, to things that are similarly structured? Make a dictionary to map them directly, rather than conditionally checking and branching code. This may include mapping data to other data, or data to different functions to run in response, or something else. See the <a href ="#misc--option-mapping-example">"Option-mapping dictionary example" under the "Miscellaneous" Python-specific bullet</a>.</li>
+					</ul>
+				</p>
+			</details></li>
+			<li><details><summary>Regular expressions frequently dramatically ease data ingestion/parsing; learn them well.</summary>
+				<p>Certainly, not all problems need them, but they can drastically simplify code and effort for a lot of problems.</p>
+			</details></li>
+			<li><details><summary>Leverage data types to your advantage &ndash; sets, dictionaries, tuples, lists, etc.</summary>
+				<p>Sets and dictionaries are hash-type storage objects and so are generally <em>far</em> more efficient to check if something is in them than are, for example, lists (arrays). They also ensure uniqueness (rather than multiplicity) of membership. Of course, they're also not (necessarily) guaranteed to be in a particular order, so there can be both pros and cons to them.</p>
+				<p>Sometimes a somewhat simple/naïve approach may work perfectly well for Part 1 of a problem, but you'll need to adapt your approach to a different and more efficient data representation for its Part 2. Keep such possibilities in mind. (See, for example, <a href="https://adventofcode.com/2021/day/6">2021's problem 6</a>.)</p>
+				<p>Also, as a bit of a side note: It's very efficient to implement "circular queues" and the like by using lists (arrays) with modulus math. That is, you can just keep incrementing an index and always mod it by the length of the list; so, i=(i+1)%len(alist), and alist[i], will just keep endlessly cycling through alist. One caveat to keep in mind for those languages that support negative indexing (such as Python) is to keep indexing non-negative (&ge;0), or you may encounter problems. If you want to decrement an index by 1, add "len(alist-1" to it instead of -1; in modulus math, this results in "i-1" regardless of where in the list the index is&mdash;including at i=0. (Of course, this only applies to non-empty lists. Not even i=0 is valid for empty lists.)</p>
+			</details></li>
+			<li><details><summary>Notice data/computational patterns.</summary>
+				<p>Some of the problems are deliberately designed so that you <em>must</em> identify patterns in order to solve them. For example, maybe Part 1 of a problem has you implement a process and compute a result by iterating it a few hundred times, but then Part 2 asks you what the result will be after iterating it several trillion times! If you don't notice that there's a repeated pattern in the computational behavior, and figure out how to leverage it to your advantage, then you will never get the answer; but if you do identify that fact, and you're careful in how you exploit it, you can chop out the vast majority of the computation in the middle that's fundamentally repeatedly redoing the same work, and instead only do the lead-in and run-out "clean up" processing in order to arrive at the correct answer before the heat death of the universe occurs.</p>
+			</details></li>
+			<li><details><summary>Solve for the data you're given, not necessarily the generalized problem that seems to be being stated.</summary>
+				<p>This is definitely a minority case, but it does crop up here and there. Most problems expect general solutions, but some <em>require</em> that the data be structured in a particular way, and discovering that and using it may be essential to solving them. (Basically, the fundamental structure of the data is part of the problem statement, but that fact may not be clearly stated. Noticing it is important.)</p>
+				<p>Sometimes even if it's not required, it's still easier to solve for the data given rather than the general problem. The objective is to get the correct answers to <em>this</em> problem-set. Corner cases that may crop up in more general hypothetical input data, but do not in the provided data, may safely go unaccounted for (albeit, perhaps with a comment in the code, noting this), and sometimes you can actually leverage this in order to signficantly simplify solution development.</p>
+				<p>I know of at least two past problems that needed more of a reverse-engineering type of solution than a programmatic one. And, there are some others that are more easily solved in less than strictly programmatic ways (especially via visualization, but not only that).</p>
+			</details></li>
+			<li><details><summary>Depth First Search (DFS), Breadth First Search (BFS), etc.</summary>
+				<p>DFS is more often used for exploring solution-space, but there's often a problem or two thrown in where BFS is needed instead. (Note that this may be more of a conceptual approach than a traversal of an actual graph data structure.)</p>
+				<p>So, keep this in mind, <em>i.e.</em>, the idea that sometimes the best way forward is . . . all of them. And, prune the results as needed.</p>
+				<p>Of course, it may also be helpful to be familiar with some common/useful graph algorithms, such as Dijkstra's algorithm (perhaps Prim's/Kruskal's algorithm as well).</p>
+			</details></li>
+			<li><details><summary>Review recursion vs iteration (stacks).</summary>
+				<p>Recursion often results in cleaner code. Iteration is typically more performant. One generally successful approach for converting a recursive solution to an iterative solution is to use a "work queue". Create a data structure to capture converting "state" (usually a tuple works fine), and then create a work queue (a Python list, or even better, a deque), with a single state element representing the starting state. Remove the first element from the queue, evaluate it to determine all new possible states, and append those to the queue. Repeat until the queue is empty, or you have found the end state you were looking for.</p>
+			</details></li>
+			<li><details><summary>Understand closures and lambda functions.</summary>
+				<p>Lambda functions (aka anonymous functions) are very handy for inline purposes, from doing filtering, to transforming data, to mapping special functionality.</p>
+				<p>Closures are good to understand if you want to use generators, coroutines, and more.</p>
+			</details></li>
+			<li><details><summary>Learn about dynamic programming (yes, without the r).</summary>
+				<p>This programming technique is somewhat less known to a lot of people, but it is very useful for certain problems that occasionally appear in the events, so it's recommended as something to be familiar with. I've seen it drop execution times from many minutes, or hours (or potentially even much longer), down to near-instand, and with very little additional effort required, so it's a good thing to be aware of. (If using Python, see a potential memoization gotcha in the Miscellaneous section bullet, <a href="#misc--defval-reset-gotcha">Default-value parameters do not necessarily "reset" to default value.</a> Also, see the Python-specific bullet: <a href="#memo-eg">A full dynamic programming example</a>.)</p>
+			</details></li>
+		</ol>
+	</section>
+
+	<section>
+		<h2>Python-Specific Comments/Topics</h2>
+		<ol>
+			<li><details><summary>Comprehensions and Generators / Coroutines</summary>
+				<p>A few examples:
+					<ul>
+						<li><code>evens = [i for i in range(0, 101, 2)]</code> &LongRightArrow; list of all even numbers from 0 through 100</li>
+						<li><code>mul_tbl = [[col*row for col in range(1, 13)] for row in range(1, 13) if row != 5]</code> &LongRightArrow; 12x12 multiplication table (list of lists), but skipping row 5</li>
+						<li><code>for n in (i for i in range(1000000000) if i not in set_a):</code> &LongRightArrow; loop n from 0 to a billion, skipping any values in set_a, and generating one value at a time, not a whole list at once (as would be the case if the brackets were used instead of parentheses)</li>
+					</ul>
+					The first two examples use list comprehensions. The third uses a generator expression. These are conceptually and syntactically very similar, although there are big differences in what happens under the covers that make it important to understand what you're doing, especially when creating large amounts of data.
+				</p>
+				<h4>Comprehensions</h4>
+				<p>A comprehension is special syntax that allows in-place initialization of a list, set, or dictionary using a very succinct expression:
+					<ul>
+						<li>list: <code>[ <em>expr</em> for <em>var</em> in <em>iterable</em> ]</code></li>
+						<li>set: <code>{ <em>expr</em> for <em>var</em> in <em>iterable</em> }</code></li>
+						<li>dict: <code>{ <em>imm</em> : <em>expr</em> for <em>var</em> in <em>iterable</em> }</code></li>
+					</ul>
+					Note that comprehensions are fully populated when they are evaluated. Thus, they can consume large amounts of memory, and for lists in particular, they can be very slow. (Many list operations are O(n).)
+				</p>
+				<h4>Generator Expressions</h4>
+				<p>The syntax for a generator expression is very similar to a list comprehension:
+					<ul>
+						<li><code>( <em>expr</em> for <em>var</em> in <em>iterable</em> )</code></li>
+						<li>the parentheses are optional in some scenarios (<em>e.g.</em>, first parameter to a function)</li>
+					</ul>
+					The difference is that a generator expression only produces its elements one at a time, on demand. This keeps generator expressions lightweight in terms of memory usage. However, it also means that certain operations are not available (<em>e.g.</em>, accessing an element by index).
+				</p>
+				<p>Note that generator expressions are distinct from lists, sets, and dictionaries; they're their own thing, even though they may appear very similar syntactically, and may also generate individual elements of content of similar forms to any of them. There is no "going back" or "random access" nature to them; there's only "give me the next item" (until there are no more to give).</p>
+				<h4>Generator Functions</h4>
+				<p>Generator functions offer a more general-purpose approach with similar functionality to generator expressions, albeit with completely different syntax. To create a generator function, you simply use the keyword <code>yield</code>. This is best explained by example:
+					<pre class="indent">
+def mygen(n):
+  for i in range(n):
+    yield i ** 2
+	
+for i in mygen(5):
+  print(i)
+
+OUTPUTS:
+0
+1
+4
+9
+16
+					</pre>
+					The important thing to note here is that the <code>mygen</code> function effectively "pauses" after each <code>yield</code>. The generator function above is equivalent to the generator expression <code>( i ** 2 for i in range(n) )</code>; however, you have considerably more flexibility in a generator function to create complicated generator functionality.
+				</p>
+				<h4>Coroutines</h4>
+				<p>It's also possible to use the <code>yield</code> keyword in the context of creating coroutines, though I won't discuss these in detail here since I haven't found them necessary in AoC. (Feel free to research them, though.) That said, here's a very short code sample to show one in action:
+<pre class="indent">
+def a_coroutine(): # define a coroutine function
+  while True:
+    val_rcvd = yield    # assigning from yield makes it a coroutine, not a (regular) generator
+    print('Value consumed:', val_rcvd)
+
+c = a_coroutine() #create instance of coroutine
+print(type(c), c) # print coroutine object
+next(c) # prime the coroutine (i.e., start it)
+for string in "first", "second", "third":
+  c.send(string) # send in the data (into the coroutine)
+
+OUTPUTS:
+&lt;class 'generator'&gt; &lt;generator object coroutine at 0x000001BB1724B350&gt;
+Value consumed: first
+Value consumed: second
+Value consumed: third
+</pre>
+				</p>
+			</details></li>
+			<li><details><summary>List (and tuple and string) indexing/slicing</summary>
+				<p>A few examples:
+					<ul>
+						<li><code>list_a[::-1]</code> &LongRightArrow; list that is reverse of list_a</li>
+						<li><code>list_a[:i] + list_b[j:] + list_c[i:j]</code> &LongRightArrow; list that is composed of list_a elements 0 through i-1 (or its end), list_b elements j through its end, and list_c elements i through j-1 (or its end)</li>
+						<li><code>"0123456789abcdef"[13:4:-3]</code> &LongRightArrow; "da7"</li>
+					</ul>
+				</p>
+			</details></li>
+			<li><details><summary>Destructuring and packing/unpacking</summary>
+				<p>A few examples:
+					<ul>
+						<li><code>a, b = [b, a]</code> &LongRightArrow; swaps values of a and b</li>
+						<li><code>a, b, c, *rest = [1,2,3,4,5,6,7,8,...]</code> &LongRightArrow; a=1, b=2, c=3, rest=[4,5,6,...]</li>
+						<li><code>def var_args_func(a, b, *args):</code> &LongRightArrow; can call with var_args_func(1,2) (so, a=1, b=2, args=()) or var_args_func(1,2,3) (so, a=1, b=2, args=(3,)) or var_args_func(1,2,3,"abc",5,False,7.0) (so, a=1, b=2, args=(3,'abc',5,False,7.0)), etc.
+							<ul>
+								<li>Side note: to initialize a single-element tuple (via "shorthand"), you need to include the trailing comma, like this: <code>t = (1,)</code></li>
+								<li>Also note that there is a <code>**kwargs</code> notation, which is used to collect named arguments ("<strong>k</strong>ey<strong>w</strong>ord <strong>arg</strong>ument<strong>s</strong> into a dictionary that can then be used inside the function. If <code>*args</code> is also being used with it, then args should appear before kwargs, and any more specific parameters should be listed before both, <em>e.g.</em>:<br/>
+								<code>def var_args_func(a, b, c, *args, **kwargs):</code></li>
+							</ul>
+						</li>
+						<li><code>return args, a, b</code> &LongRightArrow; returns a tuple &ndash; (args, a, b) &ndash; which can be captured in a variable, or multiple variables via destructuring</li>
+						<li><code>for k, v in my_dict.items():</code> &LongRightArrow; my_dict.items() is an iterator that generates (key, value) tuples, which are then destructured into variables k and v, for use in each loop</li>
+						<li><code>print(*grid, sep='\n')</code> &LongRightArrow; print a "grid" (list of lists), one row (unpacked from grid) at a time, with intervening separator character '\n' (<em>i.e.</em>, newline)</li>
+					</ul>
+				</p>
+			</details></li>
+			<li><details><summary>Especially useful functions (built-in)...</summary>
+				<ul>
+					<li><code>open</code> &ndash; for opening files, often best to use within the context of a <code>with</code> block &ndash; example:
+						<ul><li><code>with open("input.txt") as in_file:</code></li></ul>
+					</li>
+					<li><code>len</code> &ndash; get the length/size of a list/set/etc.</li>
+					<li><code>map</code> &ndash; transform iterable data from one form to another</li>
+					<li><code>iter</code> &ndash; create an iterator for an object</li>
+					<li><code>filter</code> &ndash; filter iterable data according to defined criteria, passing through only those items that satisfy the filter test</li>
+					<li><code>enumerate</code> &ndash; handy way to tack on an iteration number in a loop</li>
+					<li><code>sorted</code> &ndash; what it sounds like, but also allows you to customize how its sorting (see also <code>reversed</code>)</li>
+					<li><code>type/isinstance/issubclass/callable</code> &ndash; do typing-related checks</li>
+					<li><code id="useful-func--zip">zip</code> &ndash; generator that "zips" together <em>n</em> iterables &ndash; examples:
+						<ul>
+							<li><code>zip("abcd", [1,2,3,4,5], (True,False,True))</code> &LongRightArrow;; iteratively produces: ('a', 1, True), ('b', 2, False), and ('c', 3, True), then stopping because it ran out of elements in the third iterable</li>
+							<li>See also: <code>zip_longest</code> function in the <code>itertools</code> module</li>
+							<li><code>rc = [3,5] # e.g., indices into a grid, perhaps passed into a function as a parameter<br/>
+							for drdc in [[-1,0],[0,1],[1,0],[0,-1]]: # e.g., cycle through all horizontal and vertical neighbor-cell offsets<br/>
+							&nbsp;&nbsp;r, c = [sum(z) for z in zip(rc, drdc)]</code> &LongRightArrow; r, c end up as the row, column grid indices of neighbor cells of <code>rc</code>. (Note: This is easy to extend to arbitrary dimensions (change rc, and drdc list), or to include diagonal neighbor cells (edit drdc list).)<br/>
+							The pattern above is handy in many of the grid- and/or coordinate-related problems, which are plentiful.</li>
+							<li><code>transposed_matrix = list(zip(*matrix))</code></li>
+						</ul>
+					</li>
+					<li><code>all</code> &ndash; True if <em>all</em> items in an iterable are True; handy in conjunction with <code>map</code>; evaluates with short-circuiting</li>
+					<li><code>any</code> &ndash; True if <em>any</em> items in an iterable are True; evaluates with short-circuiting</li>
+					<li><code>eval</code> &ndash; Evaluate a string as Python code</li>
+					<li>Some others: <code>round</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>abs</code>, <code>divmod</code>, <code>ord</code>, <code>chr</code>, <code>hex</code>, <code>id</code>, <code>hasattr</code>, <code>str/int/...</code>, and so forth; you can look up a full listing of the built-in functions online (<em>e.g.</em>, <a href="https://docs.python.org/3/library/functions.html">https://docs.python.org/3/library/functions.html</a>), or get an approximate listing programmatically like this:
+<pre class="indent">
+import builtins, types
+print([nm for nm, obj in vars(builtins).items() if isinstance(obj, types.BuiltinFunctionType)])
+</pre></li>
+				</ul>
+			</details></li>
+			<li><details><summary>Modules worth having a look at...</summary>
+				<ul>
+					<li><code>re</code> &ndash; regular expression module; especially useful functions are <code>compile</code> and <code>match</code>, but there are others</li>
+					<li><code>itertools</code> &ndash; many useful functions: combinations, permutations, product, groupby, cycle, repeat, accumulate, batched, chain, compress, pairwise, dropwhile, takewhile, ...
+					<ul>
+						<li>Be sure to check out the itertools recipes in the Python documentation for the itertools module. There are lots of examples of useful ways to use itertools., many of which you may end up pulling into your code with no changes required (<em>e.g.</em>, grouper).</li>
+					</ul></li>
+					<li><code>functools</code> &ndash; probably especially look at <code>reduce</code> (often conceptually grouped with <code>map</code> and <code>filter</code>) and <code>cache</code> (a decorator)</li>
+					<li><code>collections</code> &ndash; at least <code>Counter</code>, <code>defaultdict</code>, <code>namedtuple</code>, and <code>deque</code>
+					<ul>
+						<li>Side note: a very useful pattern when building/updating a dictionary:<br/>
+						d.setdefault(k, []).append(new_value) &nbsp; or &nbsp; d.setdefault(k, set()).union(new_set) &nbsp; or &nbsp; d[k] = d.get(k, 0) + new_nbr &nbsp; etc.</li>
+					</ul></li>
+					<li><code>math</code> &ndash; at least <code>comb</code> and also the usual suspects, otherwise</li>
+					<li><code>copy</code> &ndash; <code>copy</code> and <code>deepcopy</code>, at least (if needing to make copies of arbitrarily complex objects)</li>
+					<li><code>time</code> &ndash; <code>time</code> function inside it makes it very easy to time things executing</li>
+					<li>Other modules to potentially consider for various reasons: <code>os</code>, <code>sys</code>, <code>subprocess</code>, <code>threading</code>, <code>multiprocessing</code>, <code>asyncio</code>, <code>abc</code></li>
+					<li><code>pyvis</code> &ndash; a powerful and simple-to-use module for visualizing graphs, which can be immensely useful for some problems (to better understand the structure of input data)</li>
+				</ul>
+			</details></li>
+			<li><details><summary>Custom data types (classes)</summary>
+				<p>A lot of the solutions don't really require custom data-type definitions, but they can also be pretty useful for many of them. So, it's still a good idea to review the details of user-defined Python classes, such as <code>self</code> and <code>cls</code>, the so-called dunder functions (__init__, __str__, etc.), getters and setters (@property and @propertyname.setter), static and class methods (@staticmethod and @classmethod), class vs instance variables, leading single- and double- underscore named "private" variables, and of course inheritance, polymorphism, etc. If you really want to get more into this, a potentially relevant module to examine is <code>abc</code> (short for Abstract Base Classes).</p>
+			</details></li>
+			<li><details><summary>Miscellaneous</summary>
+				<ul>
+					<li>Understand mutable vs immutable types, which may importantly impact program capabilities/functionality
+						<ul>
+							<li>Mutable and immutable:
+								<ul>
+									<li>Example immutable types: frozenset, tuple, int, float, str, bool</li>
+									<li>Example mutable types: dict, list, user data type objects</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>Dynamic programming / memoization / <code>@cache</code> / [custom] decorators (See <a href="#memo-eg">A full dynamic programming example</a> below.)</li>
+					<li>Note: Inner functions cannot change outer function immutable variables (but can access them), but they <em>can</em> change contents of outer function mutable variables.</li>
+					<li>Note: <span id="misc--defval-reset-gotcha">Default-value parameters do not necessarily "reset" to default value.</span>
+						<ul>
+							<li>This happens when the default variable is mutable. The default variable's value is set at the time the function is defined, not every time the function is called. In the example below, when the function is defined, <code>def_var</code> gets assigned a new dictionary. Then on every call where the argument isn't supplied, that same dictionary gets used.</li>
+							<li>Example:
+<pre class="indent">
+def surprise(txt, def_var={}):
+  print(f"{txt}\n\tExpected(?): {{}}. Is: {def_var}")
+  def_var[4] = 2
+  print(f"\tValue set: def_var[4] = 2.\n\tShould be: {{4: 2}}. Is: {def_var}")
+surprise("Call #1; parameter 2 omitted; expecte(?) to use specified default = {}; appears to do so.")
+surprise("Call #2; parameter 2 omitted; expecte(?) to use specified default = {}; DOES NOT!")
+surprise("Call #3; parameter 2 explicitly passes as {}; resets its value, as expected.", {})
+
+def better(txt, def_var=None): # This works because None is an immutable type (and, incidentally, a singleton).
+  if def_var is None:
+    def_var = {}
+  ...
+
+# Another possible approach is to implement something like this as an outer function
+# wrapping an inner function (e.g., in the case of memoization), where even a mutable
+# type does not hang around outside the outer function, after it's exited.
+</pre>
+							</li>
+						</ul>
+					</li>
+					<li>Learn f-strings</li>
+					<li>Python syntactically supports the chaining together of inequalities, <em>e.g.</em>, <code>if u &lt; v &lt; w &lt;= x &lt;= y &lt; z: ...</code>
+						<ul>
+							<li>Most languages require something more like this: <code>if u &lt; v and v &lt; w and w &lt;= x and x &lt;= y and y &lt; z: ...</code></li>
+							<li>Another at least as important detail to know is that the <code>range</code> object <em>efficiently</em> supports its use in if-statements (via exactly the same interface), such as,<br/>
+							<code>if x in range(start, stop, step): ...</code><br/>
+							Note that this does <span class="underline">not</span> iterate through to check; it does the direct-computation math to determine if x is in the specified range, including whether or not it aligns with the defined step size.</li>
+						</ul>
+					</li>
+					<li><span id="misc--option-mapping-example">Option-mapping dictionary example:</span> Suppose part of a problem's description is to move around in a 2D-grid with coordinates akin to indexing into a "list of lists" (<em>i.e.</em>, like (row, col), but not necessarily with any boundaries) in various directions, and your input says to do any of the following:
+					<ul>
+						<li>Go forward a distance in whatever direction you're facing(<em>e.g.</em>, "F 3"), or</li>
+						<li>Turn left 90 degrees ("L"), or</li>
+						<li>Turn right 90 degrees ("R"), or</li>
+						<li>Turn around to face backward ("B").</li>
+					</ul>
+					Suppose you decide to represent the N/E/S/W direction you're facing as a 2-tuple, <em>i.e.</em>, one of these: [-1,0], [0,1], [1,0], [0,-1]. You could write a regular expression to parse input, then go into a very simple loop to tear through it, line by line, such as the following. Note the usefulness of the "option-mapping dictionary", here named "go".
+<pre class="indent">
+import re
+
+go = { # "go" ... Left-face, Right-face, Backward-face, Forward-move-by-amount
+  "L": lambda pos, hdg, _: [pos, [-hdg[1], hdg[0]]], # turn left, regardless of current heading (pre-multiply hdg by [[0,-1],[1,0]])
+  "R": lambda pos, hdg, _: [pos, [hdg[1], -hdg[0]]], # turn right, regardless of current heading (pre-multiply hdg by [[0,1],[-1,0]])
+  "B": lambda pos, hdg, _: [pos, [-hdg[0], -hdg[1]]], # reverse direction, regardless of current heading
+  "F": lambda pos, hdg, amt: [[pos[0]+int(amt)*hdg[0], pos[1]+int(amt)*hdg[1]], hdg], # move forward "amt" steps in direction of current heading
+}
+rx = re.compile(r"^(?P&lt;cmd&gt;[LRFB])\s*(?P&lt;amt&gt;\d+)?$")
+
+with open("input.txt") as infile:
+  pos = [0, 0] # initial position
+  hdg = [-1, 0] # initial heading: face "north" ("up", in terms of (row,col) grid indexing)
+  for line in infile:
+    m = rx.match(line.rstrip('\n'))
+    if not m: raise Exception("Uh, oh...")
+    grp = m.groupdict()
+    pos, hdg = go[grp["cmd"]](pos, hdg, grp["amt"]) # &lt;---- makes for very clean code; doesn't care what action to "go" do; just go do it!
+  print(f"Final position: {pos}. Final heading: {hdg}.")
+
+EXAMPLE INPUT:
+F 8
+L
+F 2
+L
+F 5
+R
+F 1
+B
+L
+F 7
+B
+F 15
+L
+F 5
+
+OUTPUT:
+Final position: [5, 2]. Final heading: [0, 1].
+</pre>
+					</li>
+				</ul>
+			</details></li>
+			<li><details><summary id="memo-eg">A full dynamic programming example</summary>
+				<p>PROBLEM STATEMENT:<br/>
+				Write a 'best_sum' function that takes two inputs:
+				&nbsp;&nbsp;target_sum: an integer<br/>
+				&nbsp;&nbsp;number_pool: a collection of some natural numbers (<em>i.e.</em>, positive integers)<br/>
+				It returns the smallest set of those numbers that sum to target_sum.<br/>
+				The numbers are re-usable as many times as needed.<br/>
+				If target_sum is impossible to reach, return None.<br/>
+				(For more, see 'bestSum' problem (etc.) <a href="https://www.youtube.com/watch?v=oBt53YbR9Kk&t=6728s">here</a>.)
+				</p>
+<pre>
+from functools import cache
+
+#@cache # uncomment this to memoize this function
+def best_sum(target_sum, number_pool):
+  if target_sum == 0: return []
+  if target_sum &lt; 0: return None
+  shortest = None
+  for n in number_pool:
+    remainder_combo = best_sum(target_sum - n, number_pool)
+    if remainder_combo is not None:
+      combo = [*remainder_combo, n]
+      if shortest is None or len(combo) &lt; len(shortest):
+        shortest = combo
+  return shortest
+
+# Manual Memoization (MM): manual dyn. prog. (more control over exactly what's memoized)
+# Identical to above, except where marked with 'memo'.
+def best_sum_MM(target, numbers, memo=None): #memo
+  if memo is None: memo = {}      # memo (avoids default-value non-reset that memo={} causes)
+  if target in memo: return memo[target]    # memo
+  if target == 0: return []
+  if target &lt; 0: return None
+  shortest = None
+  for n in numbers:
+    remainder_combo = best_sum_MM(target - n, numbers, memo)   # memo
+    if remainder_combo is not None:
+      combo = [*remainder_combo, n]
+      if shortest is None or len(combo) &lt; len(shortest):
+        shortest = combo
+  memo[target] = shortest                        # memo
+  return shortest
+
+inputs = [ # [target sum, available numbers (repeatable) to try to hit it]
+  [7, [5, 3, 4, 7]],
+  [9, [6, 7, 4]],
+  [8, [2, 3, 5]],
+  [100, [1, 2, 5, 25]], # HORRIBLY BREAKS non-memoized run
+  [8, [1, 4, 5]],
+]
+for tgt, nbrs in inputs:
+  # frozenset used since @cache decorator req's all inputs be hashable. (It caches them all.)
+  # Manual memoization doesn't cache nbrs so doesn't req it be hashable; only tgt must be.
+  print(f"{str(tgt)+', '+str(nbrs):>20} --&gt; ", end="")
+  print(best_sum(tgt, frozenset(nbrs))) # call best_sum_MM variant instead to run it
+</pre>
+			</details></li>
+		</ol>
+	</section>
+
+	<section>
+		<h2>Specific Years' Problem Hints/Discussion</h2>
+		<ul>
+			<li><a href="2024.html">2024</a></li>
+		</ul>
+	</section>
+</body>
+</html>

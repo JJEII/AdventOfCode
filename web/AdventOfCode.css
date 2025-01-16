@@ -1,0 +1,128 @@
+/* :root {
+	--bodyColor: hsl(0, 0%, 0%);
+	--bodyBgColor: hsl(0, 0%, 100%);
+
+	--highlightYellowBgColor: rgba(255, 255, 128, 0.9);
+	--detailsBorderColor: rgb(170, 170, 170);
+	--detailsOddBgColor: rgba(230, 230, 230);
+	--detailsEvenBgColor: rgba(242, 242, 242);
+	--qBgColor: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) { */
+	:root {
+		--bodyColor: hsl(0, 0%, 65%);
+		/* --bodyColor: hsl(0, 0%, 0%); */
+		--bodyBgColor: hsl(0, 0%, 0%);
+		/* --highlightColor: hsl(60, 100%, 15%); */
+		
+		--highlightYellowBgColor: rgba(255, 255, 0, 0.2);
+		--detailsBorderColor: rgb(50, 50, 50);
+		--detailsOddBgColor: rgb(30, 30, 30);
+		--detailsEvenBgColor: rgb(22, 22, 22);
+		/* --detailsOddBgColor: rgb(17, 17, 17);
+		--detailsEvenBgColor: rgb(25, 25, 25); */
+		--qBgColor: rgba(255, 255, 255, 0.15);
+		--linkColor: rgb(150, 15, 150);
+		--linkHoverBgColor: rgb(50, 5, 50);
+	}
+/* } */
+
+* {
+	color: var(--bodyColor);
+}
+body {
+	background-color: var(--bodyBgColor);
+}
+a {
+	color: var(--linkColor);
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover {
+	background-color: var(--linkHoverBgColor);
+}
+details {
+	border: 1px solid var(--detailsBorderColor);
+	border-radius: 0.0625in;
+}
+details,
+details details details,
+details details details details details,
+details details details details details details details,
+details details details details details details details details details {
+	background-color: var(--detailsOddBgColor);
+}
+details details,
+details details details details,
+details details details details details details,
+details details details details details details details details,
+details details details details details details details details details details {
+	background-color: var(--detailsEvenBgColor);
+}
+
+/* details {
+	border: 1px solid #aaa;
+	border-radius: 0.0625in;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+details[open] {
+	background-color: rgba(0, 0, 0, 0.1);
+} */
+q {
+	/* text-shadow: 0px 0px 2px rgb(160, 192, 255); */
+	background-color: var(--qBgColor);
+}
+.underline {
+	text-decoration: underline;
+}
+.indent {
+	margin-inline-start: 0.25in;
+}
+.problem-section details {
+	margin-block: 0.5rem;
+}
+/* .problem-section details[open] {
+	margin-block-start: 0.5rem;
+} */
+.problem-section details summary {
+	font-weight: bold;
+}
+.problem-part {
+	margin-inline-start: 0.25in;
+}
+.problem-part details {
+	margin-inline-start: 0.25in;
+}
+/* .problem-part :not(summary) {
+	padding-inline-start: 0.25in;
+} */
+p {
+	text-indent: 0.125in;
+	padding-inline-start: 0.25in;
+	padding-inline-end: 0;
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+/* p+p {
+	text-indent: 0.25in;
+} */
+/* details :nth-child(2) {
+	text-indent: 0;
+} */
+.highlight-yellow {
+	background-color: var(--highlightYellowBgColor);
+	/* background-color: #FBF780; */
+	padding: 0.25rem 0.125rem;
+	margin-inline: 0.125rem;
+	/* background-color: #FBF719; */
+}
+/* svg {
+	border: 1px solid #aaa;
+} */
+pre, svg {
+	display: inline-block;
+	padding: 0.0625in 0.125in;
+	border-radius: 0.0625in;
+	background-color: var(--bodyBgColor);
+}

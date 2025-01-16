@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AoC 2024</title>
+	<link rel="stylesheet" type="text/css" href="AdventOfCode.css">
+</head>
+<body>
+	<h1>Advent of Code 2024</h1>
+
+    <section class="problem-section">
+        <details><summary>Problem 1 ★★ &ndash; Two columns of integers; compute "distance" between them</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p><code>int()</code></p>
+                <p><code>abs()</code></p>
+                <p><code>sum()</code></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p><code>collections.Counter</code></p>
+                <p><code>zip(*data)</code></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 2 ★★ &ndash; List of reports containing levels that, to be "safe", must be all increasing or all decreasing</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p><code>zip(data[1:], data[:-1])</code></p>
+                <p><code>all()</code></p>
+                <details><summary>Side note on implicit list copies...</summary>
+                    <p>Slicing a list creates new copies of the list. Performance and space considerations don't matter for this problem, but if you find yourself needing to do this sort of thing more efficiently, consider using the <code>iter</code> built-in:
+<pre class="indent">
+it = iter(data) # create an iterator
+next(it) # advance the iterator one position
+for elem_n, elem_n_plus_1 in zip(data, it):
+  ...
+</pre>
+                    </p>
+                </details>
+                <details><summary>Or even better than using <code>zip</code> at all...</summary>
+                    <p>Look up the <code>itertools.pairwise</code> function.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p><code>any()</code></p>
+                <p><code>data[:i]+data[i+1:]</code> OR <code>[data[di] for di in range(len(data)) if di!=omit_i]</code> OR <code>itertools.compress()</code> OR ...</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 3 ★★ &ndash; "mul" commands mixed into corrupted memory contents</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p><code>re</code>, <code>re</code>, <code>re</code>, <code>re</code>, <code>re</code>, ...</p>
+                <p><code>sum()</code></p>
+                <details><summary>Specifically...</summary>
+                    <p><code>re.findall</code> OR <code>re.finditer</code> OR <code>re.match</code></p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Yet more <code>re</code>...</p>
+                <details><summary>Specifically...</summary>
+                    <p><code>re.finditer</code> OR <code>re.split</code></p>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 4 ★★ &ndash; XMAS word search</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+<pre class="indent">
+def func(... rc ...):
+  ...
+  for drdc in [ ... ]:
+    r, c = rc
+    for i in range(...):
+      ...
+      r, c = [sum(z) for z in zip([r, c], drdc)]
+</pre>
+                <details><summary>Additionally...</summary>
+                    <p>Instead of loading the data into a list of lists, you may wish to load it into a (row,col)-tuple-keyed dictionary containing actual grid-content as those keys' corresponding values. For example, if reading in grid-arranged characters:</p>
+<pre class="indent">
+with open("input.txt") as infile:
+  grid_dict = {(r,c):char for r, line in enumerate(infile) for c, char in enumerate(line.rstrip('\n'))}
+  # as compared to: grid = [list(line.rstrip('\n')) for line in infile]
+</pre>
+<p>This makes it more straightforward to check for out-of-bounds situations, <em>e.g.</em>, compare these:</p>
+<ul>
+    <li><code>if 0&lt;=r and r&lt;len(grid) and 0&lt;=c and c&lt;len(grid[r]): ...</code></li>
+    <li><code>if (r,c) in grid_dict: ...</code></li>
+</ul>
+<p>Using a dictionary also may provide an opportunity to entirely avoid explicitly checking this by leveraging use of dict's .get function:</p>
+<ul>
+    <li><code>grid_dict.get((r,c), def_val)  #</code> if (r,c) is in grid_dict, its value is returned; else the provided <strong>def</strong>ault <strong>val</strong>ue is returned</li>
+</ul>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p><code>words = set([word, word[::-1]])</code></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 5 ★★ &ndash; Page-pair-order rules, lists of updates, and establishing their validity</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>sets/frozensets and dictionaries may be helpful for solving this problem a bit more efficiently. (But, it's not a computationally intensive enough problem to make their use critical.)</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p><code>from functools import cmp_to_key</code></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 6 ★★ &ndash; Guard patrolling a grid, with obstacles</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>I used a direction vector as the heading, <em>i.e.</em>, a 2-tuple expressing the row,col direction the guard is moving (<em>e.g.</em>, (-1,0) as the initial (dr,dc)), then changed it mathematically for each turn via a simple matrix multiplication:</p>
+                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" class="indent"><mrow><msub class="highlight-yellow"><mi>&#x1D407;</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>&#x0003D;</mo><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mo>&#x02212;</mo><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mtable><mtr><mtd><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>0</mn><mo stretchy="false">]</mo></mtd></mtr><mtr><mtd><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>1</mn><mo stretchy="false">]</mo></mtd></mtr></mtable><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mrow class="highlight-yellow"><mo>&#x0003D;</mo><mo minsize="1.2em" maxsize="1.2em">(</mo><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>1</mn><mo stretchy="false">]</mo><mo>&#x0002C;</mo><mo>&#x02212;</mo><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>0</mn><mo stretchy="false">]</mo><mo minsize="1.2em" maxsize="1.2em">)</mo></mrow></mrow></math>
+                <p>This approach works nicely when there are a variety of possible actions when encountering an obstacle. However, in this case there's only one action ever taken at an obstacle ("turn right"), so there are arguably "simpler" (more easily understood, anyway?) ways of dealing with this, such as iterating through a list of headings repeatedly (or something similar), <em>e.g.</em>:</p>
+<pre class="indent">
+hdgs = [(-1,0), (0,1), (1,0), (0,-1)] # headings: up, right, down, left
+hi = 0 # initial heading (index)
+hi = (hi+1)%4 # turn right (every time, regardless of what current heading is)
+pos = [sum(z) for z in zip(pos, hdgs[hi])] # move position one step in direction of current heading (i.e., hdgs[hi])
+</pre>
+<p>Something similar, and effectively equivalent:</p>
+<pre class="indent">
+hdgs = [(-1,0), (0,1), (1,0), (0,-1)] # initial headings: up, right, down, left
+hdgs = [*hdgs[1:], hdg[0]] # turn right (every time, regardless of what current heading is)
+pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction of current heading (i.e., hdgs[0])
+</pre>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Adapt Part 1's solution into a repeatable "is_looped" function that returns whether or not the guard's path is looped, and which can be run for every possible obstacle that needs to have this tested.</p>
+                <details><summary>How do you determine "is looped" or not, though?</summary>
+                    <p>"Is not looped" should be easy to determine: it's the same exit condition as in Part 1.</p>
+                    <p>"Is looped", though, might be slightly tougher to detect. I built a dictionary as I went, which recorded 2-tuples of visited locations as its keys with corresponding values being sets containing headings when visiting those locations in the past. If the guard ever revisits the same location while heading in the same direction as at some point in the past, the path is looped.</p>
+                </details>
+                <details><summary>Which points do you need to check for obstacle-placement causing loops?</summary>
+                    <p>It will work just fine to check placing a single obstacle at, respectively, every single point on the grid that isn't already an obstacle (or the guard's starting position).</p>
+                    <details><summary>But, we can do better...</summary>
+                        <p>A simple improvement is to compute the original guard path (from Part 1), and then only place obstacles on that path's positions. Anywhere off that path is irrelevant, not affecting the guard's path at all.</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 7 ★★ &ndash; Target value, list of numbers, and left-to-right evaluated operator combos</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>You can, of course, parse the input using str.split calls, but you can also directly pull all integer strings out of each line using <code>re.findall(r"-?\d+", line)</code>. (Or, use <code>re.finditer</code>.)</p>
+                <p>This can be implemented most straightforwardly using the <code>product</code> function from the <code>itertools</code> module.</p>
+                <p>(It could also be done either recursively or with an iteratively driven "work queue" (see the <code>deque</code> type in the <code>collections</code> module) so that at each stage, all possibilities are explored.)</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This probably doesn't require much change to your code. The very simple approach is <code>int(str(a)+str(b))</code>, though that may not be as efficient as other possible approaches. (However, it should be more than "efficient enough".)</p>
+                <p>One possibly more efficient alternative: <code>int(f'{a}{b}')</code>. I'm pretty sure I've heard that f-strings are highly optimized.</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 8 ★★ &ndash; Antennas and their antinodes</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Using <code>zip</code> for dealing with "vectors" is probably a good idea for this one (both for computing differences and sums).</p>
+                <p>Also, look at <code>combinations</code> from the <code>itertools</code> module.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Just loop some pieces of Part 1.</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 9 ★★ &ndash; Disk defrag</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Check out the <code>grouper</code> recipe in <code>itertools</code>; it might be helpful in converting the input into the starting disk layout.</p>
+                <p>If representing the disk as a list, <code>pop()</code> from the back and then <code>index()</code> to find the left-most open space.</p>
+                <p>Note: representing all disk blocks in a list seems non-optimal, and it shows in the run-time. There's probably a better solution to this one.</p>
+                <p>(Me) For this one, I made a list of the fully expanded disk contents where files' indices contained their respective IDs, and gap (free space) indices contained Nones. Then, I simultaneously iterated from the start rightward and from the end leftward (until the iterators collided, at which point I was done). The start iterator iterated past files to gaps, and the end iterator iterated past gaps to files and incrementally copied them into the start-iterator's locations. I didn't bother popping/deleting/inserting anything, but simply set the value at the proper location and continued onward. At the end, the list is effectively as long as where the iterators collided, even if it's actually longer than that... just compute and sum the checksums only up to that point within it. The code very quickly completed execution.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Like Part 1, the strategy here can almost certainly be improved on. Start with the same disk representation as Part 1, and add a dictionary to be an index of where all the blocks are (key is the block identifier, value is a tuple containing block size and block position). Also create a list of gap information (each element is a list containing a gap size and gap position; use a list instead of a tuple because gap entries need to be mutable).</p>
+                <p>When moving blocks, iterate down from the largest identifier to move right-to-left. For each block, iterate through the gap list to find the first gap that is big enough to fit the block. Be sure that the block is actually moving left &ndash; once you've moved enough blocks, some of the "gaps" will actually be totally free space to the right of the current block.</p>
+                <p>Again, this is a pretty ugly solution. There's probably a way to do this without representing every block individually that could be done much more efficiently.</p>
+                <details><summary>(Me) I thought of some good ideas and re-wrote the solution.</summary>
+                    <p>My initial solution was gross, and relatively slow, but still effective. This improved reimplementation resulted in both less code and a 10x+ speed-up.</p>
+                    <details><summary>The fundamental insights incorporated were these:</summary>
+                        <ul>
+                            <li>Build two dictionaries, one for the files, and one for the gaps (free space). Key each entry to its location on the disk.
+                                <ul>
+                                    <li>Files are keyed by their left-end locations (and extend rightward).</li>
+                                    <li>Gaps are keyed by their right-end locations (and extend leftward).</li>
+                                    <li>Corresponding values are their respective sizes on disk (and also file id, for files).</li>
+                                </ul>
+                            </li>
+                            <li>Build a list of the reversed keys from the file dictionary, so that the dictionary can have entries deleted/created while iterating through the list.
+                                <ul>
+                                    <li>Each loop, a specific file is either moved, or it's not. (Determined by iterating through the gap dictionary for as long as needed.)
+                                        <ul>
+                                            <li>If it is, then you create a new location-key entry in the file dictionary for the same value, and delete the old one; if not, then just move on.</li>
+                                            <li>Either way, you're done forever with looking at that file, so you don't care about updated any keys in the reversed key list.</li>
+                                        </ul>
+                                    </li>
+                                    <li>And, of course, if you moved the file, then you also update the destination gap's size. (If its size drops to zero, delete the entry from the gap dictionary.)</li>
+                                    <li>Iterate (the outer loop) only for as long as the first gap key is less than the current file key.</li>
+                                </ul>
+                            </li>
+                            <li>Finally, you can direct-compute the files' checksums (thereby reaching the final answer), regardless of the file dictionary's key-order. No need to expand or sort anything.
+                                <ul>
+                                    <li>For each entry, you have the id (<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>i</mi></mrow></math>), location (<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x02113;</mi></mrow></math>), and size (<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>s</mi></mrow></math>), which means you can use the closed form sum of all the numbers from 1 to <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> to your advantage: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn></mrow></math>. That is, compute this sum for the end location of each file, and subtract the same computation for one-less-than-the-start location.</li>
+                                    <li>So, each checksum is: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>i</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x02113;</mi><mo>&#x0002B;</mo><mi>s</mi><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x02113;</mi><mo>&#x0002B;</mo><mi>s</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn><mo>&#x02212;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x02113;</mi><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>&#x02113;</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math><br/>
+                                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" class="indent"><mrow><mo>&#x0003D;</mo><mi>i</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mi>s</mi><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x0002B;</mo><mn>2</mn><mi>&#x02113;</mi><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow></mrow></math></li>
+                                    <li>Sum them all for the answer.</li>
+                                </ul>
+                            </li>
+                            <li>I put <code>itertools.accumulate</code> to good use at the start.</li>
+                        </ul>
+                        <p>This approach is much, much faster because there's no "data expansion", no real data movement, and the checksum computations aren't iterative (based on file size).</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 10 ★★ &ndash; Scoring/rating hiking trails</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>For each trailhead, I used Breadth First Search (BFS) to incrementally expand outward until there was nowhere else to go, adding to a set any peak locations I encountered along the way and returning that set's length at the end.</p>
+                <p>However, in retrospect, Depth First Search (DFS) is the better choice here. One approach is to keep track of visited locations and do not move to any position that has already been visited. This way you don't count any peak more than once, and you don't re-explore previously explored paths. Don't forget to reset the visited locations for each trailhead.</p>
+                <details><summary>Part 2 spoiler</summary>
+                    <p>DFS has the advantage that it works almost out of the box for Part 2.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Adapted from Part 1, still using BFS to expand outward from the given trailhead, I built a graph to any/all peaks it eventually reached, then I pruned back any trails that didn't reach any peak. Then, I traversed that graph, counting every trail from the trailhead to all the peaks it reached. (I did slap on a <code>@cache</code> decorator, though it didn't end up being necessary for the given input data.)</p>
+                <p>If you used a DFS strategy in Part 1, there's almost nothing to do for Part 2. You no longer need to track visited locations, because now you want to know all the different ways to arrive at each peak, but that's the only significant change.</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 11 ★★ &ndash; Stones that change when you blink</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This problem is fairly easy (and computationally feasible) to solve via the obvious/naïve approach.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This problem is not. I suggest using dynamic programming.</p>
+                <details><summary>Use the fact that...</summary>
+                    <p>...every stone may be independently processed from every other stone.</p>
+                    <details><summary>Recursive parameters can be...</summary>
+                        <p>...just the number of the stone being processed, and the number of blinks remaining to hit the initial target blink count that starts the process.</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 12 ★★ &ndash; Computing the costs of fencing garden plot regions</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Write a function that can extract a full region.</p>
+                <details><summary>I'd suggest...</summary>
+                    <p>...using the zip of location and delta approach, and recurse to all the neighbors while tracking where you've been. The use of sets is a good idea.</p>
+                </details>
+                <p>It should then be trivial to determine the region's area. So, write a function to determine the perimeter length, and compute the final answer using the two.</p>
+                <details><summary>You could...</summary>
+                    <p>...iterate through the region's members (extracted by the preceding function) and increment a running total every time you find a "neighbor" that's <em>not</em> in the region.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Same as Part 1, but replace the perimeter function with a side-count function.</p>
+                <details><summary>Identify...</summary>
+                    <p>...all the top-side, left-side, right-side, and bottom-side edges (<em>i.e.</em>, fence segments), respectively, for each plot within the region.</p>
+                    <details><summary>For each of these categories...</summary>
+                        <p>...sort by either row or column grid-coordinate&mdash;column for vertical edges, row for horizontal edges&mdash;then <code>itertools.groupby</code> the results, and then sort each of those subgroups by the other grid-coordinate. You'll need to identify any discontinuities that result.</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 13 ★★ &ndash; Maximizing claw-machine prize count while minimizing costs</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>In retrospect, my approach for solving this one is almost embarrassing. Ultimately, it worked fine, but there's a vastly superior approach. I used dynamic programming for this part and basically brute-forced it through recursion.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This is where you must determine a better way, and what I noticed here&mdash;after staring at it with my mind blank for a while&mdash;made my Part 1 approach look pretty bad by comparison because this method is blazing fast since it's so direct.</p>
+                <details><summary>The key insight is...</summary>
+                    <p>...a combination of two things:</p>
+                    <details><summary>Each button press is...</summary>
+                        <p>...a step in a constant direction (for A and B, respectively, independently), <em>i.e.</em>, a step along a never-changing line-slope for each button.</p>
+                    </details>
+                    <details><summary>Adding...</summary>
+                        <p>...is commutative. So, only the step <em>counts</em> in the "Button A direction" and "Button B direction", respectively, matter. This means that, <em>effectively</em>, every press of Button A steps along the <span class="underline">same</span> line, and likewise for Button B. The order in which you take those steps is irrelevant; you end up with the same result for the same step counts. For a visualization of this, see the example diagram below, which shows a sampling of possible paths from the starting point (bottom left) to the target destination (top right) by taking 5 steps in one direction and 4 steps in the other. The order in which you take those steps does not matter; all the paths yield the same result, and they all lie within the shown "outer envelope" between the gray and white paths; none can stray outside that and still make it to the target. Therefore, we may pick any of these paths as a convenient representation for our purposes in solving the problem, and I suggest either the gray or the white path because then the problem effectively reduces to just solving for a line intersecting with a line.</p>
+                        <details><summary>And also...</summary>
+                            <p>...checking if that intersection falls exactly on integer coordinates (<em>i.e.</em>, whole steps, since fractional steps aren't allowed).</p>
+                        </details>
+                        <svg class="indent" baseProfile="full" height="6.556979171925674cm" version="1.1" width="13.89880685275536cm" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><marker id="id1" markerHeight="4" markerWidth="4" orient="auto" refX="4" refY="2.0"><path d="M0,0 L0,4 L4,2.0 Z" fill="#FFFFFFA0" /></marker><marker id="id2" markerHeight="4" markerWidth="4" orient="auto" refX="4" refY="2.0"><path d="M0,0 L0,4 L4,2.0 Z" fill="#FF000090" /></marker><marker id="id3" markerHeight="4" markerWidth="4" orient="auto" refX="4" refY="2.0"><path d="M0,0 L0,4 L4,2.0 Z" fill="#0000FF90" /></marker><marker id="id4" markerHeight="4" markerWidth="4" orient="auto" refX="4" refY="2.0"><path d="M0,0 L0,4 L4,2.0 Z" fill="#00C80090" /></marker><marker id="id5" markerHeight="4" markerWidth="4" orient="auto" refX="4" refY="2.0"><path d="M0,0 L0,4 L4,2.0 Z" fill="#A0A0A080" /></marker></defs><g id="rte_0" stroke="#FFFFFFA0" stroke-width="2"><line marker-end="url(#id1)" x1="0.33092397268465146cm" x2="2.271208972975315cm" y1="6.25893466411087cm" y2="5.773863414038204cm" /><line marker-end="url(#id1)" x1="2.271208972975315cm" x2="4.211493973265979cm" y1="5.773863414038204cm" y2="5.288792163965538cm" /><line marker-end="url(#id1)" x1="4.211493973265979cm" x2="6.151778973556643cm" y1="5.288792163965538cm" y2="4.803720913892872cm" /><line marker-end="url(#id1)" x1="6.151778973556643cm" x2="8.092063973847306cm" y1="4.803720913892872cm" y2="4.318649663820206cm" /><line marker-end="url(#id1)" x1="8.092063973847306cm" x2="10.032348974137971cm" y1="4.318649663820206cm" y2="3.8335784137475395cm" /><line marker-end="url(#id1)" x1="10.032348974137971cm" x2="10.916232450621155cm" y1="3.8335784137475395cm" y2="2.949694937264355cm" /><line marker-end="url(#id1)" x1="10.916232450621155cm" x2="11.80011592710434cm" y1="2.949694937264355cm" y2="2.0658114607811706cm" /><line marker-end="url(#id1)" x1="11.80011592710434cm" x2="12.683999403587524cm" y1="2.0658114607811706cm" y2="1.1819279842979862cm" /><line marker-end="url(#id1)" x1="12.683999403587524cm" x2="13.567882880070709cm" y1="1.1819279842979862cm" y2="0.29804450781480185cm" /></g><g id="rte_1" stroke="#FF000090" stroke-width="2"><line marker-end="url(#id2)" x1="0.33092397268465146cm" x2="2.271208972975315cm" y1="6.25893466411087cm" y2="5.773863414038204cm" /><line marker-end="url(#id2)" x1="2.271208972975315cm" x2="4.211493973265979cm" y1="5.773863414038204cm" y2="5.288792163965538cm" /><line marker-end="url(#id2)" x1="4.211493973265979cm" x2="5.095377449749163cm" y1="5.288792163965538cm" y2="4.4049086874823535cm" /><line marker-end="url(#id2)" x1="5.095377449749163cm" x2="5.979260926232348cm" y1="4.4049086874823535cm" y2="3.521025210999169cm" /><line marker-end="url(#id2)" x1="5.979260926232348cm" x2="7.9195459265230115cm" y1="3.521025210999169cm" y2="3.035953960926503cm" /><line marker-end="url(#id2)" x1="7.9195459265230115cm" x2="9.859830926813675cm" y1="3.035953960926503cm" y2="2.5508827108538368cm" /><line marker-end="url(#id2)" x1="9.859830926813675cm" x2="11.80011592710434cm" y1="2.5508827108538368cm" y2="2.0658114607811706cm" /><line marker-end="url(#id2)" x1="11.80011592710434cm" x2="12.683999403587524cm" y1="2.0658114607811706cm" y2="1.1819279842979862cm" /><line marker-end="url(#id2)" x1="12.683999403587524cm" x2="13.567882880070709cm" y1="1.1819279842979862cm" y2="0.29804450781480185cm" /></g><g id="rte_2" stroke="#0000FF90" stroke-width="2"><line marker-end="url(#id3)" x1="0.33092397268465146cm" x2="2.271208972975315cm" y1="6.25893466411087cm" y2="5.773863414038204cm" /><line marker-end="url(#id3)" x1="2.271208972975315cm" x2="3.1550924494584995cm" y1="5.773863414038204cm" y2="4.88997993755502cm" /><line marker-end="url(#id3)" x1="3.1550924494584995cm" x2="5.095377449749163cm" y1="4.88997993755502cm" y2="4.4049086874823535cm" /><line marker-end="url(#id3)" x1="5.095377449749163cm" x2="7.035662450039827cm" y1="4.4049086874823535cm" y2="3.9198374374096874cm" /><line marker-end="url(#id3)" x1="7.035662450039827cm" x2="7.9195459265230115cm" y1="3.9198374374096874cm" y2="3.035953960926503cm" /><line marker-end="url(#id3)" x1="7.9195459265230115cm" x2="8.803429403006195cm" y1="3.035953960926503cm" y2="2.1520704844433185cm" /><line marker-end="url(#id3)" x1="8.803429403006195cm" x2="10.74371440329686cm" y1="2.1520704844433185cm" y2="1.6669992343706526cm" /><line marker-end="url(#id3)" x1="10.74371440329686cm" x2="11.627597879780044cm" y1="1.6669992343706526cm" y2="0.7831157578874682cm" /><line marker-end="url(#id3)" x1="11.627597879780044cm" x2="13.567882880070709cm" y1="0.7831157578874682cm" y2="0.2980445078148023cm" /></g><g id="rte_3" stroke="#00C80090" stroke-width="2"><line marker-end="url(#id4)" x1="0.33092397268465146cm" x2="1.2148074491678358cm" y1="6.25893466411087cm" y2="5.375051187627686cm" /><line marker-end="url(#id4)" x1="1.2148074491678358cm" x2="2.0986909256510202cm" y1="5.375051187627686cm" y2="4.491167711144501cm" /><line marker-end="url(#id4)" x1="2.0986909256510202cm" x2="2.9825744021342047cm" y1="4.491167711144501cm" y2="3.607284234661317cm" /><line marker-end="url(#id4)" x1="2.9825744021342047cm" x2="4.922859402424868cm" y1="3.607284234661317cm" y2="3.122212984588651cm" /><line marker-end="url(#id4)" x1="4.922859402424868cm" x2="6.863144402715532cm" y1="3.122212984588651cm" y2="2.6371417345159847cm" /><line marker-end="url(#id4)" x1="6.863144402715532cm" x2="7.747027879198717cm" y1="2.6371417345159847cm" y2="1.7532582580328002cm" /><line marker-end="url(#id4)" x1="7.747027879198717cm" x2="9.68731287948938cm" y1="1.7532582580328002cm" y2="1.2681870079601343cm" /><line marker-end="url(#id4)" x1="9.68731287948938cm" x2="11.627597879780044cm" y1="1.2681870079601343cm" y2="0.7831157578874683cm" /><line marker-end="url(#id4)" x1="11.627597879780044cm" x2="13.567882880070709cm" y1="0.7831157578874683cm" y2="0.2980445078148024cm" /></g><g id="rte_4" stroke="#A0A0A080" stroke-width="2"><line marker-end="url(#id5)" x1="0.33092397268465146cm" x2="1.2148074491678358cm" y1="6.25893466411087cm" y2="5.375051187627686cm" /><line marker-end="url(#id5)" x1="1.2148074491678358cm" x2="2.0986909256510202cm" y1="5.375051187627686cm" y2="4.491167711144501cm" /><line marker-end="url(#id5)" x1="2.0986909256510202cm" x2="2.9825744021342047cm" y1="4.491167711144501cm" y2="3.607284234661317cm" /><line marker-end="url(#id5)" x1="2.9825744021342047cm" x2="3.866457878617389cm" y1="3.607284234661317cm" y2="2.7234007581781325cm" /><line marker-end="url(#id5)" x1="3.866457878617389cm" x2="5.806742878908053cm" y1="2.7234007581781325cm" y2="2.2383295081054664cm" /><line marker-end="url(#id5)" x1="5.806742878908053cm" x2="7.747027879198717cm" y1="2.2383295081054664cm" y2="1.7532582580328004cm" /><line marker-end="url(#id5)" x1="7.747027879198717cm" x2="9.68731287948938cm" y1="1.7532582580328004cm" y2="1.2681870079601345cm" /><line marker-end="url(#id5)" x1="9.68731287948938cm" x2="11.627597879780044cm" y1="1.2681870079601345cm" y2="0.7831157578874686cm" /><line marker-end="url(#id5)" x1="11.627597879780044cm" x2="13.567882880070709cm" y1="0.7831157578874686cm" y2="0.29804450781480263cm" /></g></svg>                        
+                        <details><summary>The math...</summary>
+                            <p>Let the movement for Button A be <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mover><mrow><mi>A</mi></mrow><mo stretchy="true">&#x02192;</mo></mover><mo>&#x0003D;</mo><mo stretchy="false">[</mo><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002C;</mo><msub><mi>A</mi><mi>y</mi></msub><mo stretchy="false">]</mo></mrow></math>, movement for Button B be <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mover><mrow><mi>B</mi></mrow><mo stretchy="true">&#x02192;</mo></mover><mo>&#x0003D;</mo><mo stretchy="false">[</mo><msub><mi>B</mi><mi>x</mi></msub><mo>&#x0002C;</mo><msub><mi>B</mi><mi>y</mi></msub><mo stretchy="false">]</mo></mrow></math>, the target destination be <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>T</mi><mo>&#x0003D;</mo><mo stretchy="false">[</mo><msub><mi>T</mi><mi>x</mi></msub><mo>&#x0002C;</mo><msub><mi>T</mi><mi>y</mi></msub><mo stretchy="false">]</mo></mrow></math> (and starting point be <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>S</mi><mo>&#x0003D;</mo><mo stretchy="false">[</mo><mn>0</mn><mo>&#x0002C;</mo><mn>0</mn><mo stretchy="false">]</mo></mrow></math>, <em>i.e.</em>, the origin), and the number of steps we take in directions <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mover><mrow><mi>A</mi></mrow><mo stretchy="true">&#x02192;</mo></mover></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mover><mrow><mi>B</mi></mrow><mo stretchy="true">&#x02192;</mo></mover></mrow></math>, respectively, be <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math>. Then, we need to solve the equation <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>S</mi><mo>&#x0002B;</mo><mi>a</mi><mover><mrow><mi>A</mi></mrow><mo stretchy="true">&#x02192;</mo></mover><mo>&#x0002B;</mo><mi>b</mi><mover><mrow><mi>B</mi></mrow><mo stretchy="true">&#x02192;</mo></mover><mo>&#x0003D;</mo><mi>T</mi></mrow></math>, which means solving for <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math> in these equations:<br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>x</mi></msub><mo>&#x0003D;</mo><msub><mi>T</mi><mi>x</mi></msub></mrow></math> and<br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>y</mi></msub><mo>&#x0003D;</mo><msub><mi>T</mi><mi>y</mi></msub></mrow></math>.</p>
+                            <p>Multiplying the first equation by <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>B</mi><mi>y</mi></msub></mrow></math>, and the second by <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>B</mi><mi>x</mi></msub></mrow></math>, then subtracting one from the other, we get:<br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>B</mi><mi>y</mi></msub><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>y</mi></msub><msub><mi>B</mi><mi>x</mi></msub><mo>&#x0003D;</mo><msub><mi>B</mi><mi>y</mi></msub><msub><mi>T</mi><mi>x</mi></msub></mrow></math> and<br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>B</mi><mi>x</mi></msub><msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>x</mi></msub><msub><mi>B</mi><mi>y</mi></msub><mo>&#x0003D;</mo><msub><mi>B</mi><mi>x</mi></msub><msub><mi>T</mi><mi>y</mi></msub></mrow></math>, yielding<br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">&#x00028;</mo><mi>a</mi><msub><mi>B</mi><mi>y</mi></msub><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>y</mi></msub><msub><mi>B</mi><mi>x</mi></msub><mo stretchy="false">&#x00029;</mo><mo>&#x02212;</mo><mo stretchy="false">&#x00028;</mo><mi>a</mi><msub><mi>B</mi><mi>x</mi></msub><msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>x</mi></msub><msub><mi>B</mi><mi>y</mi></msub><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><msub><mi>B</mi><mi>y</mi></msub><msub><mi>T</mi><mi>x</mi></msub><mo>&#x02212;</mo><msub><mi>B</mi><mi>x</mi></msub><msub><mi>T</mi><mi>y</mi></msub></mrow></math><br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x027F9;</mi><mspace width="0.278em" /><mi>a</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>B</mi><mi>y</mi></msub><msub><mi>T</mi><mi>x</mi></msub><mo>&#x02212;</mo><msub><mi>B</mi><mi>x</mi></msub><msub><mi>T</mi><mi>y</mi></msub></mrow><mrow><msub><mi>B</mi><mi>y</mi></msub><msub><mi>A</mi><mi>x</mi></msub><mo>&#x02212;</mo><msub><mi>B</mi><mi>x</mi></msub><msub><mi>A</mi><mi>y</mi></msub></mrow></mfrac></mrow></math>.
+                            </p>
+                            <p>Plug that back into an earlier equation to compute <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math>:<br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>x</mi></msub><mo>&#x0003D;</mo><msub><mi>T</mi><mi>x</mi></msub></mrow></math><br/>
+                                <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x027F9;</mi><mspace width="0.278em" /><mi>b</mi><mo>&#x0003D;</mo><mfrac><mrow><msub><mi>T</mi><mi>x</mi></msub><mo>&#x02212;</mo><mi>a</mi><msub><mi>A</mi><mi>x</mi></msub></mrow><mrow><msub><mi>B</mi><mi>x</mi></msub></mrow></mfrac></mrow></math>.
+                            </p>
+                            <details><summary>Don't forget you still need to [dis]confirm...</summary>
+                                <p>...integer values for these step counts. If either <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math> or <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math> is non-integral, then there is no solution to the problem.</p>
+                                <details><summary>I'd suggest doing this by...</summary>
+                                    <p>...using integer-division for computing both <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math>, then plugging those values back into the original equation to see if it still holds true. If either part does not, then fail. In other words, when using integer division, both of these must evaluate to True for it to be an actual solution:<br/>
+                                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>A</mi><mi>x</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>x</mi></msub><mo>&#x0225F;</mo><msub><mi>T</mi><mi>x</mi></msub></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi><msub><mi>A</mi><mi>y</mi></msub><mo>&#x0002B;</mo><mi>b</mi><msub><mi>B</mi><mi>y</mi></msub><mo>&#x0225F;</mo><msub><mi>T</mi><mi>y</mi></msub></mrow></math>.
+                                    </p>
+                                </details>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 14 ★★ &ndash; Robots moving in wrap-around lines on a grid, and a Christmas tree shape</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This is pretty straightforward to solve in the more obvious/naïve way, iterating through one "second" at a time until you get to the "frame" for the 100th second, then compute the safety factor at that point.</p>
+                <details><summary>Hopefully, it's obvious to use...</summary>
+                    <p>...the modulus operator a lot.</p>
+                </details>
+                <details><summary>It's probably worthwhile noting that...</summary>
+                    <p>...you don't actually need to iterate one second at a time but rather can direct-compute to the 100th-second frame by multiplying by 100 in the velocity addition, then doing the modulus operations.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>I have mixed feelings about this one due to its vagueness of objective. (Initially, I reacted fairly negatively to it, but I've since come around to feeling a bit more positively toward it.) The target result is so incredibly under-defined in terms of its actual details that you don't really have anything concrete to even look for, algorithmically speaking. Is it an outline shape? A solid (filled in) shape? A simple triangle (<em>e.g.</em>, like the overall event art for AoC 2015)? Something with more jagged edges? What, specifically, is meant by "most" of the robots aligning themselves? How big/small is the shape? Do they align themselves into the shape in the center of the grid, or can it happen anywhere within it? Etc. ?!</p>
+                <p>Also, I was initially worried that, having done a lot of AoC problems in the past, what it meant here by "rarely" was one time in, say, trillions.</p>
+                <details><summary>However, upon considering it more...</summary>
+                    <p>...it became clear that the upper limit for a repeat cycle length must be the width (101) times the height (103) of the grid. This is guaranteed a wrap-around modulus of 0 in both directions (no matter what the respective velocities are, because velocity*101*103 absolutely <span class="underline">is</span> evenly divisible by both 101 and 103), resulting in all the robots being exactly back at their starting positions on that iteration, where they begin a repeat cycle. It'd be possible to have cycles earlier than that, but not later, but since both 101 and 103 are prime numbers, then the repeat cycle length must also be at least that long. Therefore, the expected repeat-cycle length is 101*103=10,403 iterations, which is a far more manageable frame-set size to check (than trillions), albeit still somewhat annoyingly large, especially for having no good specific target definition to look for. (Side note: I did check this repeat-cycle reasoning against the facts, and it was correct; it started repeating at exactly that iteration.)</p>
+                    <details><summary>I also had a sneaking suspicion...</summary>
+                        <p>...that maybe what was done in Part 1 was a subtle nudge in the right direction for Part 2.</p>
+                        <details><summary>It...</summary>
+                            <p>...could be used that way. It's possible to apply a technique similar to Part 1's to various parts of the grid each iteration, looking for robot counts above some threshold, and thereby auto-identify at which second (iteration) the alignment happens, but it may take a bit of threshold-tuning to get it right and isn't very satisfying as a broadly applicable solution.</p>
+                            <details><summary>One other thing to note is that...</summary>
+                                <p>...in the early-ish frames (&lt;100?), you'll see some frames containing what appears to be partially aligned "static" in either a horizontal or vertical direction. Those are indications of where the tree shape will eventually appear, so&mdash;if desired&mdash;you can narrow down exactly where to target your robot-count checks each frame (rather than searching the whole grid space every frame). They're also indications of the repeat-cycle lengths in the vertical and horizontal directions, respectively.</p>
+                            </details>
+                            <p>Addendum: After having already gotten the answer, I created an html file with some JavaScript that generated all the frames in an entire repeat cycle, drawn as little canvases with each robot being a single pixel within each frame's canvas. In order to keep the displayed canvas count more manageable, I generated them on a "paged" basis that could be flipped through, forward and backward, viewing just a count-per-page number of frames at a time. The tree-image frame leaps out quite clearly from that [very long] series of frames.</p>
+                            <details><summary>Addendum 2: After chatting with a friend about this one, and thinking about it some more...</summary>
+                                <p>...a much more satisfying solution approach to this is to build a neighbor-count histogram of each frame (including diagonals, or not; either works) for all the robots. If the tree shape were only an outline, the histogram total for "2 neighbors" for that frame should spike unusually high; and, if it were a solid shape, the histogram totals for "8 neighbors" (or 4, if diagonals aren't included as neighbors) should spike.</p>
+                                <details><summary>In fact, it further occurred to me that...</summary>
+                                    <p>...since I already knew what the actual aligned shape looks like, <span class="underline">both</span> the filled-shape and outline-shape histogram spikes should happen on the correct frame, due to the "picture frame" drawn around the tree shape! And, this fact made me suspicious this was intentionally done in order to help trigger both the different search strategies at the right time.</p>
+                                    <p>I went back and implemented this very simple technique, and sure enough, all combinations nailed exactly the correct frame: both the 2-neighbor and 4-neighbor histogram counts (for excluding diagonal robots as neighbors) and the 2-neighbor and 8-neighbor counts (for including them) had their maximum histogram values for those specific count-entries occur on the tree-image iteration, across all the frames in the repeat-cycle.</p>
+                                </details>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+                <p>Counterpoint (friend): ha ha ha, I actually loved this one. I enjoyed the vagueness of Part 2, knowing there was "something" there and having to come up with a detection mechanism without knowing what I was detecting.</p>
+                <details><summary>What to detect?</summary>
+                    <p>I was pretty sure the end result would be ASCII art, so I started with a draw() function to print robots in the grid. First try &ndash; manual inspection of every frame. Got a few hundred frames in and decided I needed some actual detection logic. My strategy was to identify candidate frames based on some criteria, and then draw those for more manual inspection.</p>
+                    <details><summary>Candidate identification strategies</summary>
+                        <p>First try was border detection. Look for a frame with robots all along the outside edges. This was a bust, no frames identified.</p>
+                        <p>I considered using entropy, on the theory that entropy would drop considerably on the frame with ASCII art. However, I was too lazy to write a Shannon entropy function, so I decided instead to feed the string data for the frame into zlib and compress it. I then drew only frames whose compressed size was the smallest seen so far. Seemed like a cheap and easy way to simulate entropy calculation. Unfortunately, it didn't find the right frame.</p>
+                        <details><summary>What actually worked</summary>
+                            <p>Finally, I decided I needed to calculate a count of neighbors for each robot, assuming that the ASCII art would cluster many robots in the same area. I then determined the total count of neighbors for all robots, and only drew a candidate frame if the total number of neighbors was greater than the highest number seen so far. I let this run, and saw a Christmas tree flash by.</p>
+                            <p>In retrospect, because the tree was drawn with solid blocks of robots, I found I could find this frame without any intervening frames by detecting a robot with exactly 8 neighbors (I counted the diagonal neighbors in addition to up/down and left/right). This never occurred in my data until the frame with the ASCII art.</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 15 ★★ &ndash; Robots moving deterministically in warehouses containing boxes</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Mostly straightforward, just implement the rules to move the robot according to the sequence of directions.</p>
+                <details><summary>Tips</summary>
+                    <p>Add a function to draw the grid. Otherwise it's hard to determine whether your code is actually working.</p>
+                    <p>A dictionary mapping the "&lt;&gt;v^" direction chars to point deltas ( (-1, 0), (1, 0), (0, 1), (0, -1) ) is helpful.</p>
+                    <p>Recursion works well to handle moves that end up pushing boxes. There are three possible cases on a potential move:</p>
+                    <ol>
+                        <li>Move into a wall ('#'): base case, do nothing</li>
+                        <li>Move into empty space ('.'): base case, swap the thing moving with the place it's trying to move</li>
+                        <li>Move into a box ('O'): recursion case, move the box in the same direction, if it succeeds, swap, if not do nothing</li>
+                    </ol>
+                    <p>(Me) I did this via iteration rather than recursion, which may have resulted in a bit more code but also meant I only needed to adjust the endpoints of any actual movements, leaving the middle stretches untouched in the bookkeeping. Still not too bad.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>There are lots of ways to handle this one. Each box is now two spaces wide, enabling many more types of movement.</p>
+                <details><summary>There's probably a better way but...</summary>
+                    <p>...(friend) took the approach of treating robot moves and box moves differently, and for box moves, treated horizontal and vertical movement differently. (I also treated them differently.) Robot moves are pretty easy and mostly the same as Part 1, except that if you encounter a box, instead of recursing you call a horizontal or vertical box move depending on the direction of movement.</p>
+                    <p>For boxes, horizontal moves are still essentially the same as in Part 1. There's a little fiddliness to making sure each box moves as a unit, but the movement itself is the same. (Same thing here for me as in Part 1, except I had to back-iterate through the actual movements on this one since I couldn't only adjust the aggregate-move endpoints alone; <em>i.e.</em>, I couldn't just leave the middle stretches untouched.)</p>
+                    <p>Vertical box moves are considerably trickier, since the boxes can fan out.</p>
+                    <details><summary>I had a lot of issues trying to adapt my Part 1 approach to vertical box moves, until...</summary>
+                        <p>...instead of determining whether a box can move and performing the moving in the same function, I have a separate recursive "canmove" function to check all boxes that would be affected by a move to see if any of them hit a wall. In the process of doing this, I built a set of those boxes (actually the coordinates of their left side). Then, if the entire recursive check succeeds, I can perform the moves on the contents of the set, sorted by vertical position, so the moves are all simple swaps.</p>
+                        <p>(Me) I again used iteration for this one, building a "distance layered" list of boxes outward from the attempted push point until either all boxes were found to be able to move, or a single one of them encountered a wall in its "next layer out", in which case the whole process instantly terminated and moved on to handling the next robot [attempted] move. If they were all determined to be able to move, I again back-iterated through the list, moving each until collapsed all the way back to the robot. I did a bit of fancy "move dictionary" lookup for automatically adding in both parts of the boxes while building the outward-growing layers. <em>I.e.</em>, if trying to push "^" (which is a row,col delta of (-1, 0)) and encountering a box, that means finding either "[" or "]"; obviously, that gets added to the currently building layer's set of items to move, but it also means needing to add in its other half, which can be directly looked up by movement+boxpiece as a key. That is, the "move dictionary" can contain "move" keys of "^[" and "^]", as well as "v[" and "v]", with corresponding values of (-1, 1), (-1, -1), (1, 1), and (1, -1) as respective deltas.</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 16 ★★ &ndash; Finding the minimum movement score through a maze between start and end points (and the best seats for watching it happen)</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Path finding, (friend) likes using a work queue for this style of problem. Initialize the queue with the current state (position, heading, score), and then repeat while the queue isn't empty. Also create a dictionary to track the score for positions-&amp;-headings that have been visited. For each iteration, pop the head of the queue, then determine all next possible states (move forward, turn left, turn right), and append them to the queue if they haven't been visited yet or if the resulting score would be less than the existing score for that position-&amp;-heading. If the position is the end point, update the "best" score seen so far if it is less than any previous best score.</p>
+                <p>Once the work queue is empty, you've found the best score.</p>
+                <details><summary>(Me) It sounds like I did something nearly identical for this one, with two minor notes:</summary>
+                    <ol>
+                        <li>I recorded minimal scores found for every position-&amp;-heading for <em>all</em> of the non-wall positions (including the end position), building a dictionary of this information until there remained nothing left to handle. After all this was complete, there were one or more heading-entries associated with the end-position, from which I only then selected the minimal one to return as the result.</li>
+                        <li>I also processed moves slightly differently, with each position-&amp;-heading state being able to do one of the following: one step forward (+1 score), turn left then one step forward (+1000+1 score), or turn right then one step forward (+1000+1 score). This enable me to always be able to "look ahead" to determine if I even <em>could</em> physically make such a move (<em>i.e.</em>, is there a wall there?), and only add it to the work queue if I could. (Note that the only other potential option here is to fully turn around then step forward (+1000+1000+1 score), but thinking about this a bit led me to the conclusion that this will <em>always</em> eventually result in worse scores than other possibilities, so there's no need to include it at all.)</li>
+                    </ol>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>(Friend) used the approach from Part 1, but added an additional component to the state; a set containing all coordinates visited so far. I also keep a global set of all "best path" coordinates. At each step, I update the state's coordinate set for forward moves (there's no need to change it for turns). Then, whenever a path is found, if the score is less than the best seen so far, I replace the global set with the set from that state. If the score is equal to the best seen so far, I update the global set with the coordinates from the new states set (<em>i.e.</em>, make it be the union of the global set and the new set, but do it in-place via the "update" method).</p>
+                <p>(Me) I used the min-score dictionary I built in Part 1 to select the set of optimal scores at the end position (one or more), then ran those backward through the min-score dictionary, building a best-paths'-positions dictionary as I went. At each reverse-step, I again explored all the options (a step backward (-1 score), a step backward and a turn right (-1-1000 score), and a step backward and a turn left (-1-1000 score)), but this time I imposed the more stringent constraint that a step is only allowed if (it's not a wall and) its score exactly matches the minimal reversing-score.</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 17 ★★ &ndash; A strange, mostly-3-bit computer with 8 instructions</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This Part is not too terribly difficult, though it does require exacting attention to detail. Just read the description very carefully, and meticulously implement it, one piece at a time.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>You'll need to be a bit more clever with this part because, realistically, it's not ever going to finish running if you take the naïve approach of just starting register A's value at 0 and iteratively incrementing it and checking to see if that's the answer. You'll need to use the functionality of the program itself to determine how to generate the value in register A much more directly. So, you'll need to study it more closely in order to figure out what matters and how to leverage it.</p>
+                <details><summary>You'll want to use...</summary>
+                    <p>...<code>int(string, 2)</code> and <code>f"{integer:03b}"</code>, and/or perhaps <code>octal</code>.</p>
+                    <p>It may help to "decompose" the program: for example, its core output computation can be written as a single Python expression.</p>
+                    <p>(Friend) also found it helpful to just run the program and dump diagnostic output to get a sense of what's happening. For example, try running it by iterating over different start values for A &ndash; say from 0 to 0x1000. For each iteration, if you match one or more of the expected output values, print the start A value and the number of output values. Try dumping the A value in both octal and binary (<em>e.g.</em>, <code>f'{a:o} {a:b}'</code>).</p>
+                </details>
+                <details><summary>But, there are key insights...</summary>
+                    <details><summary>...for the "reverse" approach...</summary>
+                        <p>...where the program is processed in reverse order so that the necessary value to start with in register A gets generated from left to right. Using this strategy, each 3-bit position within A can be examined for only its eight possibilities (0 through 7)&mdash;in combination with whatever has been generated on the way to reaching it, of course. (<em>I.e.</em>, each gets appended to what's come before, and evaluated.) There's a bit more to it than that because each position may result in zero or more numbers that produce the necessary output (depending on how you reached the position), but that's a massive push in a workable direction.</p>
+                        <details><summary>I used...</summary>
+                            <p>...recursion to traverse through all the possibilities using this approach, selecting the minimal result, and it completed essentially instantly.</p>
+                            <details><summary>You'll still need to handle the dead-end/no-options cases...</summary>
+                                <p>...such as by returning <code>math.inf</code> for them, so they're never selected as the minimum value.</p>
+                            </details>
+                        </details>
+                    </details>
+                    <details><summary>...for the "forward" approach...</summary>
+                        <p>...where the program is processed in forward order so that the necessary value to start with in register A gets generated from right to left. For each value in the expected output, which bits of register A can possibly influence it? Use analysis of the program itself, combined with diagnostic output...</p>
+                        <details><summary>...to determine...</summary>
+                            <p>...that there is a 10-bit "window" that can contribute to each output. The window shifts by three bits for each output:</p>
+<pre class="indent">
+      Register A
+   2         1         0
+...098765432109876543210
+     |  |  |  |--|--|--+ output 0: bits 0-9
+     |  |  +--|--|--+ output 1: bits 3-12
+     |  +-----|--+ output 2: bits 6-15
+     +--------+ output 3: bits 9-18
+             ...
+</pre>
+                            <details><summary>Use this 10-bit window...</summary>
+                                <p>...to iterate over all possible 10-bit values (there are only <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mn>2</mn><mrow><mn>10</mn></mrow></msup><mo>&#x0003D;</mo><mn>1024</mn></mrow></math> in total) for register A, run the program, and if it produces the expected output, add it to a list of candidate values.</p>
+                                <p>Now that you have the initial set of candidates, you can prepend 3 bits at a time to generate a new list of candidates for each additional output value.</p>
+<pre class="indent">
+for each candidate starting register A value:
+xxxxxxxxxx --+-> 000xxxxxxxxxx
+             +-> 001xxxxxxxxxx
+             +-> 010xxxxxxxxxx
+             +-> 011xxxxxxxxxx
+             +-> 100xxxxxxxxxx
+             +-> 101xxxxxxxxxx
+             +-> 110xxxxxxxxxx
+             +-> 111xxxxxxxxxx
+</pre>
+                                <p>For every new candidate, run the program; if you match the next output value, keep the new candidate, otherwise discard it. Repeat until you have all starting values for A that yield the necessary output. You'll have multiple possibilities. Select the smallest one.</p>
+                                <p>Note that you don't have to run the full program each time. You can just run a single iteration for each candidate value on the current 10-bit window.</p>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 18 ★★ &ndash; Traversing a grid from upper left to lower right while avoiding invalid locations</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>I was surprised to see this problem following some of the others already seen.</p>
+                <details><summary>It's a straightforward...</summary>
+                    <p>...Breadth First Search problem, and I thought it was substantially simpler to solve than were several earlier problems.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This Part was also quite straightforward, though not necessarily in any sort of notably efficient way. For example, it could just be done by iterating in single steps through adding the byte-drops that are corrupting memory, and checking for being able to reach from upper-left to lower-right on each round. Until you can't. And, the first time it's impossible means the location of the most recently dropped byte is the answer requested. (A very obvious optimization for this approach is to start the process at 1024 bytes dropped since, from Part 1, you already know the path is not yet blocked at that point.)</p>
+                <details><summary>Even using this simple approach, you can do substantially better...</summary>
+                    <p>...such as by using a binary-search strategy to far more quickly converge on when the path-block occurs. <em>I.e.</em>, check if it's blocked at a point where the number of bytes dropped is halfway between 1024 and the total number of droppable bytes; if yes, check the halfway point between that point and 1024; if no, check the halfway point between that point and the total droppable byte count. Continue halving the remaining pool of possibilities until there's convergence on the first point where the path becomes blocked. This finds the answer far faster.</p>
+                    <details><summary>There are even more efficient ways...</summary>
+                        <p>...with one such way being to treat the corrupted byte locations as a sort of stepping stone to see if you can traverse from the left/bottom edges to the top/right edges by only moving to their neighbors (with diagonals included). If this is possible, then it means the (non-corrupted) pathway from upper left to lower right is blocked (since it only moves horizontally/vertically, not diagonally). This requires far less time to determine (perhaps via BFS again) because not only are there fewer corrupted blocks to check, but also, almost by definition, many/most of them <em>aren't connected to each other at all</em>, so they're never even reached/checked by the BFS, meaning it converges to a result even faster.</p>
+                        <p>Also, this approach can be combined with the binary-search strategy already described above to speed things up even more.</p>
+                        <p>And, it's quite possible there are yet better ways than these... ? But, these already make it pretty fast.</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 19 ★★ &ndash; Striped towels used to (try to) create desired patterns</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>I was even more surprised this problem was yet easier than Day 18's, which was already surprisingly easier than earlier problems.</p>
+                <details><summary>This problem's solution was quite straightforward if leveraging...</summary>
+                    <p>...dynamic programming.</p>
+                    <details><summary>I did make one optimization...</summary>
+                        <p>...where I built a towel dictionary containing sets of towels keyed to their respective first letters, which substantially reduced the number of towels to iterate through when checking for those that have even a chance of matching segments in the desired pattern.</p>
+                    </details>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Slightly tweak Part 1's solution.</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 20 ★★ &ndash; Racing with one allowed cheat</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This seemed like basically a simplified variation on Day 16's Part 1, plus a bit of work after that set-up. I thought it was yet again easier than some earlier problems, except...</p>
+                <details><summary>...don't forget to...</summary>
+                    <p>...account for the "cheat time" itself! <em>I.e.</em>, the 2 picoseconds required to traverse the cheat distance. I very stupidly forgot to include this in my inequality check, and it resulted in me taking roughly <em>twice</em> as long to solve the overall problem (both Parts) than it otherwise would have, due to having a hard time tracking down that single issue in my code! Oof!</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Substantially identical to Part 1, but extended more.</p>
+                <details><summary>A helpful observation...</summary>
+                    <p>...is that the cheat area to check is neatly bounded by the Manhattan Distance diamonds determined by the sum of the magnitudes of the delta-row and delta-column (relative to the potential cheat's start-point) being lower-bounded by 2 and upper-bounded by 20: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>2</mn><mo>&#x02264;</mo><mo>&#x0007C;</mo><mi>&#x1D41D;</mi><mi>r</mi><mo>&#x0007C;</mo><mo>&#x0002B;</mo><mo>&#x0007C;</mo><mi>&#x1D41D;</mi><mi>c</mi><mo>&#x0007C;</mo><mo>&#x02264;</mo><mn>20</mn></mrow></math>. This is relatively straightforward to just loop through directly. Note that the (minimal) "cheat time" is also just this sum, for any location being evaluated within this hollowed-out diamond.</p>
+                    <details><summary>Visually, the inequality relationship looks like this.</summary>
+<pre class="indent">
+                                        x   &lt;-------- 20 steps away from center o
+                                      x x x                                     |
+                                    x x x x x                                   |
+                                  x x x x x x x                                 |
+                                x x x x x x x x x                               |
+                              x x x x x x x x x x x                             |
+                            x x x x x x x x x x x x x                           |
+                          x x x x x x x x x x x x x x x                         |
+                        x x x x x x x x x x x x x x x x x                       |
+                      x x x x x x x x x x x x x x x x x x x                     |
+                    x x x x x x x x x x x x x x x x x x x x x                   |
+                  x x x x x x x x x x x x x x x x x x x x x x x                 |
+                x x x x x x x x x x x x x x x x x x x x x x x x x               |
+              x x x x x x x x x x x x x x x x x x x x x x x x x x x             |
+            x x x x x x x x x x x x x x x x x x x x x x x x x x x x x           |
+          x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x         |
+        x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x       |
+      x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x     |
+    x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x   v
+  x x x x x x x x x x x x x x x x x x x   x x x x x x x x x x x x x x x x x x x
+x x x x x x x x x x x x x x x x x x x   o   x x x x x x x x x x x x x x x x x x x
+  x x x x x x x x x x x x x x x x x x x   x x x x x x x x x x x x x x x x x x x
+    x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+      x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+        x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+          x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+            x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+              x x x x x x x x x x x x x x x x x x x x x x x x x x x
+                x x x x x x x x x x x x x x x x x x x x x x x x x
+                  x x x x x x x x x x x x x x x x x x x x x x x
+                    x x x x x x x x x x x x x x x x x x x x x
+                      x x x x x x x x x x x x x x x x x x x
+                        x x x x x x x x x x x x x x x x x
+                          x x x x x x x x x x x x x x x
+                            x x x x x x x x x x x x x
+                              x x x x x x x x x x x
+                                x x x x x x x x x
+                                  x x x x x x x
+                                    x x x x x
+                                      x x x
+                                        x
+</pre>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 21 ★★ &ndash; Direction-pad use to control a robot, to control a robot, ..., to control a robot to type a numpad code</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This can be solved in a variety of ways since there's no significant computational constraint.</p>
+                <details><summary>It did intuitively seem clear to me that...</summary>
+                    <p>...even though there are potentially quite a few possible ways to directionally get from one button to another (<em>e.g.</em>, if they're far apart from each other on the numpad) that the best routes must necessarily be either all-horizontal-then-all-vertical or all-vertical-then-all-horizontal. This is because any additional swapping back and forth between horizontal and vertical directions would increasingly lengthen direction expansions with successive direction-pad levels. Though it's not strictly necessary, I did apply this intuition to my code (in both Parts), and it yielded the correct results. This strategy prunes the paths to explore from potentially quite a few down to just one or, at most, two for each button-to-button transition. (Note that using this approach, even quite a few of the would-b two-path options are cut down to only one because of the non-rectangular shape of the pads, <em>i.e.</em>, a fair number of would-be-two paths fall off the pad for one path but not the other, in which case there's only one <em>valid</em> path.)</p>
+                    <p>Of course, this is irrelevant at the "outermost" level of direction-pad since that sequence is not further expanded. So, any sort of flipping back and forth between horizontal and vertical directions would be fine there. (Though, no matter what direction combination is used there, the length results are the same since, <em>e.g.</em>, these are all length three: <code>^^&gt;</code>, <code>^&gt;^</code>, <code>&gt;^^</code>.)</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This one has much greater computational constraints, and it took me way too long to get my head wrapped around it, but eventually I landed on what I'm sure was the expected solution. For a long time, I was pretty sure I knew the right solution strategy to use, but it took me much longer than it should have to figure out <em>how</em> to use itsince I'd solved Part 1 a bit differently. (As usual, in retrospect, it should have been fairly obvious. But, it just wasn't, for me, for a long time.)</p>
+                <details><summary>The way I solved it was...</summary>
+                    <p>...to formulate the solution code in a way conducive to using dynamic programming.</p>
+                    <details><summary>You just need to...</summary>
+                        <p>...recursively express how to expand each direction-pad sequence to the next level of direction-pad. (This may all be done after pre-expanding everything at the numpad level, so all the recursive code is exclusively dealing with direction-pad details. Pre-expanding like this may yield several possible sequences to explore; simply evaluate them all, and select the shortest.)</p>
+                        <details><summary>For each sequence level...</summary>
+                            <p>...expand each individual character into the necessary direction-pad button sequence(s) to produce it, and recurse until you're at the necessary level, at which point you return the length. If you're not yet at the target level, sum each recursion sequence option and select the minimum length among them, returning that back to the previous level.</p>
+                            <details><summary>Observe that, in order for this to work, it is vitally important that...</summary>
+                                <p>...every character expansion into a direction-pad sequence begins and ends on the 'A' key (in order to produce the button press at the previous level). Were this not the case, this strategy would not work because recursive calls would not be independent of sequentially-earlier button presses. (Though, perhaps it would be possible to also handle that situation somehow.)</p>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 22 ★★ &ndash; A monkey market, secret numbers, and predicting results from length-four sequences</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Just pay close attention to what the description says, and carefully implement the details.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Probably the most challenging component to solving this problem is just trying to figure out how to definitively identify all length-four sequences across all monkeys. Fundamentally that the only new element introduced in Part 2.</p>
+                <details><summary>I wrestled for a short time with how to do this, until I realized I could...</summary>
+                    <p>...actually process every monkey series exactly one time, ever.</p>
+                    <details><summary>Instead of trying to cleverly generate and cycle thorugh all the potential lenght-four sequences...</summary>
+                        <p>...I turned the whole process on its head and just used every length-four seuqence actually present in each of the monkey series.</p>
+                        <details><summary>Once I hit upon this approach, I simply...</summary>
+                            <p>...accumulated each of their length-four-first-appearance values (in each monkey series) in a dictionary keyed to them as 4-tuples, then selected the max value from the dictionary contents at the end.</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 23 ★★ &ndash; Identifying three-way-connected computers in a network (and maximum cliques in a graph)</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This Part isn't bad if you've built the connectivity representation nicely since it only requires identifying all computer pairs within a given computer's connections that are also connected to each other (and making sure to count each triple only once, of course&mdash;and only those containing at least one computer with a 't' name).</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This is the problem of identifying a maximum clique within a graph, which is an NP-complete problem.</p>
+                <details><summary>For the given scales of data...</summary>
+                    <p>...this can easily be brute-forced by cycling through all combinations of each subset size (from largest down to smallest) for each computer's connections, while&mdash;importantly!&mdash;tracking largest-clique-found-so-far and pruning all checks that can't possibly yield larger results.</p>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 24 ★★ &ndash; Simulating a system of XOR, AND, and OR logic gates wired together</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Just carefully implement the details of what the description says. It'll probably include some dictionaries, and perhaps frozensets.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>I don't have a purely algorithmic approach to recommend here since I used code more as an incremental forensic tool to interactively assess the circuitry.</p>
+                <details><summary>Specifically, I...</summary>
+                    <p>...noted that the problem says gate <em>outputs</em> got swapped, <em>not gate inputs</em>. This is important because it means all gate input connections are correct; only the output connections may be incorrect.</p>
+                    <p>A correctly constructed adder circuit&mdash;see below&mdash;should have only XOR gates outputting to the <code>z##</code> output wires, except for the most-significant bit, which should be an OR gate's output. So, I back-traced all the <code>z##</code> output(?) wires to their respective gates, <em>i.e.</em>, those outputting to them. This back-trace identified three incorrectly connected wires (connected to the wrong type of logic gate) for my given problem input data.</p>
+                    <img class="indent" src="img/adder_sm.png">
+                    <details><summary>I also...</summary>
+                        <p>...took advantage of the fact that, since all the gates' inputs are correct, then all of the circuit's <code>x##</code> and <code>y##</code> input wires are definitely correctly connected to their respective XOR and AND gates. This meant I could identify exactly <em>which</em> XOR gates must be connected to output wires, <em>i.e.</em>, <code>z##</code> wires&mdash;any of them, whether or not they're the correct ones. That is, all those XOR gates <em>not</em> connected to circuit inputs <code>x##</code> and <code>y##</code> wires are supposed to be connected to <code>z##</code> wires for output (except for the least-significant bit, which should be connected to all three). From this subset of XOR gates, I identified all those <em>not</em> connected to <code>z##</code> wires, which produced another three results for my problem input data, which I was able to pair-up with the previous erroneous-gate-output results to determine three of the four wire swaps.</p>
+                        <details><summary>I then had one more problematic gate-output-pair to identify...</summary>
+                            <p>...I corrected the three erroneously swapped output pairs then repeatedly simulated the resulting circuit with carefully selected input test vectors, comparing their results to known-correct results.</p>
+                            <details><summary>Specifically, I ran through inputs of...</summary>
+                                <p>...all-zero <code>y##</code> with <code>x##</code> values iterating through a single 1-bit shifted incrementally leftward, which should yield z=x as output, in each case. These inputs exercise the "sum paths" through the circuit.</p>
+                                <p>I also iterated through a single 1-bit shifted incrementally leftward for <em>both</em> <code>x##</code> and <code>y##</code> inputs (x=y), which should yield z=2x=2y (either x or y shifted left once more) as output. These inputs exercise the "carry paths" through the circuit.</p>
+                                <p>Examining those circuit-outputs not matching the known-correct results suggested the gate-outputs for a specific XOR and AND gate should be swapped. I did this wire swap, then re-ran the simulations, and they all passed.</p>
+                                <p>From all these identified problem-wire-pairs, I generated the alphabetized answer.</p>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary>Problem 25 ★★ &ndash; Identifying matching locks and keys</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>This isn't all that difficult of a problem.</p>
+                <details><summary>But, it seemed especially easy if...</summary>
+                    <p>...leveraging a simple "matrix transpose": <code>zip(*lock_or_key)</code></p>
+                    <p>This lets you more directly use Python mechanisms rather than manually coding things up&mdash;that is, something like a <code>row_list.count('#')</code> kind of thing.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This Part gives you a star for free, providing that final require dpiece to finish . . . in conjunction with completing all 49 of the preceding Parts of this year's problems.</p>
+            </details>
+        </details>
+    </section>
+</body>
+</html>
