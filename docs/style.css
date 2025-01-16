@@ -29,6 +29,7 @@ details {
 	border: 1px solid var(--detailsBorderColor);
 	border-radius: 0.0625in;
 	padding-inline-start: 0.25in;
+	margin-inline-start: 0;
 }
 details > summary {
 	margin-inline-start: -0.25in;
@@ -67,7 +68,7 @@ ol, ul {
 .problem-section details {
 	margin-block: 0.5rem;
 }
-.problem-section details summary {
+.problem-section details > summary {
 	font-weight: bold;
 }
 p {
