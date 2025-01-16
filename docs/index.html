@@ -24,17 +24,15 @@
 
 		<ol>
 			<li><details><summary>A few important general pointers...</summary>
-				<p>
-					<ul>
-						<li><strong>Solve the stated problem; do not pre-optimize or pre-generalize.</strong> After you've done a few of these, you may be tempted to anticipate Part 2 and try to write a generalized solution for Part 1 that will make Part 2 super easy. Or, you may be tempted to write ultra-optimized code in anticipation of the data set growing in a particular way. This sometimes works out, but more often it's a trap. You'll write a beautiful general solution that operates at lightning speed, and then Part 2 changes things in an unanticipated way, and you're back to the drawing board. It's better to just solve Part 1 in the most straightforward way possible, and figure out what you need to do for Part 2 once you actually have the problem statement.</li>
-						<li><strong>Leverage "test input".</strong> Nearly all problems include example scenarios that get walked through in detail as part of the problem description, which helps facilitate clear understanding of the problem. It is a very good idea to use these scenarios as "test input" for your code, to ensure it's producing the correct result for the example case before running it on the "real" input data, which is always more complex.</li>
-						<li><strong>Broadly speaking, you may completely ignore data validation concerns.</strong> All input data provided is properly formatted according to each problem's description; the event does not <em>ever</em> give you malformed data (<em>i.e.</em>, that's inconsistent with the problem description).</li>
-						<li><strong>Attention to detail is critical.</strong> Sometimes, the input data contains content that may seem a bit "sneaky" (<em>e.g.</em>, when compared to the "test input" content) but is entirely fair in the context of the problem statement, even if it wasn't considered when writing your code (which may cause it to fail). Also, there have been a handful of times where I didn't initially pay close enough attention to <em>exactly</em> what the problem statement actually said, and it resulted in some frustration.
-							<aside class="indent">Example: <a href="https://adventofcode.com/2015/day/23">2015's problem 23</a> describes an invented assembly language instruction set, which includes a <code>jie</code> and a <code>jio</code> instruction. The descriptions for <code>jie</code> and <code>jio</code> were the final two instructions provided in the overall list, with <code>jie</code> given first: <q>jie r, offset is like jmp, but only jumps if register r is even ("jump if even").</q> I far too easily elided over the detailed description for <code>jio</code> because my brain naturally leapt to it being "jump if odd", but that's not what it actually said; it was "jump if <em>one</em>". So, of course, my code wasn't working to produce the correct result, despite meticulous debugging of it, because the problem was in what I'd implemented, not how I'd done it. Oops!</aside></li>
-							<li><strong>Answers to problems <em>vary</em> from person to person.</strong> Each problem statement is identical for everybody, but the input data provided to participants varies, so the correct answer for your problem may not be the same as other people's correct answers for that same problem. (The basic <em>structures</em> of the data/problems do not vary, though, so they still may be easily discussed among participants.)</li>
-							<li><strong>Save your work.</strong> Keep separate source code files for all your solutions. This includes separate solutions for Part 1 and Part 2. Copying your Part 1 solution as the starting point for your Part 2 solution typically works well. You'll almost certainly find yourself wanting to refer back to previous solutions as you come across new problems with similarities to other problems you've already solved.</li>
-					</ul>
-				</p>
+				<ul>
+					<li><strong>Solve the stated problem; do not pre-optimize or pre-generalize.</strong> After you've done a few of these, you may be tempted to anticipate Part 2 and try to write a generalized solution for Part 1 that will make Part 2 super easy. Or, you may be tempted to write ultra-optimized code in anticipation of the data set growing in a particular way. This sometimes works out, but more often it's a trap. You'll write a beautiful general solution that operates at lightning speed, and then Part 2 changes things in an unanticipated way, and you're back to the drawing board. It's better to just solve Part 1 in the most straightforward way possible, and figure out what you need to do for Part 2 once you actually have the problem statement.</li>
+					<li><strong>Leverage "test input".</strong> Nearly all problems include example scenarios that get walked through in detail as part of the problem description, which helps facilitate clear understanding of the problem. It is a very good idea to use these scenarios as "test input" for your code, to ensure it's producing the correct result for the example case before running it on the "real" input data, which is always more complex.</li>
+					<li><strong>Broadly speaking, you may completely ignore data validation concerns.</strong> All input data provided is properly formatted according to each problem's description; the event does not <em>ever</em> give you malformed data (<em>i.e.</em>, that's inconsistent with the problem description).</li>
+					<li><strong>Attention to detail is critical.</strong> Sometimes, the input data contains content that may seem a bit "sneaky" (<em>e.g.</em>, when compared to the "test input" content) but is entirely fair in the context of the problem statement, even if it wasn't considered when writing your code (which may cause it to fail). Also, there have been a handful of times where I didn't initially pay close enough attention to <em>exactly</em> what the problem statement actually said, and it resulted in some frustration.
+						<aside class="indent">Example: <a href="https://adventofcode.com/2015/day/23">2015's problem 23</a> describes an invented assembly language instruction set, which includes a <code>jie</code> and a <code>jio</code> instruction. The descriptions for <code>jie</code> and <code>jio</code> were the final two instructions provided in the overall list, with <code>jie</code> given first: <q>jie r, offset is like jmp, but only jumps if register r is even ("jump if even").</q> I far too easily elided over the detailed description for <code>jio</code> because my brain naturally leapt to it being "jump if odd", but that's not what it actually said; it was "jump if <em>one</em>". So, of course, my code wasn't working to produce the correct result, despite meticulous debugging of it, because the problem was in what I'd implemented, not how I'd done it. Oops!</aside></li>
+						<li><strong>Answers to problems <em>vary</em> from person to person.</strong> Each problem statement is identical for everybody, but the input data provided to participants varies, so the correct answer for your problem may not be the same as other people's correct answers for that same problem. (The basic <em>structures</em> of the data/problems do not vary, though, so they still may be easily discussed among participants.)</li>
+						<li><strong>Save your work.</strong> Keep separate source code files for all your solutions. This includes separate solutions for Part 1 and Part 2. Copying your Part 1 solution as the starting point for your Part 2 solution typically works well. You'll almost certainly find yourself wanting to refer back to previous solutions as you come across new problems with similarities to other problems you've already solved.</li>
+				</ul>
 			</details></li>
 			<li><details><summary>"Structural mapping" often works well, rather than lots of special case if-else/switch/match/etc. constructs.</summary>
 				<p>A couple use cases:
@@ -90,23 +88,23 @@
 					</ul>
 				The first two examples use list comprehensions. The third uses a generator expression. These are conceptually and syntactically very similar, although there are big differences in what happens under the covers that make it important to understand what you're doing, especially when creating large amounts of data.</p>
 				<h4>Comprehensions</h4>
-				<p>A comprehension is special syntax that allows in-place initialization of a list, set, or dictionary using a very succinct expression:</p>
+				<p>A comprehension is special syntax that allows in-place initialization of a list, set, or dictionary using a very succinct expression:
 					<ul>
 						<li>list: <code>[ <em>expr</em> for <em>var</em> in <em>iterable</em> ]</code></li>
 						<li>set: <code>{ <em>expr</em> for <em>var</em> in <em>iterable</em> }</code></li>
 						<li>dict: <code>{ <em>imm</em> : <em>expr</em> for <em>var</em> in <em>iterable</em> }</code></li>
 					</ul>
-					<p>Note that comprehensions are fully populated when they are evaluated. Thus, they can consume large amounts of memory, and for lists in particular, they can be very slow. (Many list operations are O(n).)</p>
+					Note that comprehensions are fully populated when they are evaluated. Thus, they can consume large amounts of memory, and for lists in particular, they can be very slow. (Many list operations are O(n).)</p>
 				<h4>Generator Expressions</h4>
-				<p>The syntax for a generator expression is very similar to a list comprehension:</p>
+				<p>The syntax for a generator expression is very similar to a list comprehension:
 					<ul>
 						<li><code>( <em>expr</em> for <em>var</em> in <em>iterable</em> )</code></li>
 						<li>the parentheses are optional in some scenarios (<em>e.g.</em>, first parameter to a function)</li>
 					</ul>
-					<p>The difference is that a generator expression only produces its elements one at a time, on demand. This keeps generator expressions lightweight in terms of memory usage. However, it also means that certain operations are not available (<em>e.g.</em>, accessing an element by index).</p>
+					The difference is that a generator expression only produces its elements one at a time, on demand. This keeps generator expressions lightweight in terms of memory usage. However, it also means that certain operations are not available (<em>e.g.</em>, accessing an element by index).</p>
 				<p>Note that generator expressions are distinct from lists, sets, and dictionaries; they're their own thing, even though they may appear very similar syntactically, and may also generate individual elements of content of similar forms to any of them. There is no "going back" or "random access" nature to them; there's only "give me the next item" (until there are no more to give).</p>
 				<h4>Generator Functions</h4>
-				<p>Generator functions offer a more general-purpose approach with similar functionality to generator expressions, albeit with completely different syntax. To create a generator function, you simply use the keyword <code>yield</code>. This is best explained by example:</p>
+				<p>Generator functions offer a more general-purpose approach with similar functionality to generator expressions, albeit with completely different syntax. To create a generator function, you simply use the keyword <code>yield</code>. This is best explained by example:
 					<pre class="indent">
 def mygen(n):
   for i in range(n):
@@ -121,8 +119,8 @@ OUTPUTS:
 4
 9
 16
-					</pre>
-					<p>The important thing to note here is that the <code>mygen</code> function effectively "pauses" after each <code>yield</code>. The generator function above is equivalent to the generator expression <code>( i ** 2 for i in range(n) )</code>; however, you have considerably more flexibility in a generator function to create complicated generator functionality.</p>
+					</pre><br/>
+					The important thing to note here is that the <code>mygen</code> function effectively "pauses" after each <code>yield</code>. The generator function above is equivalent to the generator expression <code>( i ** 2 for i in range(n) )</code>; however, you have considerably more flexibility in a generator function to create complicated generator functionality.</p>
 				<h4>Coroutines</h4>
 				<p>It's also possible to use the <code>yield</code> keyword in the context of creating coroutines, though I won't discuss these in detail here since I haven't found them necessary in AoC. (Feel free to research them, though.) That said, here's a very short code sample to show one in action:</p>
 <pre class="indent">
@@ -145,12 +143,13 @@ Value consumed: third
 </pre>
 			</details></li>
 			<li><details><summary>List (and tuple and string) indexing/slicing</summary>
-				<p>A few examples:</p>
+				<p>A few examples:
 					<ul>
 						<li><code>list_a[::-1]</code> &LongRightArrow; list that is reverse of list_a</li>
 						<li><code>list_a[:i] + list_b[j:] + list_c[i:j]</code> &LongRightArrow; list that is composed of list_a elements 0 through i-1 (or its end), list_b elements j through its end, and list_c elements i through j-1 (or its end)</li>
 						<li><code>"0123456789abcdef"[13:4:-3]</code> &LongRightArrow; "da7"</li>
 					</ul>
+				</p>
 			</details></li>
 			<li><details><summary>Destructuring and packing/unpacking</summary>
 				<p>A few examples:</p>
@@ -326,8 +325,8 @@ Final position: [5, 2]. Final heading: [0, 1].
 			</details></li>
 			<li><details><summary id="memo-eg">A full dynamic programming example</summary>
 				You're tasked with writing a 'best_sum' function that takes two inputs:<br/>
-				&nbsp;&nbsp;target_sum: an integer<br/>
-				&nbsp;&nbsp;number_pool: a collection of some natural numbers (<em>i.e.</em>, positive integers)<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;target_sum: an integer<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;number_pool: a collection of some natural numbers (<em>i.e.</em>, positive integers)<br/>
 				It is to return the smallest collection of those numbers that sum to target_sum.<br/>
 				The numbers are re-usable as many times as needed.<br/>
 				If target_sum is impossible to reach, return None.<br/>
