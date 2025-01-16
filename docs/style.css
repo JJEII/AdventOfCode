@@ -44,7 +44,7 @@ details details details details details details details details details details 
 	background-color: var(--detailsEvenBgColor);
 }
 details > :not(summary) {
-	margin-inline-start: 0.25in;
+	padding-inline-start: 0.25in;
 }
 summary:hover {
 	cursor: pointer;
