@@ -8,7 +8,8 @@
 	--detailsEvenBgColor: rgb(22, 22, 22);
 	--spoilerBgColor: rgb(55, 22, 22);
 	--qBgColor: rgba(255, 255, 255, 0.15);
-	--linkColor: rgb(150, 15, 150);
+	--linkColor: #009900; /* rgb(150, 15, 150); */
+	--linkHoverColor: #00cc00;
 	--linkHoverBgColor: rgb(50, 5, 50);
 }
 
@@ -20,12 +21,17 @@ body {
 }
 a {
 	color: var(--linkColor);
-	font-weight: bold;
+	/* font-weight: bold; */
+	font-family: "Source Code Pro", monospace;
 	text-decoration: none;
 }
 a:hover {
-	background-color: var(--linkHoverBgColor);
+	color: var(--linkHoverColor);
+	text-shadow: 0 0 2px var(--linkHoverColor), 0 0 5px var(--linkHoverColor);
 }
+/* a:hover {
+	background-color: var(--linkHoverBgColor);
+} */
 details {
 	border: 1px solid var(--detailsBorderColor);
 	border-radius: 0.0625in;
