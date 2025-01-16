@@ -82,34 +82,31 @@
 		<h2>Python-Specific Comments/Topics</h2>
 		<ol>
 			<li><details><summary>Comprehensions and Generators / Coroutines</summary>
-				<p>A few examples:
+				<p>A few examples:</p>
 					<ul>
 						<li><code>evens = [i for i in range(0, 101, 2)]</code> &LongRightArrow; list of all even numbers from 0 through 100</li>
 						<li><code>mul_tbl = [[col*row for col in range(1, 13)] for row in range(1, 13) if row != 5]</code> &LongRightArrow; 12x12 multiplication table (list of lists), but skipping row 5</li>
 						<li><code>for n in (i for i in range(1000000000) if i not in set_a):</code> &LongRightArrow; loop n from 0 to a billion, skipping any values in set_a, and generating one value at a time, not a whole list at once (as would be the case if the brackets were used instead of parentheses)</li>
 					</ul>
-					The first two examples use list comprehensions. The third uses a generator expression. These are conceptually and syntactically very similar, although there are big differences in what happens under the covers that make it important to understand what you're doing, especially when creating large amounts of data.
-				</p>
+					<p>The first two examples use list comprehensions. The third uses a generator expression. These are conceptually and syntactically very similar, although there are big differences in what happens under the covers that make it important to understand what you're doing, especially when creating large amounts of data.</p>
 				<h4>Comprehensions</h4>
-				<p>A comprehension is special syntax that allows in-place initialization of a list, set, or dictionary using a very succinct expression:
+				<p>A comprehension is special syntax that allows in-place initialization of a list, set, or dictionary using a very succinct expression:</p>
 					<ul>
 						<li>list: <code>[ <em>expr</em> for <em>var</em> in <em>iterable</em> ]</code></li>
 						<li>set: <code>{ <em>expr</em> for <em>var</em> in <em>iterable</em> }</code></li>
 						<li>dict: <code>{ <em>imm</em> : <em>expr</em> for <em>var</em> in <em>iterable</em> }</code></li>
 					</ul>
-					Note that comprehensions are fully populated when they are evaluated. Thus, they can consume large amounts of memory, and for lists in particular, they can be very slow. (Many list operations are O(n).)
-				</p>
+					<p>Note that comprehensions are fully populated when they are evaluated. Thus, they can consume large amounts of memory, and for lists in particular, they can be very slow. (Many list operations are O(n).)</p>
 				<h4>Generator Expressions</h4>
-				<p>The syntax for a generator expression is very similar to a list comprehension:
+				<p>The syntax for a generator expression is very similar to a list comprehension:</p>
 					<ul>
 						<li><code>( <em>expr</em> for <em>var</em> in <em>iterable</em> )</code></li>
 						<li>the parentheses are optional in some scenarios (<em>e.g.</em>, first parameter to a function)</li>
 					</ul>
-					The difference is that a generator expression only produces its elements one at a time, on demand. This keeps generator expressions lightweight in terms of memory usage. However, it also means that certain operations are not available (<em>e.g.</em>, accessing an element by index).
-				</p>
+					<p>The difference is that a generator expression only produces its elements one at a time, on demand. This keeps generator expressions lightweight in terms of memory usage. However, it also means that certain operations are not available (<em>e.g.</em>, accessing an element by index).</p>
 				<p>Note that generator expressions are distinct from lists, sets, and dictionaries; they're their own thing, even though they may appear very similar syntactically, and may also generate individual elements of content of similar forms to any of them. There is no "going back" or "random access" nature to them; there's only "give me the next item" (until there are no more to give).</p>
 				<h4>Generator Functions</h4>
-				<p>Generator functions offer a more general-purpose approach with similar functionality to generator expressions, albeit with completely different syntax. To create a generator function, you simply use the keyword <code>yield</code>. This is best explained by example:
+				<p>Generator functions offer a more general-purpose approach with similar functionality to generator expressions, albeit with completely different syntax. To create a generator function, you simply use the keyword <code>yield</code>. This is best explained by example:</p>
 					<pre class="indent">
 def mygen(n):
   for i in range(n):
@@ -125,10 +122,9 @@ OUTPUTS:
 9
 16
 					</pre>
-					The important thing to note here is that the <code>mygen</code> function effectively "pauses" after each <code>yield</code>. The generator function above is equivalent to the generator expression <code>( i ** 2 for i in range(n) )</code>; however, you have considerably more flexibility in a generator function to create complicated generator functionality.
-				</p>
+					<p>The important thing to note here is that the <code>mygen</code> function effectively "pauses" after each <code>yield</code>. The generator function above is equivalent to the generator expression <code>( i ** 2 for i in range(n) )</code>; however, you have considerably more flexibility in a generator function to create complicated generator functionality.</p>
 				<h4>Coroutines</h4>
-				<p>It's also possible to use the <code>yield</code> keyword in the context of creating coroutines, though I won't discuss these in detail here since I haven't found them necessary in AoC. (Feel free to research them, though.) That said, here's a very short code sample to show one in action:
+				<p>It's also possible to use the <code>yield</code> keyword in the context of creating coroutines, though I won't discuss these in detail here since I haven't found them necessary in AoC. (Feel free to research them, though.) That said, here's a very short code sample to show one in action:</p>
 <pre class="indent">
 def a_coroutine(): # define a coroutine function
   while True:
@@ -147,19 +143,17 @@ Value consumed: first
 Value consumed: second
 Value consumed: third
 </pre>
-				</p>
 			</details></li>
 			<li><details><summary>List (and tuple and string) indexing/slicing</summary>
-				<p>A few examples:
+				<p>A few examples:</p>
 					<ul>
 						<li><code>list_a[::-1]</code> &LongRightArrow; list that is reverse of list_a</li>
 						<li><code>list_a[:i] + list_b[j:] + list_c[i:j]</code> &LongRightArrow; list that is composed of list_a elements 0 through i-1 (or its end), list_b elements j through its end, and list_c elements i through j-1 (or its end)</li>
 						<li><code>"0123456789abcdef"[13:4:-3]</code> &LongRightArrow; "da7"</li>
 					</ul>
-				</p>
 			</details></li>
 			<li><details><summary>Destructuring and packing/unpacking</summary>
-				<p>A few examples:
+				<p>A few examples:</p>
 					<ul>
 						<li><code>a, b = [b, a]</code> &LongRightArrow; swaps values of a and b</li>
 						<li><code>a, b, c, *rest = [1,2,3,4,5,6,7,8,...]</code> &LongRightArrow; a=1, b=2, c=3, rest=[4,5,6,...]</li>
@@ -174,7 +168,6 @@ Value consumed: third
 						<li><code>for k, v in my_dict.items():</code> &LongRightArrow; my_dict.items() is an iterator that generates (key, value) tuples, which are then destructured into variables k and v, for use in each loop</li>
 						<li><code>print(*grid, sep='\n')</code> &LongRightArrow; print a "grid" (list of lists), one row (unpacked from grid) at a time, with intervening separator character '\n' (<em>i.e.</em>, newline)</li>
 					</ul>
-				</p>
 			</details></li>
 			<li><details><summary>Especially useful functions (built-in)...</summary>
 				<ul>
@@ -202,7 +195,7 @@ Value consumed: third
 					<li><code>all</code> &ndash; True if <em>all</em> items in an iterable are True; handy in conjunction with <code>map</code>; evaluates with short-circuiting</li>
 					<li><code>any</code> &ndash; True if <em>any</em> items in an iterable are True; evaluates with short-circuiting</li>
 					<li><code>eval</code> &ndash; Evaluate a string as Python code</li>
-					<li>Some others: <code>round</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>abs</code>, <code>divmod</code>, <code>ord</code>, <code>chr</code>, <code>hex</code>, <code>id</code>, <code>hasattr</code>, <code>str/int/...</code>, and so forth; you can look up a full listing of the built-in functions online (<em>e.g.</em>, <a href="https://docs.python.org/3/library/functions.html">https://docs.python.org/3/library/functions.html</a>), or get an approximate listing programmatically like this:
+					<li>Some others: <code>round</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>abs</code>, <code>divmod</code>, <code>ord</code>, <code>chr</code>, <code>hex</code>, <code>id</code>, <code>hasattr</code>, <code>str/int/...</code>, and so forth; you can look up a full listing of the built-in functions online (<em>e.g.</em>, <a href="https://docs.python.org/3/library/functions.html">https://docs.python.org/3/library/functions.html</a>), or get an approximate listing programmatically like this:<br/>
 <pre class="indent">
 import builtins, types
 print([nm for nm, obj in vars(builtins).items() if isinstance(obj, types.BuiltinFunctionType)])
@@ -249,7 +242,7 @@ print([nm for nm, obj in vars(builtins).items() if isinstance(obj, types.Builtin
 					<li>Note: <span id="misc--defval-reset-gotcha">Default-value parameters do not necessarily "reset" to default value.</span>
 						<ul>
 							<li>This happens when the default variable is mutable. The default variable's value is set at the time the function is defined, not every time the function is called. In the example below, when the function is defined, <code>def_var</code> gets assigned a new dictionary. Then on every call where the argument isn't supplied, that same dictionary gets used.</li>
-							<li>Example:
+							<li>Example:<br/>
 <pre class="indent">
 def surprise(txt, def_var={}):
   print(f"{txt}\n\tExpected(?): {{}}. Is: {def_var}")
@@ -287,7 +280,7 @@ def better(txt, def_var=None): # This works because None is an immutable type (a
 						<li>Turn right 90 degrees ("R"), or</li>
 						<li>Turn around to face backward ("B").</li>
 					</ul>
-					Suppose you decide to represent the N/E/S/W direction you're facing as a 2-tuple, <em>i.e.</em>, one of these: [-1,0], [0,1], [1,0], [0,-1]. You could write a regular expression to parse input, then go into a very simple loop to tear through it, line by line, such as the following. Note the usefulness of the "option-mapping dictionary", here named "go".
+					<p>Suppose you decide to represent the N/E/S/W direction you're facing as a 2-tuple, <em>i.e.</em>, one of these: [-1,0], [0,1], [1,0], [0,-1]. You could write a regular expression to parse input, then go into a very simple loop to tear through it, line by line, such as the following. Note the usefulness of the "option-mapping dictionary", here named "go".</p>
 <pre class="indent">
 import re
 
@@ -333,14 +326,13 @@ Final position: [5, 2]. Final heading: [0, 1].
 			</details></li>
 			<li><details><summary id="memo-eg">A full dynamic programming example</summary>
 				<p>PROBLEM STATEMENT:<br/>
-				Write a 'best_sum' function that takes two inputs:
+				Write a 'best_sum' function that takes two inputs:<br/>
 				&nbsp;&nbsp;target_sum: an integer<br/>
 				&nbsp;&nbsp;number_pool: a collection of some natural numbers (<em>i.e.</em>, positive integers)<br/>
 				It returns the smallest set of those numbers that sum to target_sum.<br/>
 				The numbers are re-usable as many times as needed.<br/>
 				If target_sum is impossible to reach, return None.<br/>
-				(For more, see 'bestSum' problem (etc.) <a href="https://www.youtube.com/watch?v=oBt53YbR9Kk&t=6728s">here</a>.)
-				</p>
+				(For more, see 'bestSum' problem (etc.) <a href="https://www.youtube.com/watch?v=oBt53YbR9Kk&t=6728s">here</a>.)</p>
 <pre>
 from functools import cache
 
