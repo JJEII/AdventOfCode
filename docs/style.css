@@ -86,3 +86,6 @@ pre, svg {
 	border-radius: 0.0625in;
 	background-color: var(--bodyBgColor);
 }
+ul {
+	list-style-type: symbols(cyclic '•' '◦' '▪' '▫' '▸' '▹' '⋄' '⁃');
+}
