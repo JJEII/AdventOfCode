@@ -86,11 +86,10 @@ pre, svg {
 	border-radius: 0.0625in;
 	background-color: var(--bodyBgColor);
 }
+/* list-style-type: symbols(cyclic '•' '◦' '▪' '▫' '▸' '▹' '⋄' '⁃'); */
 ul {
-	/* list-style-type: symbols(cyclic '•' '◦' '▪' '▫' '▸' '▹' '⋄' '⁃'); */
 	list-style-type: disc;
 }
-/* '▸' '▹' '⋄' '⁃' */
 ul ul {
 	list-style-type: circle;
 }
@@ -99,4 +98,16 @@ ul ul ul {
 }
 ul ul ul ul {
 	list-style-type: '▫';
+}
+ul ul ul ul ul {
+	list-style-type: '▸';
+}
+ul ul ul ul ul ul {
+	list-style-type: '▹';
+}
+ul ul ul ul ul ul ul {
+	list-style-type: '⋄';
+}
+ul ul ul ul ul ul ul ul {
+	list-style-type: '⁃';
 }
