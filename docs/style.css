@@ -61,6 +61,9 @@ q {
 .indent {
 	margin-inline-start: 0.25in;
 }
+ol, ul {
+	padding-inline-start: 0.25in;
+}
 .problem-section details {
 	margin-block: 0.5rem;
 }
