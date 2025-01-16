@@ -129,3 +129,6 @@ pre, svg {
 summary:hover {
 	cursor: pointer;
 }
+details h4 {
+	padding-inline-start: 0.25in;
+}
