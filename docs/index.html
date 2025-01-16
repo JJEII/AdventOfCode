@@ -88,7 +88,7 @@
 						<li><code>mul_tbl = [[col*row for col in range(1, 13)] for row in range(1, 13) if row != 5]</code> &LongRightArrow; 12x12 multiplication table (list of lists), but skipping row 5</li>
 						<li><code>for n in (i for i in range(1000000000) if i not in set_a):</code> &LongRightArrow; loop n from 0 to a billion, skipping any values in set_a, and generating one value at a time, not a whole list at once (as would be the case if the brackets were used instead of parentheses)</li>
 					</ul>
-					The first two examples use list comprehensions. The third uses a generator expression. These are conceptually and syntactically very similar, although there are big differences in what happens under the covers that make it important to understand what you're doing, especially when creating large amounts of data.</p>
+				The first two examples use list comprehensions. The third uses a generator expression. These are conceptually and syntactically very similar, although there are big differences in what happens under the covers that make it important to understand what you're doing, especially when creating large amounts of data.</p>
 				<h4>Comprehensions</h4>
 				<p>A comprehension is special syntax that allows in-place initialization of a list, set, or dictionary using a very succinct expression:</p>
 					<ul>
