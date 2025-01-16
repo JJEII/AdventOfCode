@@ -28,6 +28,13 @@ a:hover {
 details {
 	border: 1px solid var(--detailsBorderColor);
 	border-radius: 0.0625in;
+	padding-inline-start: 0.25in;
+}
+details > summary {
+	margin-inline-start: -0.25in;
+}
+summary:hover {
+	cursor: pointer;
 }
 details,
 details details details,
@@ -43,21 +50,14 @@ details details details details details details details details,
 details details details details details details details details details details {
 	background-color: var(--detailsEvenBgColor);
 }
-details {
-	padding-inline-start: 0.25in;
-}
-details > summary {
-	margin-inline-start: -0.25in;
-}
-summary:hover {
-	cursor: pointer;
-}
 q {
 	background-color: var(--qBgColor);
 }
 .underline {
 	text-decoration: underline;
 }
+.problem-part,
+.problem-part details,
 .indent {
 	margin-inline-start: 0.25in;
 }
@@ -67,18 +67,9 @@ q {
 .problem-section details summary {
 	font-weight: bold;
 }
-.problem-part {
-	margin-inline-start: 0.25in;
-}
-.problem-part details {
-	margin-inline-start: 0.25in;
-}
 p {
 	text-indent: 0.125in;
-	padding-inline-start: 0; /* .25in; */
-	padding-inline-end: 0;
-	margin-block-start: 0;
-	margin-block-end: 0;
+	margin-block: 0;
 }
 .highlight-yellow {
 	background-color: var(--highlightYellowBgColor);
