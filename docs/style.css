@@ -56,8 +56,8 @@ q {
 .underline {
 	text-decoration: underline;
 }
-.problem-part,
-.problem-part details,
+/* .problem-part,
+.problem-part details, */
 .indent {
 	margin-inline-start: 0.25in;
 }
