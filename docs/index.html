@@ -55,7 +55,7 @@
 			</details></li>
 			<li><details><summary>Solve for the data you're given, not necessarily the generalized problem that seems to be being stated.</summary>
 				<p>This is definitely a minority case, but it does crop up here and there. Most problems expect general solutions, but some <em>require</em> that the data be structured in a particular way, and discovering that and using it may be essential to solving them. (Basically, the fundamental structure of the data is part of the problem statement, but that fact may not be clearly stated. Noticing it is important.)</p>
-				<p>Sometimes even if it's not required, it's still easier to solve for the data given rather than the general problem. The objective is to get the correct answers to <em>this</em> problem-set. Corner cases that may crop up in more general hypothetical input data, but do not in the provided data, may safely go unaccounted for (albeit, perhaps with a comment in the code, noting this), and sometimes you can actually leverage this in order to signficantly simplify solution development.</p>
+				<p>Sometimes even if it's not required, it's still easier to solve for the data given rather than the general problem. The objective is to get the correct answers to <em>this</em> problem-set. Corner cases that may crop up in more general hypothetical input data, but do not in the provided data, may safely go unaccounted for (albeit, perhaps with a comment in the code, noting this), and sometimes you can actually leverage this in order to significantly simplify solution development.</p>
 				<p>I know of a few past problems that needed more of a reverse-engineering type of solution than a programmatic one. And, there are some others that are more easily solved in less than strictly programmatic ways (especially via visualization, but not only that).</p>
 			</details></li>
 			<li><details><summary>Depth First Search (DFS), Breadth First Search (BFS), etc.</summary>
@@ -221,9 +221,9 @@ print([nm for nm, obj in vars(builtins).items() if isinstance(obj, types.Builtin
 					<li><code>copy</code> &ndash; <code>copy</code> and <code>deepcopy</code>, at least (if needing to make copies of arbitrarily complex objects)</li>
 					<li><code>time</code> &ndash; <code>time</code> function inside it makes it very easy to time things executing</li>
 					<li>Other modules to potentially consider for various reasons: <code>os</code>, <code>sys</code>, <code>subprocess</code>, <code>threading</code>, <code>multiprocessing</code>, <code>asyncio</code>, <code>abc</code></li>
-					<li><code>pyvis</code> &ndash; a powerful and simple-to-use module for visualizing graphs, which can be immensely useful for some problems (to better understand the structure of input data)</li>
+					<li><code>pyvis</code> &ndash; a powerful and simple-to-use third party module for visualizing graphs, which can be immensely useful for some problems (to better understand the structure of input data)</li>
 				</ul>
-				<p>There are, of course, many other modules that could be of use&mdash;including third party modules, such as <code>numpy</code>.</p>
+				<p>There are, of course, many other modules that could be of use&mdash;including other third party modules, such as <code>numpy</code>.</p>
 			</details></li>
 			<li><details><summary>Custom data types (classes)</summary>
 				<p>A lot of the solutions don't really require custom data-type definitions, but they can also be useful for some of them. So, it's still a good idea to review the details of user-defined Python classes, such as <code>self</code> and <code>cls</code>, the so-called dunder functions (<code>__init__</code>, <code>__str__</code>, etc.), getters and setters (<code>@property</code> and <code>@propertyname.setter</code>), static and class methods (<code>@staticmethod</code> and <code>@classmethod</code>), class vs instance variables, leading single- and double- underscore named "private" variables, and of course inheritance, polymorphism, etc. If you really want to get more into this, a potentially relevant module to examine is <code>abc</code> (short for Abstract Base Classes).</p>
@@ -252,8 +252,8 @@ def surprise(txt, def_var={}):
   def_var[4] = 2
   print(f"\tValue set: def_var[4] = 2.\n\tShould be: {{4: 2}}. Is: {def_var}")
 
-surprise("Call #1; parameter 2 omitted; expecte(?) to use specified default = {}; appears to do so.")
-surprise("Call #2; parameter 2 omitted; expecte(?) to use specified default = {}; DOES NOT!")
+surprise("Call #1; parameter 2 omitted; expected(?) to use specified default = {}; appears to do so.")
+surprise("Call #2; parameter 2 omitted; expected(?) to use specified default = {}; DOES NOT!")
 surprise("Call #3; parameter 2 explicitly passes as {}; resets its value, as expected.", {})
 
 def better(txt, def_var=None): # This works because None is an immutable type (and, incidentally, a singleton).
