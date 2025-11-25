@@ -14,6 +14,8 @@
 	--linkHoverColor: #00cc00;
 	--linkHoverBgColor: rgb(50, 5, 50);
 
+	--announceColor: rgb(220, 80, 80);
+
 	--indentAmt: 0.25in;
 }
 
@@ -121,6 +123,9 @@ p {
 	background-color: var(--highlightYellowBgColor);
 	padding: 0.25rem 0.125rem;
 	margin-inline: 0.125rem;
+}
+.announcement {
+	color: var(--announceColor);
 }
 .star {
 	font-family: "Source Code Pro", monospace;
