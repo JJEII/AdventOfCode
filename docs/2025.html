@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AoC 2025</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<h1><a href="https://jjeii.github.io/AdventOfCode/index.html">Advent of Code (AoC)</a> 2025</h1>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/1">Day&nbsp;&nbsp;1</a> <span class="star">**</span> Secret Entrance &ndash; Repeatedly rotate a dial while counting zeros</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p><code>%</code></p>
+                <p><code>{"L": -1, "R": 1}</code></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>You can get more performant by using something like <code>divmod(...)</code>, and being careful to account for edge cases, but it's really not necessary for this problem's input data. A single-stepping inner loop still finishes very quickly.</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/2">Day&nbsp;&nbsp;2</a> <span class="star">**</span> Gift Shop &ndash; Count invalid IDs (solely comprised of repeating sub-sequences) in number ranges</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p><code>//</code></p>
+                <p>Possible by doing the math, but ... <code>str(n)</code>.</p>
+                <details><summary>It should be obvious that ...</summary>
+                    <p>... only even-length numbers have even the possibility of matching, and you could use <code>//</code> for string slicing and comparing, etc.</p>
+                    <details><summary>But, probably what you really want to do is ...</summary>
+                        <details><summary>... use <code>re</code> with ...</summary>
+                            <p>... back-referencing (and <code>^</code> and <code>$</code>). This approach makes Part 2 hilariously trivial.</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p><code>str(n)</code></p>
+                <p>Possible by doing all the iterating through in various sub-lengths and checking that they all match&mdash;in which case, I'd suggest <code>itertools.pairwise(...)</code> and <code>itertools.batched(...)</code>.</p>
+                <details><summary>But, probably what you really want to do is ...</summary>
+                    <details><summary>... use <code>re.match(...)</code> with ...</summary>
+                        <p>... back-referencing (and <code>^</code> and <code>$</code>). This approach makes the solution for Part 2 different from the solution for Part 1 by only a single character: <code>+</code>.</p>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/3">Day&nbsp;&nbsp;3</a> <span class="star">**</span> Lobby &ndash; Maximize joltages from battery banks</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Find the maximum individual battery joltage within the bank of batteries.</p>
+                <details><summary>If it's the last battery ...</summary>
+                    <p>... find the maximum joltage preceding it, and combine them for the total.</p>
+                </details>
+                <details><summary>If not ...</summary>
+                    <p>... find the maximum joltage succeeding it, and combine them for the total.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>While solving Part 1, it occurred to me that this is exactly the direction Part 2 would go. You need to be a bit more clever for this one.</p>
+                <details><summary>An initial important observation is that ...</summary>
+                    <p>... the first digit of the final result must be the maximum possible, <em>while also leaving enough batteries afterward to fill out all remaining required digits.</em></p>
+                    <details><summary>Extending this further leads to the observation that ...</summary>
+                        <p>... this is true for <em>every</em> digit being merged into the final result.</p>
+                        <details><summary>This is, of course, in conjunction with the fact that ...</summary>
+                            <p>... each maximized digit must also follow all preceding already-maximized digits.</p>
+                            <details><summary>Visually ...</summary>
+                                <p>Battery bank joltages:
+<pre>
+xxxxxx...xxxxx...xxxxxxxx...xx
+ ^  ^ ... ^⸤___________⸥⸤______⸥
+⸤__________⸥   choose    leave
+n-1 initial   nth max   12-n
+max joltages  joltage   batteries
+are in here   in here   remaining
+</pre></p>
+                                <p>Whatever the nth max ends up being, move the start of the next "max selection range" to just after its index, as well as the end of it moving one additional step farther to the right (since there's one less joltage digit that must have space left for it).</p>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/4">Day&nbsp;&nbsp;4</a> <span class="star">**</span> Printing Department &ndash; Count forklift-reachable rolls of paper</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>It's fairly straightforward to load the data into a grid; run through each location in it; check that it's a roll and, if so, assess what's in its immediate surroundings in order to determine if it's reachable or not; counting the reachable results the whole time, as you go. Although, that may be a little exacting in terms of getting the details right, it's not "hard" to do.</p>
+                <details><summary>A better way ...</summary>
+                    <p>Instead of loading everything into a grid, if you load into a set only the (row, col) coordinates of just the rolls of paper, then you will subsequently iterate only through rolls (skipping all empty locations), and you only need to check if immediately surrounding (row, col) locations are in that set when counting how many rolls are adjacent to each.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>For the most part, this is the same as Part 1, just repeated, and with some adjustments on each iteration. Until nothing changes any more.</p>
+                <details><summary>In the case of the "better" way in Part 1 ...</summary>
+                    <p>You just remove every reachable roll in each iteration to set up for the following iteration, until there's nothing more to remove, counting along the way (or just remembering the original size, then subtracting the final size from it at the end).</p>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/5">Day&nbsp;&nbsp;5</a> <span class="star">**</span> Cafeteria &ndash; Identify and count IDs of fresh (inside provided ranges) ingredients; count total possible</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Just do it. Not sure what else to say. This may be the easiest problem of this year's event.</p>
+                <details><summary>One obvious optimization</summary>
+                    <p>When iterating through the ranges, terminate the instant one is found that fits, rather than finishing checking all of them. (But, I think it's almost harder to <em>not</em> terminate then than to terminate.)</p>
+                    <p><code>any(...)</code> is probably a good option to leverage here since its evaluation short-circuits.</p>
+                    <p><code>sum(...)</code></p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This one's a bit more tricky, but not too bad.</p>
+                <details><summary>Fundamentally, the problem to solve is ...</summary>
+                    <p>... counting every "fresh ID" exactly once, instead of multiple times, because the provided ranges overlap with each other in various ways, and they must be processed <em>as ranges</em> because simply iterating through all IDs between the minimum range low value and the maximum range high value isn't feasible due to how large the range values are.</p>
+                    <details><summary>There are two obvious ways to resolve overlapping ranges ...</summary>
+                        <p>... shrink ranges, as needed, when they overlap, so they no longer do. But, this doesn't necessarily work very well in some situations, such as if some ranges exist entirely inside other ranges, or at least are entirely overlapped by some combination of other ranges. And, even if you do get this working properly, it still will generally yield more resulting ranges than when using the next approach.</p>
+                        <p>... merge ranges, as needed, when they overlap, so they no longer do. But, then the challenge is to identify subsets of <em>all</em> ranges that are merge-able into respectively representative single ranges.</p>
+                        <details><summary>There are several ways to approach the merge problem, but probably the best is ...</summary>
+                            <p>... to first ascendingly sort all the ranges by their low values (with tie-breaks by their end values). See <code>sorted(...)</code>, or <code>[].sort()</code>.</p>
+                            <details><summary>Then, iterate through them, tracking ...</summary>
+                                <p>... an intermittently changing start value and whether or not the currently assigned end value is &ge; to the following range's low value. (Technically, you can merge on end &ge; low-1, but you don't need to.)</p>
+                                <details><summary>If it is, then set end to ...</summary>
+                                    <p>... <code>max(end, high)</code>, and continue.</p>
+                                    <p>If it's not, then add (start, end) to a set of merged ranges, and set start and end to the current range's low and high, respectively, to begin merging a new range, then continue.</p>
+                                    <p>Once done, simply sum the lengths of all merged ranges to get the total count of fresh IDs.</p>
+                                    <p>Note that it is also possible to accumulate totals on the fly (which should be more performant than storing merged ranges and later summing them), but beware of accounting for the final sorted-input range because its factoring-in with regard to merging or not, while inside versus outside the loop, is dependent upon the input data.</p>
+                                </details>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/6">Day&nbsp;&nbsp;6</a> <span class="star">**</span> Trash Compactor &ndash; Cephalopod math homework</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p><code>"...".strip()</code></p>
+                <p><code>re.split(...)</code></p>
+                <details><summary><code>sum(...)</code> and <code>math.prod(...)</code></summary>
+                    <p><code>{"+": sum, "*": prod}</code></p>
+                </details>
+                <p><code>itertools.islice(...)</code></p>
+                <p><code>zip(*lines)</code> &ndash; I really cannot emphasize this hint enough. It will <em>massively</em> help in processing the input data.</p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Well, throw out those <code>"...".strip()</code> and <code>re.split(...)</code> hints from Part 1 for this one.</p>
+                <p>But, still very, <em>very</em> much heed that <code>zip(*lines)</code> hint from Part 1.</p>
+                <p><code>"".join(...)</code> &ndash; Ok, perhaps factor in <code>"...".strip()</code> in conjunction with this.</p>
+                <details><summary>Once the input is ingested and transformed, you can either ...</summary>
+                    <p>... immediately go into a loop to process it, accounting for the variations in lines as you go, or ...</p>
+                    <p>... first build a "point of interest" (POI) list of indices that holds all the indices of the lines where the operators appear. (Plus, append a <code>len(data)</code> entry so the final "equation" gets processed automatically.) Then, you can just iterate over the data using that POI index list and <code>itertools.pairwise(...)</code>.</p>
+                </details>
+            </details>
+        </details>
+    </section>
+<!--
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/7">Day&nbsp;&nbsp;7</a> <span class="star">**</span> ??? &ndash; ???</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/8">Day&nbsp;&nbsp;8</a> <span class="star">**</span> ??? &ndash; ???</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/9">Day&nbsp;&nbsp;9</a> <span class="star">**</span> ??? &ndash; ???</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/10">Day 10</a> <span class="star">**</span> ??? &ndash; ???</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/11">Day 11</a> <span class="star">**</span> ??? &ndash; ???</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><a href="https://adventofcode.com/2025/day/12">Day 12</a> <span class="star">**</span> ??? &ndash; ???</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p></p>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>This Part gives you a star for free, providing that final required piece to finish . . . in conjunction with completing all 23 of the preceding Parts of this year's problems.</p>
+            </details>
+        </details>
+    </section>
+-->
+</body>
+</html>
