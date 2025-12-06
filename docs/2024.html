@@ -10,7 +10,7 @@
 	<h1><a href="https://jjeii.github.io/AdventOfCode/index.html">Advent of Code (AoC)</a> 2024</h1>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/1">Day&nbsp;&nbsp;1</a> <span class="star">**</span> Historian Hysteria &ndash; Two columns of integers; compute their "distance" and "similarity"</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/1">Day&nbsp;&nbsp;1: Historian Hysteria</a> &ndash; Two columns of integers; compute their "distance" and "similarity"</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p><code>int()</code></p>
                 <p><code>abs()</code></p>
@@ -24,7 +24,7 @@
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/2">Day&nbsp;&nbsp;2</a> <span class="star">**</span> Red-Nosed Reports &ndash; List of reports containing levels that, to be "safe", must be all increasing or all decreasing</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/2">Day&nbsp;&nbsp;2: Red-Nosed Reports</a> &ndash; List of reports containing levels that, to be "safe", must be all increasing or all decreasing</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p><code>itertools.pairwise(data)</code></p>
                 <p><code>all()</code></p>
@@ -50,7 +50,7 @@ for elem_n, elem_n_plus_1 in zip(data, it):
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/3">Day&nbsp;&nbsp;3</a> <span class="star">**</span> Mull It Over &ndash; "mul" commands mixed into corrupted memory contents</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/3">Day&nbsp;&nbsp;3: Mull It Over</a> &ndash; "mul" commands mixed into corrupted memory contents</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This is very much a problem for using the <code>re</code> module.</p>
                 <p><code>sum()</code></p>
@@ -68,7 +68,7 @@ for elem_n, elem_n_plus_1 in zip(data, it):
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/4">Day&nbsp;&nbsp;4</a> <span class="star">**</span> Ceres Search &ndash; XMAS word search</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/4">Day&nbsp;&nbsp;4: Ceres Search</a> &ndash; XMAS word search</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>Probably use the <code>zip</code> trick mentioned in the overall AoC commentary:</p>
 <pre class="indent">
@@ -105,7 +105,7 @@ with open("input.txt") as infile:
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/5">Day&nbsp;&nbsp;5</a> <span class="star">**</span> Print Queue &ndash; Page-pair-order rules, lists of updates, and establishing their validity</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/5">Day&nbsp;&nbsp;5: Print Queue</a> &ndash; Page-pair-order rules, lists of updates, and establishing their validity</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>sets/frozensets and dictionaries may be helpful for solving this problem a bit more efficiently. (But, it's not a computationally intensive enough problem to make their use critical.)</p>
             </details>
@@ -116,7 +116,7 @@ with open("input.txt") as infile:
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/6">Day&nbsp;&nbsp;6</a> <span class="star">**</span> Guard Gallivant &ndash; Guard patrolling a grid, with obstacles</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/6">Day&nbsp;&nbsp;6: Guard Gallivant</a> &ndash; Guard patrolling a grid, with obstacles</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>I used a direction vector as the heading, <em>i.e.</em>, a 2-tuple expressing the (row,col) direction the guard is moving (<em>e.g.</em>, (-1,0) as the initial (dr,dc)), then changed it mathematically for each turn via a simple matrix multiplication:</p>
                 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" class="indent"><mrow><msub class="highlight-yellow"><mi>&#x1D407;</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>&#x0003D;</mo><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mo>&#x02212;</mo><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mtable><mtr><mtd><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>0</mn><mo stretchy="false">]</mo></mtd></mtr><mtr><mtd><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>1</mn><mo stretchy="false">]</mo></mtd></mtr></mtable><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mrow class="highlight-yellow"><mo>&#x0003D;</mo><mo minsize="1.2em" maxsize="1.2em">(</mo><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>1</mn><mo stretchy="false">]</mo><mo>&#x0002C;</mo><mo>&#x02212;</mo><msub><mi>&#x1D407;</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo stretchy="false">[</mo><mn>0</mn><mo stretchy="false">]</mo><mo minsize="1.2em" maxsize="1.2em">)</mo></mrow></mrow></math>
@@ -151,7 +151,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/7">Day&nbsp;&nbsp;7</a> <span class="star">**</span> Bridge Repair &ndash; Target value, list of numbers, and left-to-right evaluated operator combos</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/7">Day&nbsp;&nbsp;7: Bridge Repair</a> &ndash; Target value, list of numbers, and left-to-right evaluated operator combos</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>You can, of course, parse the input using <code>str.split</code> calls, but you can also directly pull all integer strings out of each line using <code>re.findall(r"-?\d+", line)</code>. (Or, use <code>re.finditer</code>.)</p>
                 <p>This can be implemented most straightforwardly using the <code>itertools.product</code> function.</p>
@@ -165,7 +165,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/8">Day&nbsp;&nbsp;8</a> <span class="star">**</span> Resonant Collinearity &ndash; Antennas and their antinodes</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/8">Day&nbsp;&nbsp;8: Resonant Collinearity</a> &ndash; Antennas and their antinodes</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>Using <code>zip</code> for dealing with "vectors" is probably a good idea for this one (both for computing differences and sums).</p>
                 <p>Also, look up <code>itertools.combinations</code>.</p>
@@ -177,7 +177,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/9">Day&nbsp;&nbsp;9</a> <span class="star">**</span> Disk Fragmenter &ndash; Disk defrag</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/9">Day&nbsp;&nbsp;9: Disk Fragmenter</a> &ndash; Disk defrag</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>(Friend) Check out the <code>grouper</code> recipe in <code>itertools</code>; it might be helpful in converting the input into the starting disk layout.</p>
                 <p>If representing the disk as a list, <code>pop()</code> from the back and then <code>index()</code> to find the left-most open space.</p>
@@ -232,7 +232,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/10">Day 10</a> <span class="star">**</span> Hoof It &ndash; Scoring/rating hiking trails</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/10">Day 10: Hoof It</a> &ndash; Scoring/rating hiking trails</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>For each trailhead, I used Breadth First Search (BFS) to incrementally expand outward until there was nowhere else to go, adding to a set any peak locations I encountered along the way and returning that set's length at the end.</p>
                 <p>However, in retrospect, Depth First Search (DFS) is the better choice here. One approach is to&mdash;for each trailhead&mdash;keep track of visited locations and do not move to any position that has already been visited. This way you don't count any peak more than once, and you don't re-explore previously explored paths.</p>
@@ -245,7 +245,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/11">Day 11</a> <span class="star">**</span> Plutonian Pebbles &ndash; Stones that change when you blink</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/11">Day 11: Plutonian Pebbles</a> &ndash; Stones that change when you blink</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This problem is fairly easy (and computationally feasible) to solve via the obvious/naïve approach.</p>
             </details>
@@ -265,7 +265,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/12">Day 12</a> <span class="star">**</span> Garden Groups &ndash; Computing the costs of fencing garden plot regions</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/12">Day 12: Garden Groups</a> &ndash; Computing the costs of fencing garden plot regions</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>Write a function that can extract a full region (garden plot).</p>
                 <details><summary>I'd suggest...</summary>
@@ -295,7 +295,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/13">Day 13</a> <span class="star">**</span> Claw Contraption &ndash; Maximizing claw-machine prize count while minimizing costs</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/13">Day 13: Claw Contraption</a> &ndash; Maximizing claw-machine prize count while minimizing costs</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>In retrospect, my approach for solving this one is almost embarrassing. Ultimately, it worked fine, but there's a vastly superior approach. I used dynamic programming for this part and basically brute-forced it through recursion. But, there's a <em>much</em> better and more direct way. Just think carefully about what the problem is actually describing...</p>
             </details>
@@ -342,7 +342,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/14">Day 14</a> <span class="star">**</span> Restroom Redoubt &ndash; Robots moving in wrap-around lines on a grid, and a Christmas tree shape</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/14">Day 14: Restroom Redoubt</a> &ndash; Robots moving in wrap-around lines on a grid, and a Christmas tree shape</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This is pretty straightforward to solve in the obvious/naïve way, iterating through one "second" at a time until you get to the "frame" for the 100th second, then compute the safety factor at that point.</p>
                 <details><summary>Hopefully, it's obvious to use...</summary>
@@ -392,7 +392,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/15">Day 15</a> <span class="star">**</span> Warehouse Woes &ndash; Robots moving deterministically in warehouses containing boxes</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/15">Day 15: Warehouse Woes</a> &ndash; Robots moving deterministically in warehouses containing boxes</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>(Friend) This was mostly straightforward; just implement the rules to move the robot according to the sequence of directions.</p>
                 <details><summary>Tips</summary>
@@ -423,7 +423,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/16">Day 16</a> <span class="star">**</span> Reindeer Maze &ndash; Finding the minimum movement score through a maze between start and end points (and the best seats for watching it happen)</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/16">Day 16: Reindeer Maze</a> &ndash; Finding the minimum movement score through a maze between start and end points (and the best seats for watching it happen)</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>(Friend) For this style of path-finding problem, I like using a work queue. Initialize the queue with the current state (position, heading, score), and then repeat while the queue isn't empty. Also create a dictionary to track the score for positions-&amp;-headings that have been visited. For each iteration, pop the head of the queue, then determine all next possible states (move forward, turn left, turn right), and append them to the queue if they haven't been visited yet or if the resulting score would be less than the existing score for that position-&amp;-heading. If the position is the end point, update the "best" score seen so far if it is less than any previous best score.</p>
                 <p>Once the work queue is empty, you've found the best score.</p>
@@ -442,7 +442,7 @@ pos = [sum(z) for z in zip(pos, hdgs[0])] # move position one step in direction 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/17">Day 17</a> <span class="star">**</span> Chronospatial Computer &ndash; A strange, mostly-3-bit computer with 8 instructions</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/17">Day 17: Chronospatial Computer</a> &ndash; A strange, mostly-3-bit computer with 8 instructions</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This Part is not too terribly difficult, though it does require exacting attention to detail. Just read the description very carefully, and meticulously implement it, one piece at a time.</p>
             </details>
@@ -502,7 +502,7 @@ xxxxxxxxxx --+-> 000xxxxxxxxxx
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/18">Day 18</a> <span class="star">**</span> RAM Run &ndash; Traversing a grid from upper left to lower right while avoiding invalid locations</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/18">Day 18: RAM Run</a> &ndash; Traversing a grid from upper left to lower right while avoiding invalid locations</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>I was surprised to see this problem following some of the others already seen.</p>
                 <details><summary>It's a straightforward...</summary>
@@ -524,7 +524,7 @@ xxxxxxxxxx --+-> 000xxxxxxxxxx
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/19">Day 19</a> <span class="star">**</span> Linen Layout &ndash; Striped towels used to (try to) create desired patterns</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/19">Day 19: Linen Layout</a> &ndash; Striped towels used to (try to) create desired patterns</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>I was even more surprised this problem was yet easier than Day 18's, which was already surprisingly easier than earlier problems.</p>
                 <details><summary>This problem's solution was quite straightforward if leveraging...</summary>
@@ -541,7 +541,7 @@ xxxxxxxxxx --+-> 000xxxxxxxxxx
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/20">Day 20</a> <span class="star">**</span> Race Condition &ndash; Racing with one allowed cheat</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/20">Day 20: Race Condition</a> &ndash; Racing with one allowed cheat</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This seemed like basically a simplified variation on Day 16's Part 1, plus a bit of work after that set-up. I thought it was yet again easier than some earlier problems, except...</p>
                 <details><summary>...don't forget to...</summary>
@@ -603,7 +603,7 @@ x x x x x x x x x x x x x x x x x x x   o   x x x x x x x x x x x x x x x x x x 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/21">Day 21</a> <span class="star">**</span> Keypad Conundrum &ndash; Direction-pad used to control a robot, to control a robot, ..., to control a robot to type a numpad code</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/21">Day 21: Keypad Conundrum</a> &ndash; Direction-pad used to control a robot, to control a robot, ..., to control a robot to type a numpad code</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This can be solved in a variety of ways since there's no significant computational constraint.</p>
                 <details><summary>It did intuitively seem clear to me that...</summary>
@@ -630,7 +630,7 @@ x x x x x x x x x x x x x x x x x x x   o   x x x x x x x x x x x x x x x x x x 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/22">Day 22</a> <span class="star">**</span> Monkey Market &ndash; A monkey market, secret numbers, and predicting results from length-four sequences</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/22">Day 22: Monkey Market</a> &ndash; A monkey market, secret numbers, and predicting results from length-four sequences</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>Just pay close attention to what the description says, and carefully implement the details.</p>
             </details>
@@ -650,7 +650,7 @@ x x x x x x x x x x x x x x x x x x x   o   x x x x x x x x x x x x x x x x x x 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/23">Day 23</a> <span class="star">**</span> LAN Party &ndash; Identifying three-way-connected computers in a network (and maximum cliques in a graph)</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/23">Day 23: LAN Party</a> &ndash; Identifying three-way-connected computers in a network (and maximum cliques in a graph)</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This Part isn't bad if you've built the connectivity representation nicely since it only requires identifying all computer pairs within a given computer's connections that are also connected to each other (and making sure to count each triple only once, of course&mdash;and only those containing at least one computer with a 't' name).</p>
             </details>
@@ -664,7 +664,7 @@ x x x x x x x x x x x x x x x x x x x   o   x x x x x x x x x x x x x x x x x x 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/24">Day 24</a> <span class="star">**</span> Crossed Wires &ndash; Simulating a system of XOR, AND, and OR logic gates wired together</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/24">Day 24: Crossed Wires</a> &ndash; Simulating a system of XOR, AND, and OR logic gates wired together</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>Just carefully implement the details of what the description says. It'll probably include some dictionaries, and perhaps frozensets.</p>
             </details>
@@ -692,7 +692,7 @@ x x x x x x x x x x x x x x x x x x x   o   x x x x x x x x x x x x x x x x x x 
     </section>
 
     <section class="problem-section">
-        <details><summary><a href="https://adventofcode.com/2024/day/25">Day 25</a> <span class="star">**</span> Code Chronicle &ndash; Identifying matching locks and keys</summary>
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2024/day/25">Day 25: Code Chronicle</a> &ndash; Identifying matching locks and keys</summary>
             <details class="problem-part"><summary>Part 1</summary>
                 <p>This problem was also significantly easier than earlier ones.</p>
                 <details><summary>But, it seemed especially easy if...</summary>
