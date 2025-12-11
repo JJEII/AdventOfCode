@@ -187,40 +187,59 @@ are in here   in here   remaining
         </details>
     </section>
 
+    <section class="problem-section">
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/9">Day&nbsp;&nbsp;9: Movie Theater</a> &ndash; Finding a largest-area rectangle; ensuring it's "in bounds"</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Very straightforward. I solved this Part faster than any other problem's part this year.</p>
+                <details><summary>I'd suggest using ...</summary>
+                    <p>... <code>itertools.combinations</code> to help out a little.</p>
+                    <details><summary>And, don't fall victim to the programmer's infamous ...</summary>
+                        <p>... "off by one" error when computing rectangle areas.</p>
+                    </details>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Not at all straightforward, even though it "feels like it should be". (This is probably my least favorite problem of the year.)</p>
+                <p>More to come...</p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/10">Day 10: Factory</a> &ndash; Pressing buttons to turn on lights in a pattern, and set joltage levels</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <p>Not so bad.</p>
+                <details><summary>Probably, the most important insight for this one ...</summary>
+                    <p>... is noting that every button is pressed either exactly once or not at all.</p>
+                    <details><summary>You could use ...</summary>
+                        <p>... itertools.combinations to help out a little here.</p>
+                        <details><summary>Just put it in a loop, and ...</summary>
+                            <p>... increase the combo count from 0 through <em>n</em> (the number of lights). With this approach, the very first solution found is necessarily the minimum button-press count.</p>
+                            <p><code>all(...)</code> and <code>zip(...)</code> could be useful as well (for checking against the goal pattern).</p>
+                        </details>
+                    </details>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p></p>
+            </details>
+        </details>
+    </section>
+
+    <section class="problem-section">
+        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/11">Day 11: Reactor</a> &ndash; Troubleshooting a server rack's connections by tracing cables</summary>
+            <details class="problem-part"><summary>Part 1</summary>
+                <details><summary>This problem seems pretty much custom-tailored for ...</summary>
+                    <p>... a dynamic programming solution. It requires only very short code to solve, and I was surprised to see it as the second-to-last day's problem.</p>
+                </details>
+            </details>
+            <details class="problem-part"><summary>Part 2</summary>
+                <p>Same tip as for Part 1. Required just a couple very minor tweaks to adapt Part 1's solution code to this.</p>
+            </details>
+        </details>
+    </section>
+
 <!--
-    <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/9">Day&nbsp;&nbsp;9: ???</a> &ndash; ???</summary>
-            <details class="problem-part"><summary>Part 1</summary>
-                <p></p>
-            </details>
-            <details class="problem-part"><summary>Part 2</summary>
-                <p></p>
-            </details>
-        </details>
-    </section>
-
-    <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/10">Day 10: ???</a> &ndash; ???</summary>
-            <details class="problem-part"><summary>Part 1</summary>
-                <p></p>
-            </details>
-            <details class="problem-part"><summary>Part 2</summary>
-                <p></p>
-            </details>
-        </details>
-    </section>
-
-    <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/11">Day 11: ???</a> &ndash; ???</summary>
-            <details class="problem-part"><summary>Part 1</summary>
-                <p></p>
-            </details>
-            <details class="problem-part"><summary>Part 2</summary>
-                <p></p>
-            </details>
-        </details>
-    </section>
-
     <section class="problem-section">
         <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/12">Day 12: ???</a> &ndash; ???</summary>
             <details class="problem-part"><summary>Part 1</summary>
