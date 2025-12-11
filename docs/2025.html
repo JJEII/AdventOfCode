@@ -243,7 +243,7 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
 </pre>
                         </details>
                         <details><summary>Then, you need to ...</summary>
-                            <p>... manipulate the matrices into a form where things are more directly determined, <em>i.e.</em>, get it into row-reduced echelon form (RREF) using Gauss-Jordan elimination.</p>
+                            <p>... manipulate the matrices into a form where things are more directly determined, <em>i.e.</em>, get things into row-reduced echelon form (RREF) using Gauss-Jordan elimination on the (augmented) matrix.</p>
                             <details><summary>Beware of possible ...</summary>
                                 <p>... non-integer resulting entries, which may throw a monkey wrench into the process. I solved this by using the <code>fractions</code> module, along with <code>lcm(...)</code> and <code>gcd(...)</code> to, as needed, transform all entries back into smallest-possible exact integers before continuing.</p>
                             </details>
@@ -251,7 +251,7 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
                         <p>For some of the data set's problems, solving this is enough to get the answer since they're fully determined. For others, it's not. So, what do you do then?</p>
                         <p>Specifically, what do you do when you have free (independent) variables remaining?</p>
                         <details><summary>In that case, just remember that the whole reason for using all this linear algebra stuff is because the solution space was simply too large to brute-force explore, but ...</summary>
-                            <p>... now it's not. Its size has been radically reduced by the math, and, fortunately, you have hard limits on each of the free variables since you can identify bounds on the number of button presses for each: compare the goal joltages to those affected by each free-variable-button press, and select the minimum as the upper limit, per variable. (Obviously, 0 is the lower limit for all of them.) Since none of the systems in the data exceed three free variables&mdash;at least, I don't think they did in my data&mdash;you can just exhaustively try them all quite quickly, and track the minimum.</p>
+                            <p>... now it's not. Its size has been radically reduced by the math, and, fortunately, you have hard limits on each of the free variables remaining since you can easily identify bounds on the number of button presses for each: compare the goal joltages to those affected by each free-variable-button press, and select the minimum as the upper limit, per variable. (Obviously, 0 is the lower limit for all of them.) Since none of the systems in the data exceed three free variables&mdash;at least, I don't think they did in my data&mdash;you can just exhaustively try them all quite quickly, and track the minimum.</p>
                         </details>
                     </details>
                 </details>
