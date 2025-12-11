@@ -212,7 +212,7 @@ are in here   in here   remaining
                 <details><summary>Probably, the most important insight for this one ...</summary>
                     <p>... is noting that every button is pressed either exactly once or not at all.</p>
                     <details><summary>You could use ...</summary>
-                        <p>... itertools.combinations to help out a little here.</p>
+                        <p>... <code>itertools.combinations</code> to help out a little here.</p>
                         <details><summary>Just put it in a loop, and ...</summary>
                             <p>... increase the combo count from 0 through <em>n</em> (the number of lights). With this approach, the very first solution found is necessarily the minimum button-press count.</p>
                             <p><code>all(...)</code> and <code>zip(...)</code> could be useful as well (for checking against the goal pattern).</p>
@@ -221,7 +221,32 @@ are in here   in here   remaining
                 </details>
             </details>
             <details class="problem-part"><summary>Part 2</summary>
-                <p></p>
+                <p>This was substantially harder than Part 1.</p>
+                <details><summary>The single most important thing to identify is ...</summary>
+                    <p>... that this is fundamentally a linear programming/algebra problem.</p>
+                    <details><summary>Step one is to ...</summary>
+                        <p>... transform it into a system of linear equations that represent buttons as columns in matrix <strong>A</strong>, and joltages as the target vector <strong>b</strong>, with <strong>x</strong> being the solution vector to solve for: <strong>Ax = b</strong>.</p>
+                        <details><summary>Using the problem's example of <code>[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}</code>, this looks like ...</summary>
+<pre>
+                                 A                              x          b
+
+Row 0 [ 0         0         0         0         1         0 ] [ x0 ]     [ 3 ]
+Row 1 [ 0         1         0         0         0         0 ] [ x1 ]     [ 5 ]
+Row 2 [ 0         0         1         1         1         1 ] [ x2 ]  =  [ 4 ]
+Row 3 [ 1         1         0         1         0         1 ] [ x3 ]     [ 7 ]
+        ^         ^         ^         ^         ^         ^   [ x4 ]       ^
+        |         |         |         |         |         |   [ x5 ]       |
+       (3)      (1,3)      (2)      (2,3)     (0,2)     (0,1)   ^         goal
+     Button 0  Button 1  Button 2  Button 3  Button 4  Button 5 |       joltages
+                                                             solution
+                                                  (times each button is pressed)
+</pre>
+                        </details>
+                        <details><summary>For some of the dataset's problems, solving this is enough; for others, it's not. However, even then, you still ...</summary>
+                            <p>... have radically reduced the size of the solution space, and, fortunately, you have hard limits on the solution space size for each variable since you know the maximum number of button presses required. Since none of the systems in the data exceed three free variables&mdash;at least, I don't think they did in my data&mdash;you can just exhaustively try them all, and track the minimum.</p>
+                        </details>
+                    </details>
+                </details>
             </details>
         </details>
     </section>
