@@ -105,7 +105,7 @@ are in here   in here   remaining
     <section class="problem-section">
         <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/5">Day&nbsp;&nbsp;5: Cafeteria</a> &ndash; Identify and count IDs of fresh (inside provided ranges) ingredients; count total possible</summary>
             <details class="problem-part"><summary>Part 1</summary>
-                <p>Just do it. Not sure what else to say. This may be the easiest problem of this year's event.</p>
+                <p>Just do it. Not sure what else to say. This may be the easiest problem of this year's event so far.</p>
                 <details><summary>One obvious optimization</summary>
                     <p>When iterating through the ranges, terminate the instant one is found that fits, rather than finishing checking all of them. (But, I think it's almost harder to <em>not</em> terminate then than to terminate.)</p>
                     <p><code>any(...)</code> is probably a good option to leverage here since its evaluation short-circuits.</p>
@@ -190,7 +190,7 @@ are in here   in here   remaining
     <section class="problem-section">
         <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/9">Day&nbsp;&nbsp;9: Movie Theater</a> &ndash; Finding a largest-area rectangle; ensuring it's "in bounds"</summary>
             <details class="problem-part"><summary>Part 1</summary>
-                <p>Very straightforward. I solved this Part faster than any other problem's part this year.</p>
+                <p>Very straightforward. I solved this Part faster than any other problem's part so far this year.</p>
                 <details><summary>I'd suggest using ...</summary>
                     <p>... <code>itertools.combinations</code> to help out a little.</p>
                     <details><summary>And, don't fall victim to the programmer's infamous ...</summary>
@@ -199,8 +199,8 @@ are in here   in here   remaining
                 </details>
             </details>
             <details class="problem-part"><summary>Part 2</summary>
-                <p>Not at all straightforward, even though it "feels like it should be". (This is probably my least favorite problem of the year.)</p>
-                <p>More to come...</p>
+                <p>Not at all straightforward, even though it "feels like it should be". (This is probably my least favorite problem part of the year.)</p>
+                <p>More write-up details to come...</p>
             </details>
         </details>
     </section>
@@ -222,11 +222,11 @@ are in here   in here   remaining
             </details>
             <details class="problem-part"><summary>Part 2</summary>
                 <p>This was substantially harder than Part 1.</p>
-                <details><summary>The single most important thing to identify is ...</summary>
+                <details><summary>The single most important thing to recognize is ...</summary>
                     <p>... that this is fundamentally a linear programming/algebra problem.</p>
-                    <details><summary>Step one is to ...</summary>
+                    <details><summary>The first step is to ...</summary>
                         <p>... transform it into a system of linear equations that represent buttons as columns in matrix <strong>A</strong>, and joltages as the target vector <strong>b</strong>, with <strong>x</strong> being the solution vector to solve for: <strong>Ax = b</strong>.</p>
-                        <details><summary>Using the problem's example of <code>[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}</code>, this looks like ...</summary>
+                        <details><summary>Using the problem's example data&mdash;<code>[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}</code>&mdash;this looks like ...</summary>
 <pre>
                                  A                              x          b
 
@@ -242,8 +242,16 @@ Row 3 [ 1         1         0         1         0         1 ] [ x3 ]     [ 7 ]
                                                   (times each button is pressed)
 </pre>
                         </details>
-                        <details><summary>For some of the dataset's problems, solving this is enough; for others, it's not. However, even then, you still ...</summary>
-                            <p>... have radically reduced the size of the solution space, and, fortunately, you have hard limits on the solution space size for each variable since you know the maximum number of button presses required. Since none of the systems in the data exceed three free variables&mdash;at least, I don't think they did in my data&mdash;you can just exhaustively try them all, and track the minimum.</p>
+                        <details><summary>Then, you need to ...</summary>
+                            <p>... manipulate the matrices into a form where things are more directly determined, <em>i.e.</em>, get it into row-reduced echelon form (RREF) using Gauss-Jordan elimination.</p>
+                            <details><summary>Beware of possible ...</summary>
+                                <p>... non-integer resulting entries, which may throw a monkey wrench into the process. I solved this by using the <code>fractions</code> module, along with <code>lcm(...)</code> and <code>gcd(...)</code> to, as needed, transform all entries back into smallest-possible exact integers before continuing.</p>
+                            </details>
+                        </details>
+                        <p>For some of the data set's problems, solving this is enough to get the answer since they're fully determined. For others, it's not. So, what do you do then?</p>
+                        <p>Specifically, what do you do when you have free (independent) variables remaining?</p>
+                        <details><summary>In that case, just remember that the whole reason for using all this linear algebra stuff is because the solution space was simply too large to brute-force explore, but ...</summary>
+                            <p>... now it's not. Its size has been radically reduced by the math, and, fortunately, you have hard limits on each of the free variables since you can identify bounds on the number of button presses for each: compare the goal joltages to those affected by each free-variable-button press, and select the minimum as the upper limit, per variable. (Obviously, 0 is the lower limit for all of them.) Since none of the systems in the data exceed three free variables&mdash;at least, I don't think they did in my data&mdash;you can just exhaustively try them all quite quickly, and track the minimum.</p>
                         </details>
                     </details>
                 </details>
@@ -259,7 +267,7 @@ Row 3 [ 1         1         0         1         0         1 ] [ x3 ]     [ 7 ]
                 </details>
             </details>
             <details class="problem-part"><summary>Part 2</summary>
-                <p>Same tip as for Part 1. Required just a couple very minor tweaks to adapt Part 1's solution code to this.</p>
+                <p>Repeat the same tip as for Part 1. This required just a couple very minor tweaks to adapt Part 1's solution code to solve it.</p>
             </details>
         </details>
     </section>
