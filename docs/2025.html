@@ -4,26 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AoC 2025</title>
+    <script src="script.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h1><a href="https://jjeii.github.io/AdventOfCode/index.html">Advent of Code (AoC)</a> 2025</h1>
+    <section class="header-section">
+        <h1><a href="https://jjeii.github.io/AdventOfCode/index.html">Advent of Code (AoC)</a> 2025</h1>
+        <div class="introduction">
+            <p class="year-objective-p">Overall objective for 2025: <span class="year-objective">Finish decorating the North Pole by December 12th.</span></p>
+            <p class="tiny-note">Use Ctrl-Click to toggle open/closed entire hierarchy sections.</p>
+            <p class="announcement">Note: Eric Wastl, the creator of Advent of Code, announced there will be only 12 (cf. 25) days of problems each year from 2025 onward.</p>
+        </div>
+    </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/1">Day&nbsp;&nbsp;1: Secret Entrance</a> &ndash; Repeatedly rotate a dial while counting zeros</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day1"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/1">Day&nbsp;&nbsp;1: Secret Entrance</a> &ndash; Repeatedly rotate a dial while counting zeros</summary>
+            <details class="problem-part" id="day1p1"><summary>Part 1</summary>
                 <p><code>%</code></p>
                 <p><code>{"L": -1, "R": 1}</code></p>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day1p2"><summary>Part 2</summary>
                 <p>You can get more performant by using something like <code>divmod(...)</code>, and being careful to account for edge cases, but it's really not necessary for this problem's input data. A single-stepping inner loop still finishes very quickly.</p>
             </details>
         </details>
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/2">Day&nbsp;&nbsp;2: Gift Shop</a> &ndash; Count invalid IDs (solely comprised of repeating sub-sequences) in number ranges</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day2"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/2">Day&nbsp;&nbsp;2: Gift Shop</a> &ndash; Count invalid IDs (solely comprised of repeating sub-sequences) in number ranges</summary>
+            <details class="problem-part" id="day2p1"><summary>Part 1</summary>
                 <p><code>//</code></p>
                 <p>Possible by doing the math, but ... <code>str(n)</code>.</p>
                 <details><summary>It should be obvious that ...</summary>
@@ -35,7 +43,7 @@
                     </details>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day2p2"><summary>Part 2</summary>
                 <p><code>str(n)</code></p>
                 <p>Possible by doing all the iterating through in various sub-lengths and checking that they all match&mdash;in which case, I'd suggest <code>itertools.pairwise(...)</code> and <code>itertools.batched(...)</code>.</p>
                 <details><summary>But, probably what you really want to do is ...</summary>
@@ -48,8 +56,8 @@
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/3">Day&nbsp;&nbsp;3: Lobby</a> &ndash; Maximize joltages from battery banks</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day3"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/3">Day&nbsp;&nbsp;3: Lobby</a> &ndash; Maximize joltages from battery banks</summary>
+            <details class="problem-part" id="day3p1"><summary>Part 1</summary>
                 <p>Find the maximum individual battery joltage within the bank of batteries.</p>
                 <details><summary>If it's the last battery ...</summary>
                     <p>... find the maximum joltage preceding it, and combine them for the total.</p>
@@ -58,7 +66,7 @@
                     <p>... find the maximum joltage succeeding it, and combine them for the total.</p>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day3p2"><summary>Part 2</summary>
                 <p>While solving Part 1, it occurred to me that this is exactly the direction Part 2 would go. You need to be a bit more clever for this one.</p>
                 <details><summary>An initial important observation is that ...</summary>
                     <p>... the first digit of the final result must be the maximum possible, <em>while also leaving enough batteries afterward to fill out all remaining required digits.</em></p>
@@ -86,14 +94,14 @@ are in here   in here   remaining
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/4">Day&nbsp;&nbsp;4: Printing Department</a> &ndash; Count forklift-reachable rolls of paper</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day4"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/4">Day&nbsp;&nbsp;4: Printing Department</a> &ndash; Count forklift-reachable rolls of paper</summary>
+            <details class="problem-part" id="day4p1"><summary>Part 1</summary>
                 <p>It's fairly straightforward to load the data into a grid; run through each location in it; check that it's a roll and, if so, assess what's in its immediate surroundings in order to determine if it's reachable or not; counting the reachable results the whole time, as you go. Although, that may be a little exacting in terms of getting the details right, it's not "hard" to do.</p>
                 <details><summary>A better way ...</summary>
                     <p>Instead of loading everything into a grid, if you load into a set only the (row, col) coordinates of just the rolls of paper, then you will subsequently iterate only through rolls (skipping all empty locations), and you only need to check if immediately surrounding (row, col) locations are in that set when counting how many rolls are adjacent to each.</p>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day4p2"><summary>Part 2</summary>
                 <p>For the most part, this is the same as Part 1, just repeated, and with some adjustments on each iteration. Until nothing changes any more.</p>
                 <details><summary>In the case of the "better" way in Part 1 ...</summary>
                     <p>You just remove every reachable roll in each iteration to set up for the following iteration, until there's nothing more to remove, counting along the way (or just remembering the original size, then subtracting the final size from it at the end).</p>
@@ -103,8 +111,8 @@ are in here   in here   remaining
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/5">Day&nbsp;&nbsp;5: Cafeteria</a> &ndash; Identify and count IDs of fresh (inside provided ranges) ingredients; count total possible</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day5"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/5">Day&nbsp;&nbsp;5: Cafeteria</a> &ndash; Identify and count IDs of fresh (inside provided ranges) ingredients; count total possible</summary>
+            <details class="problem-part" id="day5p1"><summary>Part 1</summary>
                 <p>Just do it. Not sure what else to say. This may be the easiest problem of this year's event so far.</p>
                 <details><summary>One obvious optimization</summary>
                     <p>When iterating through the ranges, terminate the instant one is found that fits, rather than finishing checking all of them. (But, I think it's almost harder to <em>not</em> terminate then than to terminate.)</p>
@@ -112,7 +120,7 @@ are in here   in here   remaining
                     <p><code>sum(...)</code></p>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day5p2"><summary>Part 2</summary>
                 <p>This one's a bit more tricky, but not too bad.</p>
                 <details><summary>Fundamentally, the problem to solve is ...</summary>
                     <p>... counting every "fresh ID" exactly once, instead of multiple times, because the provided ranges overlap with each other in various ways, and they must be processed <em>as ranges</em> because simply iterating through all IDs between the minimum range low value and the maximum range high value isn't feasible due to how large the range values are.</p>
@@ -138,8 +146,8 @@ are in here   in here   remaining
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/6">Day&nbsp;&nbsp;6: Trash Compactor</a> &ndash; Cephalopod math homework</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day6"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/6">Day&nbsp;&nbsp;6: Trash Compactor</a> &ndash; Cephalopod math homework</summary>
+            <details class="problem-part" id="day6p1"><summary>Part 1</summary>
                 <p><code>"...".strip()</code></p>
                 <p><code>re.split(...)</code></p>
                 <details><summary><code>sum(...)</code> and <code>math.prod(...)</code></summary>
@@ -148,7 +156,7 @@ are in here   in here   remaining
                 <p><code>itertools.islice(...)</code></p>
                 <p><code>zip(*lines)</code> &ndash; I really cannot emphasize this hint enough. It will <em>massively</em> help in processing the input data.</p>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day6p2"><summary>Part 2</summary>
                 <p>Well, throw out those <code>"...".strip()</code> and <code>re.split(...)</code> hints from Part 1 for this one.</p>
                 <p>But, still very, <em>very</em> much heed that <code>zip(*lines)</code> hint from Part 1.</p>
                 <p><code>"".join(...)</code> &ndash; Ok, perhaps factor in <code>"...".strip()</code> in conjunction with this.</p>
@@ -161,19 +169,19 @@ are in here   in here   remaining
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/7">Day&nbsp;&nbsp;7: Laboratories</a> &ndash; Counting beam splits and timelines</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day7"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/7">Day&nbsp;&nbsp;7: Laboratories</a> &ndash; Counting beam splits and timelines</summary>
+            <details class="problem-part" id="day7p1"><summary>Part 1</summary>
                 <p>Strongly suggest using sets, and set operations&mdash;both for storing column locations of splitters on rows and tracking traveling beams.</p>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day7p2"><summary>Part 2</summary>
                 <p><code>@cache</code></p>
             </details>
         </details>
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/8">Day&nbsp;&nbsp;8: Playground</a> &ndash; Running Christmas lights between junction boxes, minimizing distances</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day8"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/8">Day&nbsp;&nbsp;8: Playground</a> &ndash; Running Christmas lights between junction boxes, minimizing distances</summary>
+            <details class="problem-part" id="day8p1"><summary>Part 1</summary>
                 <details><summary>I don't have much to say here since this is a fairly simple problem if you use ...</summary>
                     <p>... the union-find algorithm.</p>
                 </details>
@@ -181,15 +189,15 @@ are in here   in here   remaining
                     <p>... <code>collections.Counter</code>.</p>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day8p2"><summary>Part 2</summary>
                 <p>I have nothing more to add to Part 1's information, except to just keep going until they're all in the same circuit.</p>
             </details>
         </details>
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/9">Day&nbsp;&nbsp;9: Movie Theater</a> &ndash; Finding a largest-area rectangle; ensuring it's "in bounds"</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day9"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/9">Day&nbsp;&nbsp;9: Movie Theater</a> &ndash; Finding a largest-area rectangle; ensuring it's "in bounds"</summary>
+            <details class="problem-part" id="day9p1"><summary>Part 1</summary>
                 <p>Very straightforward. I solved this Part faster than any other problem's part so far this year.</p>
                 <details><summary>I'd suggest using ...</summary>
                     <p>... <code>itertools.combinations</code> to help out a little.</p>
@@ -198,7 +206,7 @@ are in here   in here   remaining
                     </details>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day9p2"><summary>Part 2</summary>
                 <p>Not at all straightforward, even though it "feels like it should be". (This is probably my least favorite problem part of the year.)</p>
                 <p>More write-up details to come...</p>
             </details>
@@ -206,8 +214,8 @@ are in here   in here   remaining
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/10">Day 10: Factory</a> &ndash; Pressing buttons to turn on lights in a pattern, and set joltage levels</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day10"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/10">Day 10: Factory</a> &ndash; Pressing buttons to turn on lights in a pattern, and set joltage levels</summary>
+            <details class="problem-part" id="day10p1"><summary>Part 1</summary>
                 <p>Not so bad.</p>
                 <details><summary>Probably, the most important insight for this one ...</summary>
                     <p>... is noting that every button is pressed either exactly once or not at all.</p>
@@ -220,8 +228,8 @@ are in here   in here   remaining
                     </details>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
-                <p>This was substantially harder than Part 1.</p>
+            <details class="problem-part" id="day10p2"><summary>Part 2</summary>
+                <p>This was substantially harder than Part 1, and it reminded me a bit of Part 2 of <a href="2024.html#day13p2">Claw Contraption</a> from 2024. (That's a bit of a hint.)</p>
                 <details><summary>The single most important thing to recognize is ...</summary>
                     <p>... that this is fundamentally a linear programming/algebra problem.</p>
                     <details><summary>The first step is to ...</summary>
@@ -260,13 +268,13 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
     </section>
 
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/11">Day 11: Reactor</a> &ndash; Troubleshooting a server rack's connections by tracing cables</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day11"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/11">Day 11: Reactor</a> &ndash; Troubleshooting a server rack's connections by tracing cables</summary>
+            <details class="problem-part" id="day11p1"><summary>Part 1</summary>
                 <details><summary>This problem seems pretty much custom-tailored for ...</summary>
                     <p>... a dynamic programming solution. It requires only very short code to solve, and I was surprised to see it as the second-to-last day's problem.</p>
                 </details>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day11p2"><summary>Part 2</summary>
                 <p>Repeat the same tip as for Part 1. This required just a couple very minor tweaks to adapt Part 1's solution code to solve it.</p>
             </details>
         </details>
@@ -274,11 +282,11 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
 
 <!--
     <section class="problem-section">
-        <details><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/12">Day 12: ???</a> &ndash; ???</summary>
-            <details class="problem-part"><summary>Part 1</summary>
+        <details id="day12"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/12">Day 12: ???</a> &ndash; ???</summary>
+            <details class="problem-part" id="day12p1"><summary>Part 1</summary>
                 <p></p>
             </details>
-            <details class="problem-part"><summary>Part 2</summary>
+            <details class="problem-part" id="day12p2"><summary>Part 2</summary>
                 <p>This Part gives you a star for free, providing that final required piece to finish . . . in conjunction with completing all 23 of the preceding Parts of this year's problems.</p>
             </details>
         </details>

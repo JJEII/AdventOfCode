@@ -14,6 +14,7 @@
 	--linkHoverColor: #00cc00;
 	--linkHoverBgColor: rgb(50, 5, 50);
 
+	--introBgColor: rgb(0, 20, 30);
 	--announceColor: rgb(220, 80, 80);
 
 	--indentAmt: 0.25in;
@@ -33,6 +34,9 @@ a {
 a:hover {
 	color: var(--linkHoverColor);
 	text-shadow: 0 0 2px var(--linkHoverColor), 0 0 5px var(--linkHoverColor);
+}
+h1 {
+	margin-block-end: 0.5rem;
 }
 details {
 	border: 1px solid var(--detailsBorderColor);
@@ -78,6 +82,7 @@ ol, ul {
 .problem-section details {
 	margin-block: 0.5rem;
 }
+.year-objective,
 .problem-section details > summary {
 	font-weight: bold;
 }
@@ -131,4 +136,16 @@ p {
 	font-family: "Source Code Pro", monospace;
 	color: #ffff66;
   text-shadow: 0 0 5px #ffff66;
+}
+.introduction {
+	border-radius: calc(0.25*var(--indentAmt));
+	border: 1px solid var(--detailsBorderColor);
+	padding-inline: calc(0.5*var(--indentAmt));
+	background-color: var(--introBgColor)
+}
+.tiny-note {
+	font-size: small;
+}
+.year-objective-p {
+	font-size: larger;
 }
