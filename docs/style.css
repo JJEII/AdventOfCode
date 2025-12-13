@@ -16,6 +16,7 @@
 
 	--introBgColor: rgb(0, 20, 30);
 	--announceColor: rgb(220, 80, 80);
+	--asideColor: hsl(0, 0%, 45%);
 
 	--indentAmt: 0.25in;
 }
@@ -37,6 +38,13 @@ a:hover {
 }
 h1 {
 	margin-block-end: 0.5rem;
+}
+aside {
+	padding-inline: 1rem;
+}
+aside,
+aside em {
+	color: var(--asideColor);
 }
 details {
 	border: 1px solid var(--detailsBorderColor);

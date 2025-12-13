@@ -280,17 +280,35 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
         </details>
     </section>
 
-<!--
     <section class="problem-section">
-        <details id="day12"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/12">Day 12: ???</a> &ndash; ???</summary>
+        <details id="day12"><summary><span class="star">**</span> <a href="https://adventofcode.com/2025/day/12">Day 12: Christmas Tree Farm</a> &ndash; Trying to fit collections of oddly-shaped gifts under limited-boundary trees</summary>
             <details class="problem-part" id="day12p1"><summary>Part 1</summary>
-                <p></p>
+                <p>Carefully analyze the input data. (Seriously. Just do it. That's the first hint.)</p>
+                <details><summary>As far as I know, this problem is ...</summary>
+                    <p>... <em>in the general case</em>, NP-hard. So, when I glanced at the scale of the provided input data, I was initially entirely at a loss as to how to approach it because the values are far too large to just brute-force through.</p>
+                    <p>However, I figured that, at the very least, I could examine the data in more detail to see if maybe some of the entries could fairly easily be ruled out via a simple check or two.</p>
+                    <details><summary>The first test was to ...</summary>
+                        <p>... see if any of the entries were able to be rejected <em>even if they were perfectly densely packed</em> (no holes at all). I assessed each shape's total actual coverage area as its '#'-count, and I multiplied these areas by their respective required-appearance counts in each entry, summing them all up. If this total coverage area exceeded the boundary region's area, then that entry could be immediately rejected as impossible.</p>
+                        <p>Imagine my surprise when literally hundreds of the entries were rejected by this simple check!</p>
+                        <aside>Frustratingly, when the problem first became available to work on, I had only tried this test on the very first entry, and by hand, and I'd accidentally reversed the comparison and concluded that the boundary region area was just slightly larger than the total shape-coverage area, even though it was actually slightly <em>smaller</em>! Oof!</aside>
+                        <p>At any rate, this was all fine and good to discover, but it still didn't necessarily get me much closer to a final answer since it didn't tell me whether or not the remaining (non-rejectees) would work, and trying to crank through even just <u>one</u> of them would be computationally infeasible.</p>
+                        <details><summary>But, it did encourage me to then look more closely at those remaining entries, on which I first examined ...</summary>
+                            <p>... just <em>how much</em> larger the boundary region's area was than the perfectly-densely-packed-shapes area was. And, it was by quite a substantial amount, even for the smallest one! Now, this seemed potentially promising...</p>
+                            <p>I decided to examine them in terms of percentage, too&mdash;1 - shapesArea/regionArea&mdash;and this also showed great promise because even the smallest overage amount was still &gt;26%!</p>
+                            <details><summary>Given all this, I decided to just try it out and see what would happen if ...</summary>
+                                <p>... I checked to see if all the respectively required shapes for each of the remaining regions could just be dropped in by providing it with its own little independent 3x3 tile space (since all the shapes are "3x3").</p>
+                                <p>That is, I tested to see how many entries passed the check that &lfloor;regionWidth/3&rfloor; &times; &lfloor;regionLength/3&rfloor; &geq; shapesTotal for that region.</p>
+                                <p>Every single one of the remaining entries passed this test.</p>
+                                <p>On a closing note, I will just say that I think this problem is super sketchy in how it unfolded. For example, the approach outlined above <em>fails on the test data</em>, and the entire problem presentation essentially misleads you away from it! (Don't get me wrong; I'm glad it ended up the way it did, because I don't see how it's feasible otherwise; but, still...)</p>
+                            </details>
+                        </details>
+                    </details>
+                </details>
             </details>
             <details class="problem-part" id="day12p2"><summary>Part 2</summary>
                 <p>This Part gives you a star for free, providing that final required piece to finish . . . in conjunction with completing all 23 of the preceding Parts of this year's problems.</p>
             </details>
         </details>
     </section>
--->
 </body>
 </html>
