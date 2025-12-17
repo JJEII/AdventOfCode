@@ -151,9 +151,18 @@ p {
 	padding-inline: calc(0.5*var(--indentAmt));
 	background-color: var(--introBgColor)
 }
+sub,
+sup {
+	font-size: 0.55em;
+}
 .tiny-note {
 	font-size: small;
 }
 .year-objective-p {
 	font-size: larger;
+}
+.side-by-side {
+	display: flex;
+	flex-direction: row;
+	gap: calc(0.5*var(--indentAmt));
 }

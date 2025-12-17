@@ -207,8 +207,9 @@ are in here   in here   remaining
                 </details>
             </details>
             <details class="problem-part" id="day9p2"><summary>Part 2</summary>
-                <p>Not at all straightforward, even though it "feels like it should be". (This is probably my least favorite problem part of the year.)</p>
-                <p>More write-up details to come...</p>
+                <p>Not at all straightforward, even though it "feels like it should be", which I found rather frustrating while working through it.</p>
+                <p>I suspect that almost everybody who "solved" this ... didn't actually solve it and instead just semi-accidentally got lucky with the problem's particular input data. (I know for a fact that of the four different people's code I had run on some test data I created, <em>all</em> of them failed to assess it correctly, and that includes my own.)</p>
+                <p>More to come on this...</p>
             </details>
         </details>
     </section>
@@ -285,20 +286,54 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
             <details class="problem-part" id="day12p1"><summary>Part 1</summary>
                 <p>Carefully analyze the input data. (Seriously. Just do it. That's the first hint.)</p>
                 <details><summary>As far as I know, this problem is ...</summary>
-                    <p>... <em>in the general case</em>, NP-hard. So, when I glanced at the scale of the provided input data, I was initially entirely at a loss as to how to approach it because the values are far too large to just brute-force through.</p>
-                    <p>However, I figured that, at the very least, I could examine the data in more detail to see if maybe some of the entries could fairly easily be ruled out via a simple check or two.</p>
+                    <p>... <em>in the general case</em>, NP-hard. So, when I glanced at the scale of the provided input data, I was initially entirely at a loss as to how to approach it because the values appear far too large to just brute-force through.</p>
+                    <p>However, I figured that, at the very least, I could examine the data in more detail to see if maybe some of the inputs could fairly easily be ruled out via a simple check or two.</p>
                     <details><summary>The first test was to ...</summary>
-                        <p>... see if any of the entries were able to be rejected <em>even if they were perfectly densely packed</em> (no holes at all). I assessed each shape's total actual coverage area as its '#'-count, and I multiplied these areas by their respective required-appearance counts in each entry, summing them all up. If this total coverage area exceeded the boundary region's area, then that entry could be immediately rejected as impossible.</p>
-                        <p>Imagine my surprise when literally hundreds of the entries were rejected by this simple check!</p>
-                        <aside>Frustratingly, when the problem first became available to work on, I had only tried this test on the very first entry, and by hand, and I'd accidentally reversed the comparison and concluded that the boundary region area was just slightly larger than the total shape-coverage area, even though it was actually slightly <em>smaller</em>! Oof!</aside>
-                        <p>At any rate, this was all fine and good to discover, but it still didn't necessarily get me much closer to a final answer since it didn't tell me whether or not the remaining (non-rejectees) would work, and trying to crank through even just <u>one</u> of them would be computationally infeasible.</p>
-                        <details><summary>But, it did encourage me to then look more closely at those remaining entries, on which I first examined ...</summary>
-                            <p>... just <em>how much</em> larger the boundary region's area was than the perfectly-densely-packed-shapes area was. And, it was by quite a substantial amount, even for the smallest one! Now, this seemed potentially promising...</p>
-                            <p>I decided to examine them in terms of percentage, too&mdash;1 - shapesArea/regionArea&mdash;and this also showed great promise because even the smallest overage amount was still &gt;26%!</p>
-                            <details><summary>Given all this, I decided to just try it out and see what would happen if ...</summary>
-                                <p>... I checked to see if all the respectively required shapes for each of the remaining regions could just be dropped in by providing it with its own little independent 3x3 tile space (since all the shapes are "3x3").</p>
-                                <p>That is, I tested to see how many entries passed the check that &lfloor;regionWidth/3&rfloor; &times; &lfloor;regionLength/3&rfloor; &geq; shapesTotal for that region.</p>
-                                <p>Every single one of the remaining entries passed this test.</p>
+                        <p>... see if any of the entries were able to be rejected <em>even if they were perfectly densely packed</em> (no holes at all).</p>
+                        <p>For each data input independently examined, let:
+                            <ul>
+                                <li>W : width of boundary region</li>
+                                <li>L : length of boundary region</li>
+                                <li>A<sub>R</sub> = WL : area of boundary region</li>
+                                <li>n<sub>i</sub> : required number of shape i</li>
+                                <li>a<sub>i</sub> : area covered by shape i, computed as its '#'-count (same across all "WxL: n<sub>i</sub> for i in 0..5" data inputs)</li>
+                                <li>A<sub>D</sub> = Σ n<sub>i</sub> a<sub>i</sub> : "dense area", which is the theoretical minimum coverage area of all of an input's shapes (ignoring region shape)</li>
+                                <li>N = Σ n<sub>i</sub> : total shape count</li>
+                            </ul>
+                            It should be obvious that if A<sub>D</sub>&gt;A<sub>R</sub>, then that input can immediately be rejected as impossible.</p>
+                        <p>Imagine my surprise when literally hundreds of the inputs were rejected by this simple check!</p>
+                        <aside>Frustratingly, when the problem first became available to work on, I had only tried this test on the very first input, and by hand, and I'd accidentally reversed the comparison and concluded that the boundary region area was just slightly larger than the total shape-coverage area, even though it was actually slightly <em>smaller</em>! Oof!</aside>
+                        <p>At any rate, this was all fine and good to discover, but it still didn't necessarily get me much closer to a final answer since it didn't tell me whether or not those remaining (not rejected) would work, and trying to crank through even just <u>one</u> of them would be computationally infeasible.</p>
+                        <details><summary>But, it did encourage me to then look more closely at those remaining inputs. I next examined ...</summary>
+                            <p>... just <em>how much</em> larger A<sub>R</sub> was than A<sub>D</sub>. It turned out to be by quite a substantial amount, even for the smallest one! Now, this seemed potentially promising...</p>
+                            <p>I decided to examine them in terms of ratio, too&mdash;(1 - A<sub>D</sub>/A<sub>R</sub>)&mdash;and this also showed great promise because even the smallest "excess" was still &gt;26%! That felt like quite a lot of "wiggle room".</p>
+                            <details><summary>Given all this, I decided to just see what would happen if ...</summary>
+                                <p>... I checked to see if all the respectively required shapes for each of the remaining regions could just be dropped in by providing it with its own little independent 3x3 tile space (since all the shapes are "3x3"), without even trying to interlock them at all. See figure.</p>
+<pre>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃             ←"excesses"↓┃
+┠┄┄┄┄┄┬┄┄┄┄┄┐     ┌┄┄┄┄┄┐ ┃
+┃     ┆     ┆     ┆     ┆ ┃
+┃  ?  ┆  ?  ┆ ... ┆  ?  ┆ ┃ &lfloor;L/3&rfloor;
+┃     ┆     ┆     ┆     ┆ ┃
+┠┄┄┄┄┄┴┄┄┄┄┄┘     └┄┄┄┄┄┘ ┃
+┃  .     .      .    .    ┃  .
+┃  .     .     .     .    ┃  .
+┃  .     .    .      .    ┃  .
+┠┄┄┄┄┄┬┄┄┄┄┄┐     ┌┄┄┄┄┄┐ ┃
+┃ ### ┆ ### ┆     ┆     ┆ ┃
+┃  ## ┆ #   ┆ ... ┆  ?  ┆ ┃  2
+┃   # ┆ ### ┆     ┆     ┆ ┃
+┠┄┄┄┄┄┼┄┄┄┄┄┤     ├┄┄┄┄┄┤ ┃
+┃   # ┆ ##  ┆     ┆     ┆ ┃
+┃ ### ┆  ## ┆ ... ┆  ?  ┆ ┃  1
+┃ ### ┆   # ┆     ┆     ┆ ┃
+┗━━━━━┷━━━━━┷━━━━━┷━━━━━┷━┛
+   1     2    ...  &lfloor;W/3&rfloor;
+</pre>
+<!-- ┘ ┐ └ ┌ ┆ ┄ ⋯ ⋮ ⋰ ↓ ← -->
+                                <p>That is, I tested to see how many inputs passed the check that &lfloor;W/3&rfloor; &times; &lfloor;L/3&rfloor; &geq; N.</p>
+                                <p>Every single one of the remaining inputs passed this test, giving me my answer!</p>
                                 <p>On a closing note, I will just say that I think this problem is super sketchy in how it unfolded. For example, the approach outlined above <em>fails on the test data</em>, and the entire problem presentation essentially misleads you away from it! (Don't get me wrong; I'm glad it ended up the way it did, because I don't see how it's feasible otherwise; but, still...)</p>
                             </details>
                         </details>
