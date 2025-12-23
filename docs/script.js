@@ -15,6 +15,25 @@ function toggleAllOpenStates(event) {
 	}
 }
 
+function tripleclick(event) {
+	try {
+		if (event.detail === 3) {
+			event.preventDefault(); // Prevent further click counts from triggering
+			// const pre = event.target;
+			// if (pre.tagName === "PRE") {
+				// Select all text in the PRE element
+				const range = document.createRange();
+				range.selectNodeContents(event.target);
+				// range.selectNodeContents(pre);
+				const sel = window.getSelection();
+				sel.removeAllRanges();
+				sel.addRange(range);
+			// }
+		}
+	} catch (err) {
+	}
+}
+
 function initialize() {
 	// Open target element if URL has hash (intra-page link)
 	const url = window.location.href;

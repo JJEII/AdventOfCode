@@ -166,3 +166,9 @@ sup {
 	flex-direction: row;
 	gap: calc(0.5*var(--indentAmt));
 }
+.v-max {
+	max-height: 20rem;
+}
+.v-scroll {
+	overflow-y: auto;
+}
