@@ -208,9 +208,9 @@ are in here   in here   remaining
             </details>
             <details class="problem-part" id="day9p2"><summary>Part 2</summary>
                 <p>Not at all straightforward, even though it (at least initially) "feels like it should be", which I found rather frustrating while working through it.</p>
-                <p>I suspect that almost everybody who "solved" this ... didn't actually solve it and instead just semi-accidentally got lucky with the problem's particular input data. (I know for a fact that of the four different people's code I had run on some test data I created, <em>all</em> of them failed to assess it correctly, and that includes my own.)</p>
-                <p>We all misread the actual problem being asked, and we simply got lucky that the input data was designed in the shape it was, so our solutions to our misreadings of the problem were coincidentally "correct".</p>
-                <p>I'm providing some test data here for people to try out, which far better exercise solution code than the actual problem's input data did. (Triple-click inside one of the sets to select it, for easier copying.)</p>
+                <p>In fact, this may be the hardest problem part of the year, and I suspect that almost everybody who "solved" it ... didn't actually solve it and instead just accidentally got lucky with the problem's particular input data. (I know for a fact that of the six different independent code "solutions" I ran on some test data I created (below), <em>all</em> of them failed to assess it correctly, and that included my own.)</p>
+                <p>We all misread the actual problem being asked, and we simply got lucky that the input data was designed in the shape it was, so our solutions to our misreadings of the problem were coincidentally "correct" in this specific case. Had the input data better flexed to test the problem's constraints, we'd all have needed to work harder on the problem to solve it properly.</p>
+                <p>I'm providing some test data here for people to try out, which far better exercise solution code than the actual problem's input data did. (Triple-click inside one of the sets to select it, for easier copying.) I'm also providing the correct maximum area for valid rectangles in each, to compare against. (I include additional solution details inside the spoiler-fold below.)</p>
 <div class="side-by-side indent">
 <div>Test: M<br/>
 Max: 21<br/>
@@ -453,7 +453,7 @@ Max: 35<br/>
 10,19</pre>
 </div>
 <div>Test: ⇑<br/>
-Max: ??<br/>
+Max: 21<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 16,0
 16,2
@@ -513,7 +513,7 @@ Max: ??<br/>
 10,0</pre>
 </div>
 <div>Test: ⇑⤸<br/>
-Max: ??<br/>
+Max: 21<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 18,16
 16,16
@@ -573,7 +573,7 @@ Max: ??<br/>
 18,10</pre>
 </div>
 <div>Test: 紆<br/>
-Max: 288?<br/>
+Max: 288<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 25,0
 25,2
@@ -631,7 +631,7 @@ Max: 288?<br/>
 9,0</pre>
 </div>
 <div>Test: 紆⤸<br/>
-Max: 288?<br/>
+Max: 288<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 18,25
 16,25
@@ -689,7 +689,7 @@ Max: 288?<br/>
 18,9</pre>
 </div>
 <div>Test: ₂₅<br/>
-Max: ??<br/>
+Max: 13680<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 342,192
 340,192
@@ -1429,7 +1429,7 @@ Max: ??<br/>
 343,192</pre>
 </div>
 <div>Test: 25₁₀₀<br/>
-Max: ??<br/>
+Max: 711217230<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 81037,45743
 81307,45743
@@ -2208,7 +2208,7 @@ Max: ??<br/>
 80690,45743</pre>
 </div>
 <div>Test: 25₁<br/>
-Max: ??<br/>
+Max: 1126639500<br/>
 <pre class="v-max v-scroll" onclick="tripleclick(event)">
 81164,45870
 81402,45870
@@ -2973,7 +2973,123 @@ Max: ??<br/>
 80654,45870</pre>
 </div>
 </div>
-                <p>I will add more to this write-up later...</p>
+                    <details><summary>More exact details on these datasets' maximum rectangle solutions ...</summary>
+                        <ul>
+                            <li>M: max area 21 (100th largest of 118 areas), defined by either of these point-pairs:
+                                <ul>
+                                    <li>(11, 2), (17, 0)</li>
+                                    <li>(25, 2), (19, 0)</li>
+                                </ul>
+                            </li>
+                            <li>M⤸: max area 21 (100th largest of 118 areas), defined by either of these point-pairs:
+                                <ul>
+                                    <li>(8, 25), (10, 19)</li>
+                                    <li>(8, 11), (10, 17)</li>
+                                </ul>
+                            </li>
+
+                            <li>M_: max area 35 (207th largest of 239 areas), defined uniquely by:
+                                <ul>
+                                    <li>(63, 8), (29, 8)</li>
+                                </ul>
+                            </li>
+                            <li>M_⤸: max area 35 (207th largest of 239 areas), defined uniquely by:
+                                <ul>
+                                    <li>(2, 63), (2, 29)</li>
+                                </ul>
+                            </li>
+
+                            <li>⇑: max area 21 (52nd largest of 61 areas), defined by any of these point-pairs:
+                                <ul>
+                                    <li>(16, 0), (10, 2)</li>
+                                    <li>(16, 2), (10, 0)</li>
+                                    <li>(24, 10), (26, 16)</li>
+                                    <li>(26, 10), (24, 16)</li>
+                                    <li>(2, 16), (0, 10)</li>
+                                    <li>(0, 16), (2, 10)</li>
+                                </ul>
+                            </li>
+                            <li>⇑⤸: max area 21 (52nd largest of 61 areas), defined by any of these point-pairs:
+                                <ul>
+                                    <li>(18, 16), (16, 10)</li>
+                                    <li>(16, 16), (18, 10)</li>
+                                    <li>(8, 24), (2, 26)</li>
+                                    <li>(8, 26), (2, 24)</li>
+                                    <li>(2, 2), (8, 0)</li>
+                                    <li>(2, 0), (8, 2)</li>
+                                </ul>
+                            </li>
+
+                            <li>紆: max area 288 (14th largest of 157 areas), defined uniquely by:
+                                <ul>
+                                    <li>(23, 11), (0, 0)</li>
+                                </ul>
+                            </li>
+                            <li>紆⤸: max area 288 (14th largest of 157 areas), defined uniquely by:
+                                <ul>
+                                    <li>(7, 23), (18, 0)</li>
+                                </ul>
+                            </li>
+
+                            <li>₂₅: max area 13680 (8216th largest of 15419 areas), defined uniquely by:
+                                <ul>
+                                    <li>(277, 239), (188, 88)</li>
+                                </ul>
+                            </li>
+
+                            <li>25₁₀₀: max area 711217230 (57939th largest of 279907 areas), defined uniquely by:
+                                <ul>
+                                    <li>(42027, 45843), (73912, 23539)</li>
+                                </ul>
+                            </li>
+
+                            <li>25₁: max area 1126639500 (23174th largest of 267843 areas), defined uniquely by:
+                                <ul>
+                                    <li>(40794, 56312), (72818, 21133)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </details>
+
+                <p>I had initially misread the problem to be asking for the maximum area of all "in bounds" rectangles, so I had written a "solution" to enforce that no data-points were inside a valid rectangle, no segments intruded into/across any valid rectangle, and no valid rectangle possessed any edge overlapping by more than one unit with a boundary segment with opposite winding direction. This just happened to turn up the correct answer for the problem's input data, because that data did not well-exercise the problem's constraints.</p>
+                <p>But, this is not, in fact, what the problem asks for: "Using two red tiles as opposite corners, what is the largest area of any rectangle you can make using only red and green tiles?"</p>
+                <p><strong>This formulation allows the boundary to enter/exit/wind-around-inside a max rectangle <em>so long as there is never any 'gap' between the intruding boundary lines!</em></strong></p>
+                <p>EXAMPLE - The most obvious largest-rectangle (area=12x5=60, made by the highlighted red points) in the following dataset is <em>valid</em> because every tile within it is either red (#) or green (|, -, or .), exactly as the problem demands. ("Outside" is indicated by blue x.) It does not matter that the boundary enters and exits the rectangle; it remains valid because there are no gaps (blue x) between.
+<pre>
+<span style="color:#0000ff">xxxxxxxxxxxxxxxxx</span>
+<span style="color:#0000ff">x</span><span style="color:#ff0000; background-color:#403000">#</span><span style="color:#00bb00">-------------</span><span style="color:#ff0000">#</span><span style="color:#0000ff">x</span>
+<span style="color:#0000ff">x</span><span style="color:#00bb00">|..........</span><span style="color:#ff0000">#</span><span style="color:#00bb00">--</span><span style="color:#ff0000">#</span><span style="color:#0000ff">x</span>
+<span style="color:#0000ff">x</span><span style="color:#00bb00">|....</span><span style="color:#ff0000">##</span><span style="color:#00bb00">....|</span><span style="color:#0000ff">xxxx</span>
+<span style="color:#0000ff">x</span><span style="color:#00bb00">|....||....|</span><span style="color:#0000ff">xxxx</span>
+<span style="color:#0000ff">x</span><span style="color:#ff0000">#</span><span style="color:#00bb00">----</span><span style="color:#ff0000">##</span><span style="color:#00bb00">----</span><span style="color:#ff0000; background-color:#403000">#</span><span style="color:#0000ff">xxxx</span>
+<span style="color:#0000ff">xxxxxxxxxxxxxxxxx</span>
+</pre>
+                </p>
+                <p>With this very different way of understanding the problem and thinking about how to solve it (also quite differently), I wrestled for a while with how on Earth to try to tackle it.</p>
+                <details><summary>I eventually landed on the idea of ...</summary>
+                    <p>... subdividing any selected rectangle into "empty regions" within it (<em>i.e.</em>, regions that are left over inside the rectangle after carving it up by "removing" overall-boundary edges), and then testing each of those regions for "inside-ness" versus "outside-ness". If any of them ends up as "outside", the entire rectangle is invalid; if all are "inside", the rectangle is valid.</p>
+                    <details><summary>To test "inside-ness", I ...</summary>
+                        <p>... performed a horizontal ray-cast out of each region to beyond the dataset's limits, counting boundary/edge crossings along the way. An odd count means "inside", an even count means "outside".</p>
+                        <p>Note that doing this comes with its own complications due to the possibility of the ray aligning exactly along some number of horizontal edges, in which case it matters what the edges connecting to each end are doing.</p>
+                        <details><summary>However, this is fairly straightforwardly resolved with the trick of ...</summary>
+                            <p>... offsetting the ray's y-coordinate by a small amount to avoid alignment issues&mdash;for example, by &pm;0.5.</p>
+                        </details>
+                    </details>
+                    <aside>Note: When I eventually developed this solution, it ran more slowly than I would have liked (a few minutes?). I know there are some things I could do to speed it up, but also it may be better to precompute (for the entire dataset) all the "outside" regions first (via almost exactly the same technique, but on a bounding-box rectangle for the whole dataset), then during the main run, test each selected rectangle for intersections with any of those "outside rectangles". If there's an intersection found, the selected rectangle is invalid; if not, it's valid. Maybe this would be better, and maybe not. (The "outside" rectangles could, for example, be arranged in a tree structure for efficient querying, or whatever... but, I haven't tested this idea.)</aside>
+                    <details><summary>It was not clear to me how <em>exactly</em> to carve up rectangles, but the way I ended up doing it was ...</summary>
+                        <p>... by performing a "sweep" from left to right across the rectangle, evaluating the state of a vertical cross-section only when it changes&mdash;so, at every vertical segment (sorted by x), and in-between them if there's a gap.</p>
+                        <details><summary>For each unit-wide "vertical slice", I ...</summary>
+                            <p>... already knew which vertical segments were in-play (since I'd previously done the bookkeeping for that), so I sliced through the horizontal segments to bring in all of those also in-play for that x-value slice (all clipped to the selected rectangle's bounds, of course). I represented all the vertical and horizontal segments as (low, high) y-ranges (horizontal-edge "y-ranges" being only size 1), y-sorted them all, and performed a "range merge" much like what was done for <a href="#day5p2">Day 5 Part 2</a> (also merging ranges directly juxtaposed). The result was the ranges of 'filled' locations, which I used to produce an inverted set of ranges for what was empty within that slice of rectangle (if anything).</p>
+                            <p>For each of these slices' empty ranges, I could have tested "inside-ness" using the same ray-cast technique described above. However, I didn't want to produce legions of these, with large subsets of them likely parts of the same "empty regions", and then test every single one of them for "inside-ness" rather than just testing every "empty region" as a whole, just once each.</p>
+                            <details><summary>To accomplish this single ray-cast per region, I...</summary>
+                                <p>... used union-find to merge adjacent (with successive slices) empty ranges into larger "empty regions", then performed a single ray-cast test only on each region's "representative slice-range".</p>
+                            </details>
+                        </details>
+                    </details>
+                </details>
+                <details><summary>An suggestion for finding <em>all</em> maximal solutions is ...</summary>
+                    <p>... to precompute all the data-point-pair areas, making a dictionary to map every distinct area to all the pairs that produce it, then iterate through the areas in reverse-sorted-area order (then all the pairs for each), so that the very first valid area found is the answer (and <em>all</em> such answers for that area).</p>
+                </details>
             </details>
         </details>
     </section>
