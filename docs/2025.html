@@ -3096,10 +3096,18 @@ Max: 1126639500<br/>
                             <details><summary>To accomplish this single ray-cast per region, I...</summary>
                                 <p>... used union-find to merge adjacent (with successive slices) empty ranges into larger "empty regions", then performed a single ray-cast test only on each region's "representative slice-range".</p>
                             </details>
+                            <details><summary>Big performance-improvement spoilers related to my note above...</summary>
+                                <p>In order to (drastically!) speed things up, I implemented a couple of important changes, with all the heavy lifting being done as precomputation.</p>
+                                <p>The first was to create "compressed coordinate" mappings for both x and y directions of the input data, where all the unique x and y values mapped to their densest possible versions while still accurately representing the input structurally. Basically, I started each at 0 and incremented it by 1 if the difference between successive sorted values was only 1, and by 2 if it was &ge;2.</p>
+                                <p>The second was to build summed-area table from this compressed-coordinate representation of the input. I initialized the whole table with zeros then ran my inside/outside region code on the entire compressed-coordinate dataset in order to identify "outside" regions, which I then filled into the table with 1 values throughout. From this intermediate table, I constructed a final summed-area table.</p>
+                                <p>To assess each selected rectangle during the main run, I simply performed an O(1) lookup in the summed-area table, using the compressed-coordinate versions of the rectangle's coordianates. If the result is nonzero, some part of the rectangle is "outside"; if it's zero, then it's fully inside.</p>
+                                <p>I kept the reverse-sorting-by-area code structure in place, too, so the first area found that works, is the largest area.</p>
+                                <p>These changes dropped the runtime down to almost nothing (perhaps a couple seconds on my rather old laptop).</p>
+                            </details>
                         </details>
                     </details>
                 </details>
-                <details><summary>An suggestion for finding <em>all</em> maximal solutions is ...</summary>
+                <details><summary>A suggestion for finding <em>all</em> maximal solutions is ...</summary>
                     <p>... to precompute all the data-point-pair areas, making a dictionary to map every distinct area to all the pairs that produce it, then iterate through the areas in reverse-sorted-area order (then all the pairs for each), so that the very first valid area found is the answer (and <em>all</em> such answers for that area).</p>
                 </details>
             </details>
@@ -3202,25 +3210,25 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
                             <details><summary>Given all this, I decided to just see what would happen if ...</summary>
                                 <p>... I checked to see if all the respectively required shapes for each of the remaining regions could just be dropped in by providing it with its own little independent 3x3 tile space (since all the shapes are "3x3"), without even trying to interlock them at all. See figure.</p>
 <pre>
-┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃             ←"excesses"↓┃
-┠┄┄┄┄┄┬┄┄┄┄┄┐     ┌┄┄┄┄┄┐ ┃
-┃     ┆     ┆     ┆     ┆ ┃
-┃  ?  ┆  ?  ┆ ... ┆  ?  ┆ ┃ &lfloor;L/3&rfloor;
-┃     ┆     ┆     ┆     ┆ ┃
-┠┄┄┄┄┄┴┄┄┄┄┄┘     └┄┄┄┄┄┘ ┃
-┃  .     .      .    .    ┃  .
-┃  .     .     .     .    ┃  .
-┃  .     .    .      .    ┃  .
-┠┄┄┄┄┄┬┄┄┄┄┄┐     ┌┄┄┄┄┄┐ ┃
-┃ ### ┆ ### ┆     ┆     ┆ ┃
-┃  ## ┆ #   ┆ ... ┆  ?  ┆ ┃  2
-┃   # ┆ ### ┆     ┆     ┆ ┃
-┠┄┄┄┄┄┼┄┄┄┄┄┤     ├┄┄┄┄┄┤ ┃
-┃   # ┆ ##  ┆     ┆     ┆ ┃
-┃ ### ┆  ## ┆ ... ┆  ?  ┆ ┃  1
-┃ ### ┆   # ┆     ┆     ┆ ┃
-┗━━━━━┷━━━━━┷━━━━━┷━━━━━┷━┛
+╔═════════════════════════╗
+║             ←"excesses"↓║
+╟─────┬─────┐     ┌─────┐ ║
+║     │     │     │     │ ║
+║  ?  │  ?  │ ... │  ?  │ ║ &lfloor;L/3&rfloor;
+║     │     │     │     │ ║
+╟─────┴─────┘     └─────┘ ║
+║  .     .      .    .    ║  .
+║  .     .     .     .    ║  .
+║  .     .    .      .    ║  .
+╟─────┬─────┐     ┌─────┐ ║
+║ ### │ ### │     │     │ ║
+║  ## │ #   │ ... │  ?  │ ║  2
+║   # │ ### │     │     │ ║
+╟─────┼─────┤     ├─────┤ ║
+║   # │ ##  │     │     │ ║
+║ ### │  ## │ ... │  ?  │ ║  1
+║ ### │   # │     │     │ ║
+╚═════╧═════╧═════╧═════╧═╝
    1     2    ...  &lfloor;W/3&rfloor;
 </pre>
 <!-- ┘ ┐ └ ┌ ┆ ┄ ⋯ ⋮ ⋰ ↓ ← -->
