@@ -99,6 +99,8 @@ pre, svg {
 	padding: calc(0.25*var(--indentAmt)) calc(0.5*var(--indentAmt));
 	border-radius: calc(0.25*var(--indentAmt));
 	background-color: var(--bodyBgColor);
+}
+pre {
 	font-family: 'Courier New', Courier, monospace;
 }
 img {
