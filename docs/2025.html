@@ -2974,34 +2974,29 @@ Max: 1126639500<br/>
 </div>
 </div>
                     <details><summary>More exact details on these datasets' maximum rectangle solutions ...</summary>
-                        <p>I provide visualizations of some of the datasets below, with light reddish "boundaries" and max-area valid rectangles marked in green with the point-pairs that define them in lighter green(s).</p>
                         <ul>
                             <li>M: max area 21 (100th largest of 118 areas), defined by either of these point-pairs:
                                 <ul>
                                     <li>(11, 2), (17, 0)</li>
                                     <li>(25, 2), (19, 0)</li>
                                 </ul>
-                                <img src="img/2025_9b_m.png" alt="Visualized example image">
                             </li>
                             <li>M⤸: max area 21 (100th largest of 118 areas), defined by either of these point-pairs:
                                 <ul>
                                     <li>(8, 25), (10, 19)</li>
                                     <li>(8, 11), (10, 17)</li>
                                 </ul>
-                                <p>(Visualization same as above, but rotated 90 degrees clockwise.)</p>
                             </li>
 
                             <li>M_: max area 35 (207th largest of 239 areas), defined uniquely by:
                                 <ul>
                                     <li>(63, 8), (29, 8)</li>
                                 </ul>
-                                <img src="img/2025_9b_m_.png" alt="Visualized example image">
                             </li>
                             <li>M_⤸: max area 35 (207th largest of 239 areas), defined uniquely by:
                                 <ul>
                                     <li>(2, 63), (2, 29)</li>
                                 </ul>
-                                <p>(Visualization same as above, but rotated 90 degrees clockwise.)</p>
                             </li>
 
                             <li>⇑: max area 21 (52nd largest of 61 areas), defined by any of these point-pairs:
@@ -3013,7 +3008,6 @@ Max: 1126639500<br/>
                                     <li>(2, 16), (0, 10)</li>
                                     <li>(0, 16), (2, 10)</li>
                                 </ul>
-                                <img src="img/2025_9b_h.png" alt="Visualized example image">
                             </li>
                             <li>⇑⤸: max area 21 (52nd largest of 61 areas), defined by any of these point-pairs:
                                 <ul>
@@ -3024,41 +3018,37 @@ Max: 1126639500<br/>
                                     <li>(2, 2), (8, 0)</li>
                                     <li>(2, 0), (8, 2)</li>
                                 </ul>
-                                <p>(Visualization same as above, but rotated 90 degrees clockwise.)</p>
                             </li>
 
                             <li>紆: max area 288 (14th largest of 157 areas), defined uniquely by:
                                 <ul>
                                     <li>(23, 11), (0, 0)</li>
                                 </ul>
+                                <p>Here is this dataset and solution visualized with light reddish "boundaries", the max-rect pair-points (above) in green, and the rectangle they form in darker green:</p>
                                 <img src="img/2025_9b_example.png" alt="Visualized example image">
                             </li>
                             <li>紆⤸: max area 288 (14th largest of 157 areas), defined uniquely by:
                                 <ul>
                                     <li>(7, 23), (18, 0)</li>
                                 </ul>
-                                <p>(Visualization same as above, but rotated 90 degrees clockwise.)</p>
                             </li>
 
                             <li>₂₅: max area 13680 (8216th largest of 15419 areas), defined uniquely by:
                                 <ul>
                                     <li>(277, 239), (188, 88)</li>
                                 </ul>
-                                <img src="img/2025_9b_sm25.png" alt="Visualized example image">
                             </li>
 
                             <li>25₁₀₀: max area 711217230 (57939th largest of 279907 areas), defined uniquely by:
                                 <ul>
                                     <li>(42027, 45843), (73912, 23539)</li>
                                 </ul>
-                                <p>(Visualization omitted.)</p>
                             </li>
 
                             <li>25₁: max area 1126639500 (23174th largest of 267843 areas), defined uniquely by:
                                 <ul>
                                     <li>(40794, 56312), (72818, 21133)</li>
                                 </ul>
-                                <p>(Visualization omitted.)</p>
                             </li>
                         </ul>
                     </details>
@@ -3096,18 +3086,10 @@ Max: 1126639500<br/>
                             <details><summary>To accomplish this single ray-cast per region, I...</summary>
                                 <p>... used union-find to merge adjacent (with successive slices) empty ranges into larger "empty regions", then performed a single ray-cast test only on each region's "representative slice-range".</p>
                             </details>
-                            <details><summary>Big performance-improvement spoilers related to my note above...</summary>
-                                <p>In order to (drastically!) speed things up, I implemented a couple of important changes, with all the heavy lifting being done as precomputation.</p>
-                                <p>The first was to create "compressed coordinate" mappings for both x and y directions of the input data, where all the unique x and y values mapped to their densest possible versions while still accurately representing the input structurally. Basically, I started each at 0 and incremented it by 1 if the difference between successive sorted values was only 1, and by 2 if it was &ge;2.</p>
-                                <p>The second was to build a summed-area table from this compressed-coordinate representation of the input. I initialized the whole table with zeros then ran my inside/outside region code on the entire compressed-coordinate dataset in order to identify "outside" regions, which I then filled into the table with 1 values throughout. From this intermediate table, I constructed a final summed-area table.</p>
-                                <p>To assess each selected rectangle during the main run, I simply performed an O(1) lookup in the summed-area table, using the compressed-coordinate versions of the rectangle's coordinates. If the result was nonzero, some part of the rectangle was "outside"; if it was zero, then it was fully inside.</p>
-                                <p>I kept the reverse-sorting-by-area code structure in place, too, so the first area found that works, was the largest area.</p>
-                                <p>These changes dropped the runtime down to almost nothing (perhaps a couple seconds on my rather old laptop).</p>
-                            </details>
                         </details>
                     </details>
                 </details>
-                <details><summary>A suggestion for finding <em>all</em> maximal solutions is ...</summary>
+                <details><summary>An suggestion for finding <em>all</em> maximal solutions is ...</summary>
                     <p>... to precompute all the data-point-pair areas, making a dictionary to map every distinct area to all the pairs that produce it, then iterate through the areas in reverse-sorted-area order (then all the pairs for each), so that the very first valid area found is the answer (and <em>all</em> such answers for that area).</p>
                 </details>
             </details>
@@ -3196,13 +3178,13 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
                                 <li>L : length of boundary region</li>
                                 <li>A<sub>R</sub> = WL : area of boundary region</li>
                                 <li>n<sub>i</sub> : required number of shape i</li>
-                                <li>a<sub>i</sub> : area covered by shape i, computed as its '#'-count (same across all "WxL: n<sub>i</sub> for i in 0..5" data inputs)</li>
+                                <li>a<sub>i</sub> : area covered by shape i, computed as its '#'-count (same across all "WxL: n<sub>0</sub> n<sub>1</sub> n<sub>2</sub> n<sub>3</sub> n<sub>4</sub>" data inputs)</li>
                                 <li>A<sub>D</sub> = Σ n<sub>i</sub> a<sub>i</sub> : "dense area", which is the theoretical minimum coverage area of all of an input's shapes (ignoring region shape)</li>
                                 <li>N = Σ n<sub>i</sub> : total shape count</li>
                             </ul>
                             It should be obvious that if A<sub>D</sub>&gt;A<sub>R</sub>, then that input can immediately be rejected as impossible.</p>
                         <p>Imagine my surprise when literally hundreds of the inputs were rejected by this simple check!</p>
-                        <aside>Frustratingly, when the problem first became available to work on, I had only tried this test on the very first input, and by hand, and I'd accidentally reversed the comparison and concluded that the boundary region area was just slightly larger than the total shape-coverage area, even though it was actually slightly <em>smaller</em>! Oof!</aside>
+                        <aside>Frustratingly, when the problem first became available to work on, I had only tried this test on the very first input, and by hand, and I'd accidentally reversed the comparison and concluded that A<sub>R</sub> was just slightly larger than A<sub>D</sub>, even though it was actually slightly <em>smaller</em>! Oof!</aside>
                         <p>At any rate, this was all fine and good to discover, but it still didn't necessarily get me much closer to a final answer since it didn't tell me whether or not those remaining (not rejected) would work, and trying to crank through even just <u>one</u> of them would be computationally infeasible.</p>
                         <details><summary>But, it did encourage me to then look more closely at those remaining inputs. I next examined ...</summary>
                             <p>... just <em>how much</em> larger A<sub>R</sub> was than A<sub>D</sub>. It turned out to be by quite a substantial amount, even for the smallest one! Now, this seemed potentially promising...</p>
@@ -3210,25 +3192,25 @@ row 3 [ 1         1         0         1         0         1 ] [ x₃ ]     [ 7 ]
                             <details><summary>Given all this, I decided to just see what would happen if ...</summary>
                                 <p>... I checked to see if all the respectively required shapes for each of the remaining regions could just be dropped in by providing it with its own little independent 3x3 tile space (since all the shapes are "3x3"), without even trying to interlock them at all. See figure.</p>
 <pre>
-╔═════════════════════════╗
-║             ←"excesses"↓║
-╟─────┬─────┐     ┌─────┐ ║
-║     │     │     │     │ ║
-║  ?  │  ?  │ ... │  ?  │ ║ &lfloor;L/3&rfloor;
-║     │     │     │     │ ║
-╟─────┴─────┘     └─────┘ ║
-║  .     .      .    .    ║  .
-║  .     .     .     .    ║  .
-║  .     .    .      .    ║  .
-╟─────┬─────┐     ┌─────┐ ║
-║ ### │ ### │     │     │ ║
-║  ## │ #   │ ... │  ?  │ ║  2
-║   # │ ### │     │     │ ║
-╟─────┼─────┤     ├─────┤ ║
-║   # │ ##  │     │     │ ║
-║ ### │  ## │ ... │  ?  │ ║  1
-║ ### │   # │     │     │ ║
-╚═════╧═════╧═════╧═════╧═╝
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃             ←"excesses"↓┃
+┠┄┄┄┄┄┬┄┄┄┄┄┐     ┌┄┄┄┄┄┐ ┃
+┃     ┆     ┆     ┆     ┆ ┃
+┃  ?  ┆  ?  ┆ ... ┆  ?  ┆ ┃ &lfloor;L/3&rfloor;
+┃     ┆     ┆     ┆     ┆ ┃
+┠┄┄┄┄┄┴┄┄┄┄┄┘     └┄┄┄┄┄┘ ┃
+┃  .     .      .    .    ┃  .
+┃  .     .     .     .    ┃  .
+┃  .     .    .      .    ┃  .
+┠┄┄┄┄┄┬┄┄┄┄┄┐     ┌┄┄┄┄┄┐ ┃
+┃ ### ┆ ### ┆     ┆     ┆ ┃
+┃  ## ┆ #   ┆ ... ┆  ?  ┆ ┃  2
+┃   # ┆ ### ┆     ┆     ┆ ┃
+┠┄┄┄┄┄┼┄┄┄┄┄┤     ├┄┄┄┄┄┤ ┃
+┃   # ┆ ##  ┆     ┆     ┆ ┃
+┃ ### ┆  ## ┆ ... ┆  ?  ┆ ┃  1
+┃ ### ┆   # ┆     ┆     ┆ ┃
+┗━━━━━┷━━━━━┷━━━━━┷━━━━━┷━┛
    1     2    ...  &lfloor;W/3&rfloor;
 </pre>
 <!-- ┘ ┐ └ ┌ ┆ ┄ ⋯ ⋮ ⋰ ↓ ← -->

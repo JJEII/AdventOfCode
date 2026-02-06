@@ -100,9 +100,6 @@ pre, svg {
 	border-radius: calc(0.25*var(--indentAmt));
 	background-color: var(--bodyBgColor);
 }
-pre {
-	font-family: 'Courier New', Courier, monospace;
-}
 img {
 	border-radius: calc(0.25*var(--indentAmt));
 }
@@ -157,6 +154,7 @@ p {
 sub,
 sup {
 	font-size: 0.55em;
+	color: inherit;
 }
 .tiny-note {
 	font-size: small;
